@@ -1,0 +1,57 @@
+@import "_settings";
+@import "~goodstrap/packages/core/styles/themes/indigo/mixins";
+
+// colors
+$nav-background: $gd-color-light;
+$border-color: #DDE4EB;
+
+// sizes
+$section-padding: 20px;
+$header-height: 70px;
+$item-min-height: 168px;
+$kpi-border: 3px;
+
+// fonts
+@mixin gd-font-heavy {
+    @extend %gd-font-bold;
+}
+
+/**
+ * TODO: move to goodstrap
+ * Pure css scrolling shadows:
+ * http://lea.verou.me/2012/04/background-attachment-local/
+ */
+@mixin scroll-view-shadow($background, $shadow) {
+    background:
+        /* Shadow covers */
+        linear-gradient($background 30%, rgba(252,252,253,0)),
+        linear-gradient(rgba(252,252,253,0), $background 70%) 0 100%,
+
+        /* Shadows */
+        radial-gradient(50% 0, farthest-side, rgba(0,0,0,.15), rgba(0,0,0,0)),
+        radial-gradient(50% 100%,farthest-side, rgba(0,0,0,.15), rgba(0,0,0,0)) 0 100%,
+
+        /* Shadows */
+        radial-gradient(50% 0, farthest-side, $shadow, rgba(0,0,0,0)),
+        radial-gradient(50% 100%,farthest-side, $shadow, rgba(0,0,0,0)) 0 100%;
+
+    background:
+        /* Shadow covers */
+        linear-gradient($background 30%, rgba(252,252,253,0)),
+        linear-gradient(rgba(252,252,253,0), $background 70%) 0 100%,
+
+        /* Shadows */
+        radial-gradient(farthest-side at 50% 0, $shadow, rgba(0,0,0,0)),
+        radial-gradient(farthest-side at 50% 100%, $shadow, rgba(0,0,0,0)) 0 100%,
+
+        /* Shadow line */
+        radial-gradient(farthest-side at 50% 0, $shadow, rgba(0,0,0,0)),
+        radial-gradient(farthest-side at 50% 100%, $shadow, rgba(0,0,0,0)) 0 100%;
+
+    background-repeat: no-repeat;
+    background-color: $background;
+    background-size: 100% 15px, 100% 15px, 100% 5px, 100% 5px, 100% 1px, 100% 1px;
+
+    /* Opera doesn't support this in the shorthand */
+    background-attachment: local, local, scroll, scroll, scroll, scroll;
+}
