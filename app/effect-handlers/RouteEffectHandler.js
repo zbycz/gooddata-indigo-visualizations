@@ -1,5 +1,5 @@
 import * as Effects from '../constants/Effects';
-import * as RouterService from '../services/RouterService';
+import * as RouterService from '../services/router_service';
 
 // TODO: Remove the directive once dispatch is used.
 /* eslint no-unused-vars: 0 */

@@ -4,7 +4,7 @@ import { isMobile } from '../utils/BrowserDetect';
 
 import * as Actions from '../constants/Actions';
 import * as API from '../utils/api';
-import * as RouterService from '../services/RouterService';
+import * as RouterService from '../services/router_service';
 
 function parseUri(uri) {
     const { route, params } = RouterService.parseUri(uri);

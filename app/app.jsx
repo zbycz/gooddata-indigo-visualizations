@@ -3,15 +3,16 @@ require('./styles/app');
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-
-import Root from './containers/Root.jsx';
+import { IntlProvider } from 'react-intl';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
 import routerEffectHandler from './effect-handlers/RouteEffectHandler';
+import translations from './translations/en';
 
+import Root from './containers/Root.jsx';
 import rootReducer from './reducers/RootReducer';
 import initialState from './reducers/InitialReduction';
 
@@ -31,5 +32,7 @@ const setupAppStore = state => {
 };
 
 ReactDOM.render(<Provider store={setupAppStore(initialState)}>
-    <Root />
+    <IntlProvider locale="en" messages={translations}>
+        <Root />
+    </IntlProvider>
 </Provider>, document.getElementById('app-analyze'));
