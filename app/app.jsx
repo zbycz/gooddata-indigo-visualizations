@@ -4,7 +4,7 @@ require('./styles/app');
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-import Root from './components/Root.jsx';
+import Root from './containers/Root.jsx';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
