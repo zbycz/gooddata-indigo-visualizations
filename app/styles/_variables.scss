@@ -1,6 +1,12 @@
 @import "_settings";
 @import "~goodstrap/packages/core/styles/themes/indigo/mixins";
 
+// themes
+$goodstrapThemePath: "../../node_modules/goodstrap/packages/theme-indigo";
+
+// devices
+$narrowDevice: "(max-width: 1400px) and (min-height: 860px)";
+
 // colors
 $nav-background: $gd-color-light;
 $border-color: #DDE4EB;
@@ -15,6 +21,10 @@ $kpi-border: 3px;
 @mixin gd-font-heavy {
     @extend %gd-font-bold;
 }
+
+// bucket item
+$adi-field-icon-color: #0095FF;
+
 
 /**
  * TODO: move to goodstrap

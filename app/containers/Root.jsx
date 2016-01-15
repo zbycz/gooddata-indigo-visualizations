@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Header from 'goodstrap/packages/Header/ReactHeader';
+import Header from '../../node_modules/goodstrap/packages/Header/ReactHeader';
+import Dashboard from './../components/Dashboard.jsx';
 
 import * as AppContextActions from '../actions/AppContextActions';
 
@@ -45,9 +46,7 @@ class Root extends Component {
                         onLogout={onLogout}
                         onMenuItemClick={onMenuItemClick}
                     />
-                    <div className="container">
-                        Hello, World!
-                    </div>
+                    <Dashboard />
                 </div>
             );
         }
