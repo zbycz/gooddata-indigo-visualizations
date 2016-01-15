@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { isEmpty } from 'lodash';
 import classNames from 'classnames';
 
-import { getCssClass } from '../utils/CssClass';
+import { getCssClass } from '../utils/css_class';
 import { flattenDatasets } from '../utils/Datasets';
 import Dataset from './Dataset.jsx';
 

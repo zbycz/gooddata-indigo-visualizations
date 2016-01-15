@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import pureRender from 'pure-render-decorator';
 
 import Bubble from 'Bubble/ReactBubble';
 import BubbleHoverTrigger from 'Bubble/ReactBubbleHoverTrigger';
@@ -9,32 +10,22 @@ import AttributeBubbleContent from './../shared/AttributeBubbleContent.jsx';
 import FactBubbleContent from './../shared/FactBubbleContent.jsx';
 import MetricBubbleContent from './../shared/MetricBubbleContent.jsx';
 
-
+@pureRender
 export default class CatalogueDetailsBubble extends React.Component {
     static propTypes = {
         item: React.PropTypes.object.isRequired,
         offsetX: React.PropTypes.number,
         offsetY: React.PropTypes.number,
-        onShowTooltip: React.PropTypes.func,
-        onHideTooltip: React.PropTypes.func
+        onShowBubble: React.PropTypes.func,
+        onHideBubble: React.PropTypes.func
     };
 
     static defaultProps = {
         offsetX: 200,
-        offsetY: 10
+        offsetY: 10,
+        onShowBubble: () => {},
+        onHideBubble: () => {}
     };
-
-    onMouseEnter() {
-        if (this.props.onShowTooltip) {
-            this.props.onShowTooltip(this.props.item);
-        }
-    }
-
-    onMouseLeave() {
-        if (this.props.onHideTooltip) {
-            this.props.onHideTooltip(this.props.item);
-        }
-    }
 
     getItemDetails(prop) {
         let item = this.props.item.get('details');
@@ -57,6 +48,7 @@ export default class CatalogueDetailsBubble extends React.Component {
 
     renderContent() {
         let type = this.props.item.get('type');
+
         switch (type) {
             case 'metric':
                 return <MetricBubbleContent maql={this.getItemDetails('metricMaql')}/>;
@@ -82,8 +74,8 @@ export default class CatalogueDetailsBubble extends React.Component {
             <BubbleHoverTrigger showDelay={0} hideDelay={0}>
                 <span
                     className="inlineBubbleHelp"
-                    onMouseEnter={this.onMouseEnter.bind(this)}
-                    onMouseLeave={this.onMouseLeave.bind(this)}
+                    onMouseEnter={() => props.onShowBubble(props.item)}
+                    onMouseLeave={() => props.onHideBubble(props.item)}
                 />
                 <Bubble
                     className={this.getClasses()}

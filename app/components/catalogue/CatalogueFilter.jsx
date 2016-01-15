@@ -1,4 +1,4 @@
-import { getCssClass } from '../../utils/CssClass';
+import { getCssClass } from '../../utils/css_class';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import React, { Component, PropTypes } from 'react';

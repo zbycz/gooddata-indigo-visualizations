@@ -30,7 +30,7 @@ describe('Catalogue Details Bubble', () => {
     function render(catalogueItem) {
         return renderIntoDocument(
             <IntlProvider locale="en" messages={translations}>
-                <CatalogueDetailsBubble item={catalogueItem} onShowTooltip={onShowTooltip} />
+                <CatalogueDetailsBubble item={catalogueItem} onShowBubble={onShowTooltip} />
             </IntlProvider>
         );
     }

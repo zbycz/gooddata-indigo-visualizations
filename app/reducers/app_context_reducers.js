@@ -1,7 +1,8 @@
 import { Record, Map, List, fromJS } from 'immutable';
 import get from 'lodash/object/get';
 import keys from 'lodash/object/keys';
-import buildMessage from '../utils/MessageBuilder';
+
+import buildMessage from '../utils/message_builder';
 
 import * as Header from 'goodstrap/packages/Header/ReactHeader';
 

@@ -1,0 +1,59 @@
+@import "./variables";
+
+.adi-visualization-picker {
+    overflow: hidden;
+    margin: 0 0 10px 10px;
+
+    button.vis {
+        display: block;
+        position: relative;
+        float: left;
+        width: 56px;
+        height: 48px;
+        padding: 0;
+        margin: 0 0 0 -1px;
+        z-index: 1;
+
+        background-color: $adi-bucket-background-color;
+        background-repeat: no-repeat;
+        background-position: center, -999px -999px;
+        box-shadow: $adi-bucket-box-shadow;
+        border: 1px solid $adi-bucket-border-color;
+
+        cursor: pointer;
+
+        &:hover {
+            border-color: #B1C1D1;
+            z-index: 2;
+        }
+
+        &.is-selected {
+            border-color: #44B1F0;
+            background-color: #ffffff;
+            z-index: 3;
+        }
+
+        &:hover,
+        &.is-selected {
+            background-position: -999px -999px, center;
+        }
+
+        &:first-of-type {
+            border-radius: $adi-bucket-border-radius 0 0 $adi-bucket-border-radius;
+
+            margin-left: 0;
+            width: 55px;
+        }
+
+        &:last-of-type {
+            border-radius: 0 $adi-bucket-border-radius $adi-bucket-border-radius 0;
+        }
+
+        @each $icon in bar, line, column, table {
+            &.vis-type-#{$icon} {
+                background-image: url('./assets/#{$icon}.svg'), url('./assets/#{$icon}-active.svg');
+            }
+        }
+    }
+
+}

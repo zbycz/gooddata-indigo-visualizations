@@ -4,12 +4,14 @@
 
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
+import pureRender from 'pure-render-decorator';
 
 import CatalogueItem from './CatalogueItem';
 import Header from './CatalogueHeader';
 
 export const LIST_ITEM_HEIGHT = 25;
 
+@pureRender
 export default class CatalogueListItem extends Component {
     static propTypes = {
         item: PropTypes.object.isRequired

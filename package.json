@@ -90,10 +90,14 @@
     "gooddata": "git+ssh://git@github.com:gooddata/gooddata-js.git#v0.1.16",
     "goodstrap": "git+ssh://git@github.com:gooddata/gdc-goodstrap.git#v0.79.2",
     "intl-messageformat": "1.2.0",
+    "invariant": "^2.2.0",
     "jquery": "2.1.4",
     "jquery.browser": "0.1.0",
     "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils.git#v0.2.0",
+    "kefir": "^3.2.0",
     "lodash": "3.10.1",
+    "md5": "^2.0.0",
+    "pure-render-decorator": "^0.2.0",
     "react": "0.14.3",
     "react-dnd": "2.0.2",
     "react-dnd-html5-backend": "2.0.0",
@@ -106,6 +110,8 @@
     "react-textarea-autosize": "3.2.0",
     "redux": "^3.0.5",
     "redux-thunk": "^1.0.3",
-    "uniqueid": "0.1.0"
+    "reselect": "^2.0.2",
+    "uniqueid": "0.1.0",
+    "wolfy87-eventemitter": "^4.3.0"
   }
 }

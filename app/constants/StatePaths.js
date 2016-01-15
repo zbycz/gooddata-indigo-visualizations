@@ -54,3 +54,7 @@ export const DATASETS = DATA.concat('datasets');
 
 export const DIMENSIONS = DATA.concat('dimensions');
 export const DIMENSIONS_AVAILABLE = DIMENSIONS.concat('dimensions');
+
+export const BUCKETS = DATA.concat('buckets');
+
+export const VISUALIZATION_TYPE = DATA.concat('visualizationType');

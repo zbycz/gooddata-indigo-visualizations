@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
+import pureRender from 'pure-render-decorator';
 
+@pureRender
 export default class MetricBubbleContent extends React.Component {
     static propTypes = {
         maql: PropTypes.object
@@ -17,7 +19,7 @@ export default class MetricBubbleContent extends React.Component {
                 return category ?
                     <span key={idx} className={`${category} adi-maql-segment`}>{m.get('title')}</span> :
                     m.get('title');
-            });
+            }).toJS();
         }
 
         return <FormattedMessage id="loading" />;

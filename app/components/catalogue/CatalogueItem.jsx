@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { getCssClass } from '../../utils/CssClass';
-
+import { getCssClass } from '../../utils/css_class';
 import CatalogueDetailsBubble from './CatalogueDetailsBubble';
 
 export function getCatalogueItemClassName(item) {
@@ -100,7 +99,8 @@ export default class CatalogueItem extends React.Component {
     }
 
     render() {
-        var item = this.props.item,
+        var props = this.props,
+            item = props.item,
             type = item.get('type'),
             title = item.get('title'),
             isUnavailable = !this.props.available;
@@ -115,12 +115,17 @@ export default class CatalogueItem extends React.Component {
             }
         );
 
-        var bubbleHelp = <CatalogueDetailsBubble item={item} onShowTooltip={this.props.onMouseOver} />;
+        var bubbleHelp = (
+            <CatalogueDetailsBubble
+                item={props.item}
+                onShowBubble={props.onShowBubble}
+            />
+        );
 
         return (
             <div className={classes}>
                 <div>{title}</div>
-                {this.props.bubbleHelp && bubbleHelp}
+                {props.bubbleHelp && bubbleHelp}
             </div>
         );
     }

@@ -62,7 +62,7 @@ class Catalogue extends Component {
         let catalogueFilters = catalogue.get('filters').toJS();
         let activeFilterIndex = catalogue.get('activeFilterIndex');
 
-        let onBubbleOver = item => {
+        let onShowBubble = item => {
             if (!item.get('details')) {
                 this.props.dispatch(DataActions.catalogueItemDetailRequested(item.toJS(), this.props.projectId));
             }
@@ -114,8 +114,7 @@ class Catalogue extends Component {
                             isLoadingAvailability={false}
                             onDragStart={() => {}}
                             onDragStop={() => {}}
-                            onMouseOver={onBubbleOver}
-                            onMouseOut={() => {}}
+                            onShowBubble={onShowBubble}
                             onRangeChange={this.onRangeChange.bind(this)}
                             start={this.props.catalogue.getIn(['paging', 'start'])}
                             end={this.props.catalogue.getIn(['paging', 'end'])}

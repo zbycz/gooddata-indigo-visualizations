@@ -6,6 +6,8 @@ const initialPaging = {
     end: 39
 };
 
+import * as buckets from '../models/bucket';
+
 export default fromJS({
     appState: {
         header: {
@@ -63,7 +65,9 @@ export default fromJS({
             }
         },
         dimensions: {},
-        datasets: {}
+        datasets: {},
+        visualizationType: 'column',
+        buckets: buckets.INITIAL_MODEL
     },
     effects: []
 });
