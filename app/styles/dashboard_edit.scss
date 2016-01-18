@@ -1,5 +1,4 @@
-@import "../../node_modules/goodstrap/packages/theme-indigo";
-@import "./variables";
+@import "variables";
 
 .adi-editor-header {
     position: absolute;
@@ -138,7 +137,6 @@
     position: relative;
     flex: 1 1 auto;
     margin-top: 20px;
-    overflow: hidden;
 }
 
 .adi-chart-container {
@@ -310,7 +308,7 @@
 
     margin-right: -9px; // Reserve some space for a scrollbar
 
-    @include scroll-view-shadow(#fff, rgba(0,0,0,.15));
+    @include scroll-view-shadow(#fff);
 }
 
 .adi-bucket-list {

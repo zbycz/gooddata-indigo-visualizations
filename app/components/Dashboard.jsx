@@ -1,14 +1,11 @@
-import '../styles/dashboard';
-import '../styles/dashboard_edit';
-import React, { Component } from 'react';
-import Editor from './Editor.jsx';
+import React from 'react';
 
-export default class Dashboard extends Component {
-    render() {
-        return (
-            <div className="adi-dashboard">
-                <Editor />
-            </div>
-        );
-    }
+import Editor from './Editor';
+
+export default function() {
+    return (
+        <div className="adi-dashboard">
+            <Editor />
+        </div>
+    );
 }

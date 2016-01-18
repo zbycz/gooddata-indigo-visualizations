@@ -5,6 +5,7 @@ import buildMessage from '../utils/MessageBuilder';
 
 import * as Header from 'goodstrap/packages/Header/ReactHeader';
 
+import * as Actions from '../constants/Actions';
 import * as Effects from '../constants/Effects';
 import * as BootstrapService from '../services/bootstrap_service';
 import * as StatePaths from '../constants/StatePaths';
@@ -16,7 +17,8 @@ const BootstrapDataRecord = new Record({
     profileSetting: {},
     accountSetting: {},
     branding: {},
-    featureFlags: {}
+    featureFlags: {},
+    isBootstrapLoaded: false
 });
 
 const TRANSLATIONS = {
@@ -42,7 +44,7 @@ function transformBootstrapData(bootstrapData) {
         const uri = project.links.self;
 
         return new Map({
-            id: project.links.self.split('/').pop(),
+            id: uri.split('/').pop(),
             uri,
             title: project.meta.title,
             template: projectTemplate
@@ -92,7 +94,7 @@ function hackMenuForTranslations(menu) {
     });
 }
 
-export const bootstrap = (state, action) => {
+function bootstrap(state, action) {
     const data = action.bootstrapData;
     const windowInfo = action.windowInfo;
     // if user has not current project accessible bootstrap resource
@@ -123,7 +125,8 @@ export const bootstrap = (state, action) => {
             .setIn(StatePaths.ACCOUNT_MENU_ITEMS, new List(headerAccountMenu))
             .setIn(StatePaths.DEVICE_VIEWPORT, windowInfo.viewport)
             .setIn(StatePaths.DEVICE_PIXEL_RATIO, windowInfo.pixelRatio)
-            .setIn(StatePaths.IS_MOBILE_DEVICE, windowInfo.isMobileDevice);
+            .setIn(StatePaths.IS_MOBILE_DEVICE, windowInfo.isMobileDevice)
+            .setIn(StatePaths.BOOTSTRAP_IS_LOADED, true);
     });
 
     // embedded-only user
@@ -132,21 +135,31 @@ export const bootstrap = (state, action) => {
     }
 
     if (!mutatedAppState.getIn(['router', 'route'])) {
-        let hash = mutatedAppState.getIn(['bootstrapData', 'project', 'id']);
+        let hash = mutatedAppState.getIn(StatePaths.PROJECT_ID);
         state.setIn('effects', [buildMessage(Effects.SET_HASH, hash)]);
     }
 
     return state.set('appState', mutatedAppState);
-};
+}
 
-export const bootstrapError = state => {
-    const url = encodeURIComponent(location.href);
-    var loginRedirectionUrl = `/account.html?lastUrl=${url}#/login`;
-    var loginRedirectionEffect = buildMessage(Effects.REDIRECTION, loginRedirectionUrl);
-    return state.set('effects', [loginRedirectionEffect]);
-};
+function bootstrapError(state, action) {
+    return state.setIn(['appState', 'errors'], state.getIn(['appState', 'errors']).push(action.error));
+}
 
-export const loggedOut = state => {
+function loggedOut(state) {
     var logoutRedirectionEffect = buildMessage(Effects.REDIRECTION, '/');
     return state.set('effects', [logoutRedirectionEffect]);
+}
+
+export default (state, action) => {
+    switch (action.type) {
+        case Actions.BOOTSTRAP_DATA:
+            return bootstrap(state, action);
+        case Actions.BOOTSTRAP_ERROR:
+            return bootstrapError(state, action);
+        case Actions.LOGOUT_DATA:
+            return loggedOut(state);
+        default:
+            return state;
+    }
 };

@@ -1,15 +1,10 @@
 import $ from 'jquery';
 
 import { isMobile } from '../utils/BrowserDetect';
-
+import { catalogueRequested, datasetsRequested } from './data_actions';
 import * as Actions from '../constants/Actions';
 import * as API from '../utils/api';
-import * as RouterService from '../services/router_service';
-
-function parseUri(uri) {
-    const { route, params } = RouterService.parseUri(uri);
-    return { route, ...params };
-}
+import { isCsvUploaderEnabled } from '../services/bootstrap_service';
 
 function bootstrapDataReceived(bootstrapData, windowInstance) {
     const $window = $(windowInstance);
@@ -29,10 +24,10 @@ function bootstrapDataReceived(bootstrapData, windowInstance) {
     };
 }
 
-function bootstrapError(reason) {
+function bootstrapError(error) {
     return {
         type: Actions.BOOTSTRAP_ERROR,
-        data: reason
+        error
     };
 }
 
@@ -42,17 +37,27 @@ function loggedOut() {
     };
 }
 
-export function bootstrap(windowInstance) {
-    return dispatch => {
-        dispatch({
-            type: Actions.BOOTSTRAP
-        });
-        let currentHash = RouterService.getCurrentHash();
-        let parsedUri = parseUri(currentHash);
-        API.bootstrap(parsedUri.projectId)
+export function bootstrap(windowInstance, projectId, loadBootstrap = API.bootstrap) {
+    return (dispatch, getState) => {
+        dispatch({ type: Actions.BOOTSTRAP });
+
+        return loadBootstrap(projectId)
             .then(
-                bootstrapData => dispatch(bootstrapDataReceived(bootstrapData, windowInstance)),
-                reason => dispatch(bootstrapError(reason)));
+                bootstrapData => {
+                    dispatch(bootstrapDataReceived(bootstrapData, windowInstance));
+                    let state = getState().get('appState');
+
+                    if (isCsvUploaderEnabled(state)) {
+                        dispatch(datasetsRequested(projectId));
+                    }
+
+                    dispatch(catalogueRequested(projectId));
+                }
+            )
+            .catch(error => {
+                dispatch(bootstrapError(error));
+            })
+        ;
     };
 }
 
@@ -61,10 +66,9 @@ export function logoutRequested() {
         dispatch({
             type: Actions.LOGOUT
         });
+
         API.logout().then(() => {
             dispatch(loggedOut());
-        }, rejectedReason => {
-            console.warn('logout failed', rejectedReason);
         });
     };
 }

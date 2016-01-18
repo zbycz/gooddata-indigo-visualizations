@@ -7,32 +7,19 @@ import { IntlProvider } from 'react-intl';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunkMiddleware from 'redux-thunk';
+import thunk from 'redux-thunk';
 
-import routerEffectHandler from './effect-handlers/RouteEffectHandler';
 import translations from './translations/en';
 
 import Root from './containers/Root.jsx';
-import rootReducer from './reducers/RootReducer';
-import initialState from './reducers/InitialReduction';
+import rootReducer from './reducers/root_reducer';
+import initialState from './reducers/initial_state';
+import { getProjectId, getCurrentHash } from './utils/location';
 
-const effectsHandlingMiddleware = store => next => action => {
-    const result = next(action);
-    store.getState().get('effects').forEach(effect => {
-        routerEffectHandler(effect, store.dispatch);
-    });
+const setupAppStore = applyMiddleware(thunk)(createStore);
 
-    return result;
-};
-
-const setupAppStore = state => {
-    const createStoreWithMiddleware =
-        applyMiddleware(thunkMiddleware, effectsHandlingMiddleware)(createStore);
-    return createStoreWithMiddleware(rootReducer, state);
-};
-
-ReactDOM.render(<Provider store={setupAppStore(initialState)}>
+ReactDOM.render(<Provider store={setupAppStore(rootReducer, initialState)}>
     <IntlProvider locale="en" messages={translations}>
-        <Root />
+        <Root projectId={getProjectId(getCurrentHash())} />
     </IntlProvider>
 </Provider>, document.getElementById('app-analyze'));

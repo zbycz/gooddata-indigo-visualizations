@@ -2,19 +2,22 @@ import * as React from 'react';
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import RootDom from '../components/RootDom.jsx';
+import Error from '../components/Error.jsx';
 
-import * as AppContextActions from '../actions/AppContextActions';
+import { bootstrap, logoutRequested } from '../actions/app_context_actions';
 
-import * as BootstrapService from '../services/bootstrap_service';
+import { isBootstrapLoaded, getBranding } from '../services/bootstrap_service';
+import { isError } from '../services/error_service';
 
 class Root extends Component {
     static propTypes = {
         dispatch: PropTypes.func.isRequired,
-        appState: PropTypes.object.isRequired
+        appState: PropTypes.object.isRequired,
+        projectId: PropTypes.string.isRequired
     };
 
     componentWillMount() {
-        this.props.dispatch(AppContextActions.bootstrap(window));
+        this.props.dispatch(bootstrap(window, this.props.projectId));
     }
 
     onMenuItemClick(item) {
@@ -24,20 +27,25 @@ class Root extends Component {
     }
 
     onLogoutRequest() {
-        this.props.dispatch(AppContextActions.logoutRequested());
+        this.props.dispatch(logoutRequested());
     }
 
     render() {
-        if (this.props.appState.get('bootstrapData')) {
-            var branding = BootstrapService.getBranding(this.props.appState);
-            branding = branding ? branding.toJS() : branding;
+        if (isError(this.props.appState)) {
+            return (
+                <Error errors={this.props.appState.get('errors').toArray()} />
+            );
+        }
+
+        if (isBootstrapLoaded(this.props.appState)) {
+            var branding = getBranding(this.props.appState);
             var onLogout = this.onLogoutRequest.bind(this);
             var onMenuItemClick = this.onMenuItemClick.bind(this);
 
             return (
                 <RootDom
                     appState={this.props.appState}
-                    branding={branding}
+                    branding={branding.toJS()}
                     onLogout={onLogout}
                     onMenuItemClick={onMenuItemClick}
                 />

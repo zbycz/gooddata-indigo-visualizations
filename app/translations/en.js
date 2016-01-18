@@ -18,7 +18,7 @@ export default flattenMessages({
     'application_title': 'Analyze',
     'open_as_report': 'Open as Report',
     'export_unsupported': 'Visualization is not compatible with Report Editor. ' +
-        '"{{title}}" is in configuration twice. Remove one {{type}} to Open as Report.',
+        '"{title}" is in configuration twice. Remove one {type} to Open as Report.',
     'reset': 'Reset',
     'undo': 'Undo',
     'redo': 'Redo',
@@ -54,13 +54,13 @@ export default flattenMessages({
         },
 
         'metric_title': {
-            'COUNT': 'Count of {{title}}',
-            'SUM': 'Sum of {{title}}',
-            'MAX': 'Max {{title}}',
-            'MIN': 'Min {{title}}',
-            'AVG': 'Avg {{title}}',
-            'RUNSUM': 'Runsum of {{title}}',
-            'MEDIAN': 'Median {{title}}'
+            'COUNT': 'Count of {title}',
+            'SUM': 'Sum of {title}',
+            'MAX': 'Max {title}',
+            'MIN': 'Min {title}',
+            'AVG': 'Avg {title}',
+            'RUNSUM': 'Runsum of {title}',
+            'MEDIAN': 'Median {title}'
         }
     },
     'recommendation': {
@@ -79,8 +79,8 @@ export default flattenMessages({
         }
     },
     'date': {
-        'timezoneHint': 'in {{timezoneName}} (UTC&nbsp;{{offset}})',
-        'filter.dropdownTitle': '{{dimension}}: {{granularity}}',
+        'timezoneHint': 'in {timezoneName} (UTC&nbsp;{offset})',
+        'filter.dropdownTitle': '{dimension}: {granularity}',
 
         'title.allTime': 'All time',
 
@@ -91,19 +91,19 @@ export default flattenMessages({
 
         'floating': {
             title: {
-                'single.this': 'This {{unitTitle}}',
-                'single.last': 'Last {{unitTitle}}',
-                'range.last': 'Last {{unitCount}} {{unitTitle}}',
-                'range.trailing': 'Last {{unitCount}} {{unitTitle}}'
+                'single.this': 'This {unitTitle}',
+                'single.last': 'Last {unitTitle}',
+                'range.last': 'Last {unitCount} {unitTitle}',
+                'range.trailing': 'Last {unitCount} {unitTitle}'
             },
             'example': {
-                'single': '{{periodStart}}',
-                'range': '{{periodStart}} &ndash; {{periodEnd}}'
+                'single': '{periodStart}',
+                'range': '{periodStart} &ndash; {periodEnd}'
             }
         },
 
-        'interval.title.single': '{{periodStart}}',
-        'interval.title.range': '{{periodStart}} &ndash; {{periodEnd}}',
+        'interval.title.single': '{periodStart}',
+        'interval.title.range': '{periodStart} &ndash; {periodEnd}',
 
         // date dimension granularity by attr.identifier
         'date': {
@@ -140,10 +140,8 @@ export default flattenMessages({
     'catalogue': {
         'loading_availability': 'Fetching related data',
         'no_data_matching': 'No data matching',
-        'unavailable_items_matched': {
-            'one': '{{count}} unrelated data item hidden',
-            'other': '{{count}} unrelated data items hidden'
-        },
+        'unavailable_items_matched':
+            '{count} unrelated data {count, plural, one {item} other {items}} hidden',
         'filter': {
             'all': 'all data',
             'metrics': 'measures',
@@ -202,7 +200,7 @@ export default flattenMessages({
             'values': 'values',
             'dataset': 'dataset',
             'empty_value': '(empty value)',
-            'shortening_decoration': '...and {{count}} more',
+            'shortening_decoration': '...and {count} more',
             'common_date_description': 'Represents all your dates in project. Can group by Day, Week, Month, Quarter & Year.'
         },
         'blank': '' +
@@ -246,9 +244,9 @@ export default flattenMessages({
         'trash.hint': 'Drop to remove'
     },
     'shortcut': {
-        'metric_over_time': 'See "{{decoratedTitle}}" <strong>trending</strong> over time',
-        'single_attribute': '<strong>List</strong> of "{{decoratedTitle}}" values',
-        'single_metric': 'See "{{decoratedTitle}}"<br>' +
+        'metric_over_time': 'See "{decoratedTitle}" <strong>trending</strong> over time',
+        'single_attribute': '<strong>List</strong> of "{decoratedTitle}" values',
+        'single_metric': 'See "{decoratedTitle}"<br>' +
             'as a <strong>column chart</strong>'
     },
     'header': {
@@ -263,10 +261,11 @@ export default flattenMessages({
         'logout': 'Logout'
     },
     'error': {
+        'no_error': 'No error.',
         'project': {
             // TODO: How to i18n various generic error messages
-            'error': 'Project `{{projectId}}` error: `{{error.statusText}}`',
-            'not_found': 'Project `{{projectId}}` not found.'
+            'error': 'Project `{projectId}` error: `{error.statusText}`',
+            'not_found': 'Project `{projectId}` not found.'
         }
     },
     'csv_uploader': {

@@ -1,0 +1,111 @@
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
+
+import Bubble from 'Bubble/ReactBubble';
+import BubbleHoverTrigger from 'Bubble/ReactBubbleHoverTrigger';
+
+import AttributeBubbleContent from './../shared/AttributeBubbleContent.jsx';
+import FactBubbleContent from './../shared/FactBubbleContent.jsx';
+import MetricBubbleContent from './../shared/MetricBubbleContent.jsx';
+
+
+export default class CatalogueDetailsBubble extends React.Component {
+    static propTypes = {
+        item: React.PropTypes.object.isRequired,
+        offsetX: React.PropTypes.number,
+        offsetY: React.PropTypes.number,
+        onShowTooltip: React.PropTypes.func,
+        onHideTooltip: React.PropTypes.func
+    };
+
+    static defaultProps = {
+        offsetX: 200,
+        offsetY: 10
+    };
+
+    onMouseEnter() {
+        if (this.props.onShowTooltip) {
+            this.props.onShowTooltip(this.props.item);
+        }
+    }
+
+    onMouseLeave() {
+        if (this.props.onHideTooltip) {
+            this.props.onHideTooltip(this.props.item);
+        }
+    }
+
+    getItemDetails(prop) {
+        let item = this.props.item.get('details');
+        return item ? item.get(prop) : null;
+    }
+
+    getClasses() {
+        var details = this.props.item.get('details');
+
+        return classNames(
+            'bubble-light',
+            'adi-catalogue-item-details',
+            's-catalogue-bubble',
+            {
+                's-catalogue-bubble-loaded': !!details,
+                's-catalogue-bubble-loading': !details
+            }
+        );
+    }
+
+    renderContent() {
+        let type = this.props.item.get('type');
+        switch (type) {
+            case 'metric':
+                return <MetricBubbleContent maql={this.getItemDetails('metricMaql')}/>;
+            case 'attribute':
+                return (
+                    <AttributeBubbleContent
+                        elements={this.getItemDetails('attrElements')}
+                        totalElementsCount={this.getItemDetails('attrElementsTotalCount')}
+                    />
+                );
+            case 'fact':
+                return <FactBubbleContent dataset={this.getItemDetails('dataset')}/>;
+            case 'date':
+                return false;
+            default:
+                throw new Error('Invalid attribute item type: ' + type);
+        }
+    }
+
+    render() {
+        let props = this.props;
+        return (
+            <BubbleHoverTrigger showDelay={0} hideDelay={0}>
+                <span
+                    className="inlineBubbleHelp"
+                    onMouseEnter={this.onMouseEnter.bind(this)}
+                    onMouseLeave={this.onMouseLeave.bind(this)}
+                />
+                <Bubble
+                    className={this.getClasses()}
+                    alignPoints={[
+                        {
+                            align: 'cr cl',
+                            offset: {
+                                x: props.offsetX,
+                                y: props.offsetY
+                            }
+                        }
+                    ]}
+                >
+                    <h3>{props.item.get('title')}</h3>
+                    <p className="adi-item-description">{props.item.get('summary')}</p>
+                    <h4><FormattedMessage id="dashboard.catalogue_item.type" /></h4>
+                    <p className="adi-item-type">
+                        <FormattedMessage id={`bucket_item_types.${props.item.get('type')}`} />
+                    </p>
+                    {this.renderContent()}
+                </Bubble>
+            </BubbleHoverTrigger>
+        );
+    }
+}

@@ -5,7 +5,6 @@ import * as RouterService from '../services/router_service';
 /* eslint no-unused-vars: 0 */
 export default (effect, dispatch) => {
     const { type, payload } = effect;
-
     switch (type) {
         case Effects.REDIRECTION:
             RouterService.setHref(payload);
