@@ -1,4 +1,5 @@
 import * as StatePaths from '../constants/StatePaths';
+import * as MenuConstants from '../constants/Menu';
 
 export function getViewport(state) {
     return state.getIn(StatePaths.DEVICE_VIEWPORT);
@@ -90,8 +91,24 @@ export function getMenuItems(appState) {
     return appState.getIn(StatePaths.MENU_ITEMS);
 }
 
+export function getLocalizedMenuItems(appState, intl) {
+    var menuItems = getMenuItems(appState);
+    return menuItems.map(menuItem => {
+        menuItem.title = intl.formatMessage({ id: menuItem[MenuConstants.ITEM_TRANSLATION_KEY] });
+        return menuItem;
+    });
+}
+
 export function getAccountMenuItems(appState) {
     return appState.getIn(StatePaths.ACCOUNT_MENU_ITEMS);
+}
+
+export function getLocalizedAccountMenuItems(appState, intl) {
+    var menuItems = getAccountMenuItems(appState);
+    return menuItems.map(menuItem => {
+        menuItem.title = intl.formatMessage({ id: menuItem[MenuConstants.ITEM_TRANSLATION_KEY] });
+        return menuItem;
+    });
 }
 
 export function isMobileDevice(appState) {

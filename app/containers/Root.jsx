@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import Header from '../../node_modules/goodstrap/packages/Header/ReactHeader';
-import Dashboard from './../components/Dashboard.jsx';
+import RootDom from '../components/RootDom.jsx';
 
 import * as AppContextActions from '../actions/AppContextActions';
 
-import * as BootstrapService from '../services/BootstrapService';
+import * as BootstrapService from '../services/bootstrap_service';
 
 class Root extends Component {
     static propTypes = {
@@ -36,18 +35,12 @@ class Root extends Component {
             var onMenuItemClick = this.onMenuItemClick.bind(this);
 
             return (
-                <div className="app-root">
-                    <Header
-                        branding={branding}
-                        projectTitle={BootstrapService.getProjectTitle(this.props.appState)}
-                        menuItems={BootstrapService.getMenuItems(this.props.appState)}
-                        accountMenuItems={BootstrapService.getAccountMenuItems(this.props.appState)}
-                        userName={BootstrapService.getUserFullName(this.props.appState)}
-                        onLogout={onLogout}
-                        onMenuItemClick={onMenuItemClick}
-                    />
-                    <Dashboard />
-                </div>
+                <RootDom
+                    appState={this.props.appState}
+                    branding={branding}
+                    onLogout={onLogout}
+                    onMenuItemClick={onMenuItemClick}
+                />
             );
         }
 

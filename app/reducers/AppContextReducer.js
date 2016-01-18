@@ -6,8 +6,9 @@ import buildMessage from '../utils/MessageBuilder';
 import * as Header from 'goodstrap/packages/Header/ReactHeader';
 
 import * as Effects from '../constants/Effects';
-import * as BootstrapService from '../services/BootstrapService';
+import * as BootstrapService from '../services/bootstrap_service';
 import * as StatePaths from '../constants/StatePaths';
+import * as MenuConstants from '../constants/Menu';
 
 const BootstrapDataRecord = new Record({
     project: {},
@@ -19,15 +20,15 @@ const BootstrapDataRecord = new Record({
 });
 
 const TRANSLATIONS = {
-    kpis: 'KPIs',
-    dashboards: 'Dashboards',
-    analyze: 'Analyze',
-    reports: 'Reports',
-    manage: 'Manage',
-    load: 'Load',
-    account: 'Account',
-    dic: 'Data integration console',
-    logout: 'Logout'
+    kpis: 'header.kpis',
+    dashboards: 'header.dashboards',
+    analyze: 'header.analyze',
+    reports: 'header.reports',
+    manage: 'header.manage',
+    load: 'header.load',
+    account: 'header.account',
+    dic: 'header.dic',
+    logout: 'header.logout'
 };
 
 const ActiveMenuItems = 'analyze';
@@ -81,6 +82,14 @@ function transformBootstrapData(bootstrapData) {
     });
 }
 
+function hackMenuForTranslations(menu) {
+    return menu.map(menuItem => {
+        menuItem[MenuConstants.ITEM_TRANSLATION_KEY] = menuItem.title;
+        delete menuItem.title;
+        return menuItem;
+    });
+}
+
 export const bootstrap = (state, action) => {
     const data = action.bootstrapData;
     const windowInfo = action.windowInfo;
@@ -97,11 +106,13 @@ export const bootstrap = (state, action) => {
     const mutatedAppState = appState.withMutations(mutableState => {
         const currentPageTitle = BootstrapService.getPageTitle(mutableState);
         const applicationTitle = BootstrapService.getApplicationTitle(mutableState);
-        const headerMenu = Header.generateHeaderMenu(data, {
+        const headerMenu = hackMenuForTranslations(Header.generateHeaderMenu(data, {
             translations: TRANSLATIONS,
             activeItem: ActiveMenuItems
-        });
-        const headerAccountMenu = Header.generateAccountMenu(data, { translations: TRANSLATIONS });
+        }));
+        const headerAccountMenu = hackMenuForTranslations(
+            Header.generateAccountMenu(data, { translations: TRANSLATIONS })
+        );
 
         mutableState
             .setIn(StatePaths.BOOTSTRAP, transformBootstrapData(data))
