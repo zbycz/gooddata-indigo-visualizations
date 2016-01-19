@@ -9,6 +9,7 @@
   },
   "main": "index.html",
   "scripts": {
+    "preinstall": "npm install bower",
     "start": "npm run dev",
     "dev": "grunt dev",
     "dist": "npm install grunt-cli && ./node_modules/.bin/grunt dist",
@@ -49,7 +50,7 @@
     "immutable": "3.7.5",
     "istanbul-instrumenter-loader": "0.1.3",
     "json5": "0.4.0",
-    "karma": "0.13.11",
+    "karma": "0.13.19",
     "karma-chrome-launcher": "0.2.1",
     "karma-coverage": "0.5.2",
     "karma-junit-reporter": "0.2.2",

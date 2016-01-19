@@ -7,7 +7,7 @@ setupGrunt () {
     npm install grunt-cli
 
     # install dependencies
-    npm install && bower install
+    npm install
 }
 
 export PATH=$PATH:$WORKSPACE/node_modules/.bin
