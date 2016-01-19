@@ -108,14 +108,14 @@ module.exports = function(grunt) {
         var grizzly = new Grizzly(options);
 
         // Shutdown & notify on error
-        grizzly.on('error', error => {
+        grizzly.on('error', function(error) {
             grunt.log.error('Grizzly error: %s', error);
             grunt.log.error('Stopping task grizzly');
 
             throw error;
         });
 
-        grizzly.on('start', () => {
+        grizzly.on('start', function() {
             // Continue to next task if keepAlive is not set
             if (!options.keepAlive) {
                 done();

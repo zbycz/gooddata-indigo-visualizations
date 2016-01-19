@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable';
 import * as MessagesUtils from '../messages';
 
 describe('Message utils', () => {

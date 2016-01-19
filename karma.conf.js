@@ -1,3 +1,5 @@
+/* eslint object-shorthand: 0 */
+
 var webpackTestConfig = require('./webpack.test.config.js');
 var _ = require('lodash');
 
@@ -25,7 +27,7 @@ module.exports = function(config) {
             'karma.tests.js': ['webpack', 'sourcemap']
         },
 
-        webpack: webpackTestConfig({ codeCoverage }),
+        webpack: webpackTestConfig({ codeCoverage: codeCoverage }),
 
         webpackMiddleware: {
             stats: {
@@ -38,7 +40,7 @@ module.exports = function(config) {
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-        reporters,
+        reporters: reporters,
 
         coverageReporter: {
             reporters: [
