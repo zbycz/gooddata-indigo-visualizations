@@ -5,7 +5,7 @@ var webpack = require('webpack');
 module.exports = function getWebpackConfig() {
     return {
         entry: {
-            'example': ['./example/index']
+            example: ['./example/index']
         },
 
         output: {},
@@ -19,7 +19,7 @@ module.exports = function getWebpackConfig() {
             loaders: [
                 {
                     test: /\.jsx?$/,
-                    loader: 'babel?' + JSON.stringify({presets: ['es2015', 'react']}),
+                    loader: 'babel?' + JSON.stringify({ presets: ['es2015', 'react', 'stage-0'] }),
                     include: /src\/|test\/|example\//
                 },
 

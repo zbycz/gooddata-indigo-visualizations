@@ -1,10 +1,12 @@
 // Copyright (C) 2007-2016, GoodData(R) Corporation. All rights reserved.
-
+/* eslint-disable no-use-before-define */
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 import partial from 'lodash/partial';
 import isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
+import cloneDeep from 'lodash/cloneDeep';
+import every from 'lodash/every';
 
 // import Highcharts from 'highcharts-release';
 // import Status from '../utils/status';
@@ -105,7 +107,7 @@ export const DEFAULT_COLOR_PALETTE = [
     'rgba(137,77,148, 0.4)'
 ];
 
-export function getCommonChartConfiguration(chartOptions) {
+export function getCommonChartConfiguration() { // chartOptions) {
     return merge(CONFIG_TEMPLATE, {}); // TODO create config
 }
 
@@ -283,15 +285,16 @@ function getLabelsConfiguration(chartOptions) {
 
 function getSeries(series, colorPalette = []) {
     return series.map((seriesItem, index) => {
-        seriesItem.color = colorPalette[index % colorPalette.length];
+        const item = cloneDeep(seriesItem);
+        item.color = colorPalette[index % colorPalette.length];
         // Escaping is handled by highcharts so we don't want to provide escaped input.
         // With one exception, though. Highcharts supports defining styles via
         // for example <b>...</b> and parses that from series name.
         // So to avoid this parsing, escape only < and > to &lt; and &gt;
         // which is understood by highcharts correctly
-        seriesItem.name = seriesItem.name && escapeAngleBrackets(seriesItem.name);
+        item.name = item.name && escapeAngleBrackets(item.name);
 
-        return seriesItem;
+        return item;
     });
 }
 
@@ -323,7 +326,7 @@ function getLegendConfiguration(chartOptions) {
     }
 
     return {
-        legend: LEGEND_OPTIONS[chartOptions.legendLayout]
+        legend: LINE_LEGEND_OPTIONS[chartOptions.legendLayout]
     };
 }
 
@@ -331,10 +334,11 @@ function formatAsPercent() {
     return parseFloat((this.value * 100).toPrecision(14)) + '%';
 }
 
-function positionTooltip(chartType, boxWidth, boxHeight, point) {
+function positionTooltip(chartType, boxWidth, boxHeight, _point) {
     // point.source requires patched highcharts
     // used to correctly position tooltip above bars in bar chart
-    var originalPoint = point.source;
+    const originalPoint = _point.source,
+        point = cloneDeep(_point);
 
     if (originalPoint && originalPoint.shapeType === 'rect') {
         if (chartType === 'bar') {
@@ -367,13 +371,22 @@ function labelFormatter() {
     return labelFormatter(this.y, get(this, 'point.format'));
 }
 
+// check whether series contains only positive values, not consider nulls
+function hasOnlyPositiveValues(series, x) {
+    return every(series, function(seriesItem) {
+        var dataPoint = seriesItem.yData[x];
+        return dataPoint !== null && dataPoint >= 0;
+    });
+}
+
+
 function stackLabelFormatter() {
     // show labels: always for negative,
     // without negative values or with non-zero total for positive
     var showStackLabel =
         this.isNegative || hasOnlyPositiveValues(this.axis.series, this.x) || this.total !== 0;
     return showStackLabel ?
-        labelFormatter(this.total, _.get(this, 'axis.userOptions.defaultFormat')) : null;
+        labelFormatter(this.total, get(this, 'axis.userOptions.defaultFormat')) : null;
 }
 
 export function getLineChartConfiguration(chartOptions) {
@@ -402,8 +415,6 @@ export function getColumnChartConfiguration(chartOptions) {
     return merge(COLUMN_CONFIG_TEMPLATE, lineData);
 }
 
-// const getColumnChartConfiguration = compose(getCommonChartConfiguration, getLineChartConfiguration, functoin)
-
 // Setting legend:
 // ======
 // #<{(|*
@@ -411,8 +422,10 @@ export function getColumnChartConfiguration(chartOptions) {
 //     * Use highcharts-approved symbols only and series names only
 //     * Note: pass opacity for legend items if needed,
 //     *       due to different fill opacities in configurations
-//     * @param {String} seriesName series for which the legend symbol should be drawn (Highcharts.seriesTypes)
-//     * @param {String} symbolName symbol name to be used to render in legend (use highcharts-supported)
+//     * @param {String} seriesName series for which the legend symbol should be drawn
+//                      (Highcharts.seriesTypes)
+//     * @param {String} symbolName symbol name to be used to render in legend
+//                      (use highcharts-supported)
 //     * @param {Number} [opacity] opacity to be used, defaults to 0.6
 //     |)}>#
 // function setLegendSymbol(hc, seriesName, symbolName, opacity) {
@@ -421,7 +434,8 @@ export function getColumnChartConfiguration(chartOptions) {
 //             legendSymbol,
 //             renderer = this.chart.renderer,
 //             legendItemGroup = this.legendGroup,
-//             verticalCenter = legend.baseline - Math.round(renderer.fontMetrics(legendOptions.itemStyle.fontSize).b * 0.3),
+//             _RENAME_ME_ = renderer.fontMetrics(legendOptions.itemStyle.fontSize).b,
+//             verticalCenter = legend.baseline - Math.round(_RENAME_ME_ * 0.3),
 //             radius = 4;
 //         this.legendSymbol = legendSymbol = renderer.symbol(
 //             symbolName,
@@ -482,4 +496,3 @@ export function getColumnChartConfiguration(chartOptions) {
 // var data = chartOptions.data || EMPTY_DATA;
 //
 // if (!this.checkDataStatus(data.series)) {
-

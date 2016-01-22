@@ -56,7 +56,8 @@ module.exports = function(config) {
         },
 
         // full (default)  all output is printed to the console
-        // autowatch       first run will have the full output and the next runs just output the summary and errors in mocha style
+        // autowatch       first run will have the full output and the next runs just output the
+        //                 summary and errors in mocha style
         // minimal         only the summary and errors are printed to the console in mocha style
         // noFailures      the failure details are not logged
         mochaReporter: {
@@ -70,7 +71,8 @@ module.exports = function(config) {
         colors: true,
 
         // level of logging
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN ||
+        //                  config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_INFO,
 
         // enable / disable watching file and executing tests whenever any file changes

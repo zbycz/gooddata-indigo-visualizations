@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import React from 'react';
 
 import Visualization from '../src/Visualization';
 import testConfig from './test_config';

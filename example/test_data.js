@@ -1,3 +1,4 @@
+/* eslint-disable */
 // copy(App.__container__.lookup('canvasContext:main').get('chartData'))
 export default [{
   "isLoaded": true,

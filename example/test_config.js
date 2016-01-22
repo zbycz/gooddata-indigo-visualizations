@@ -1,3 +1,4 @@
+/* eslint-disable */
 // copy(SwitchableVisualizationController.get('properites'))
 // TODO this should be generated out of buckets configuration for specific chart
 export default {
