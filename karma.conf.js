@@ -51,7 +51,7 @@ module.exports = function(config) {
         },
 
         junitReporter: {
-            suite: 'Indigo Analyze-new Unit',
+            suite: 'Indigo Vizualisations Unit',
             outputFile: 'ci/results/test-results.xml'
         },
 

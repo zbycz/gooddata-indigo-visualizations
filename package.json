@@ -47,7 +47,7 @@
     "karma-chrome-launcher": "0.2.2",
     "karma-coverage": "0.5.3",
     "karma-expect": "1.1.1",
-    "karma-junit-reporter": "0.3.8",
+    "karma-junit-reporter": "0.2.2",
     "karma-mocha": "0.2.1",
     "karma-mocha-reporter": "1.1.5",
     "karma-sourcemap-loader": "0.3.7",

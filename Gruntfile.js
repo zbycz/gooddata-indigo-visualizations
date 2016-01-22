@@ -77,10 +77,6 @@ module.exports = function(grunt) {
         server: {
             dev: {},
             test: {}
-        },
-
-        test: {
-            unit: {}
         }
     });
 

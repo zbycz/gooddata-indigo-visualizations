@@ -17,6 +17,8 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
-# Test results
+# junit test/coverage reports
 ci/results
 ci/results/coverage
+coverage
+
