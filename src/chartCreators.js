@@ -22,7 +22,7 @@ export function propertiesToHeaders(config, data) { // TODO export for test only
     return res;
 }
 
-function getIndices(config, headers) {
+export function getIndices(config, headers) { // TODO export only for test
     var headerIndices = map(headers, 'id');
     var metric = indexOf(headerIndices, 'metricValues');
     var category = indexOf(headerIndices, config.x);
@@ -31,7 +31,7 @@ function getIndices(config, headers) {
     return { metric, category, series };
 }
 
-function isMetricNamesInSeries(config, data) {
+export function isMetricNamesInSeries(config, data) { // TODO export only for test
     return !(get(propertiesToHeaders(config, data), 'color.id') === 'metricNames');
 }
 
@@ -56,15 +56,15 @@ export function getColumnChartData(config, rawData) {
     return getChartData(data, configuration);
 }
 
-function getLegendLayout(config, data) {
+export function getLegendLayout(config, data) { // TODO export only for test
     return (isMetricNamesInSeries(config, data)) ? 'horizontal' : 'vertical';
 }
 
-function getCategoryAxisLabel(config, data) {
+export function getCategoryAxisLabel(config, data) { // TODO export only for test
     return get(propertiesToHeaders(config, data), 'x.title', '');
 }
 
-function getMetricAxisLabel(config, data) {
+export function getMetricAxisLabel(config, data) {
     var metrics = get(propertiesToHeaders(config, data), 'color.metrics', []);
 
     if (!metrics.length) {
@@ -76,7 +76,7 @@ function getMetricAxisLabel(config, data) {
     return '';
 }
 
-function showInPercent(config, data) {
+export function showInPercent(config, data) { // TODO export only for test
     return includes(get(propertiesToHeaders(config, data), 'y.format', ''), '%');
 }
 
