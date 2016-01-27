@@ -6,13 +6,20 @@ import find from 'lodash/find';
 import keys from 'lodash/keys';
 import includes from 'lodash/includes';
 
-import { transformData, getChartData } from './transformation';
+import {
+    _transformMetrics,
+    transformData,
+    getChartData
+} from './transformation';
 
-function propertiesToHeaders(config, headers) {
-    return keys(config).reduce(function(result, field) {
+export function propertiesToHeaders(config, data) { // TODO export for test only
+
+    let headers = transformData(data).headers;
+    const res = keys(config).reduce(function(result, field) {
         var fieldContent = get(config, field);
         return set(result, field, find(headers, ['id', fieldContent]));
     }, {});
+    return res;
 }
 
 function getIndices(config, headers) {
@@ -24,8 +31,8 @@ function getIndices(config, headers) {
     return { metric, category, series };
 }
 
-function isMetricNamesInSeries(config, headers) {
-    return !(get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames');
+function isMetricNamesInSeries(config, data) {
+    return !(get(propertiesToHeaders(config, data), 'color.id') === 'metricNames');
 }
 
 export function getColumnChartData(config, rawData) {
@@ -43,25 +50,25 @@ export function getColumnChartData(config, rawData) {
     // configure transformation. Sort data only if metric names not in series.
     var configuration = {
         indices,
-        sortSeries: isMetricNamesInSeries(config, data.headers)
+        sortSeries: isMetricNamesInSeries(config, data)
     };
 
     return getChartData(data, configuration);
 }
 
-function getLegendLayout(config, headers) {
-    return (isMetricNamesInSeries(config, headers)) ? 'horizontal' : 'vertical';
+function getLegendLayout(config, data) {
+    return (isMetricNamesInSeries(config, data)) ? 'horizontal' : 'vertical';
 }
 
-function getCategoryAxisLabel(config, headers) {
-    return get(propertiesToHeaders(config, headers), 'x.title', '');
+function getCategoryAxisLabel(config, data) {
+    return get(propertiesToHeaders(config, data), 'x.title', '');
 }
 
-function getMetricAxisLabel(config, headers) {
-    var metrics = get(propertiesToHeaders(config, headers), 'color.metrics', []);
+function getMetricAxisLabel(config, data) {
+    var metrics = get(propertiesToHeaders(config, data), 'color.metrics', []);
 
     if (!metrics.length) {
-        return get(propertiesToHeaders(config, headers), 'y.title', '');
+        return get(propertiesToHeaders(config, data), 'y.title', '');
     } else if (metrics.length === 1) {
         return get(metrics, '0.header.title', '');
     }
@@ -69,8 +76,8 @@ function getMetricAxisLabel(config, headers) {
     return '';
 }
 
-function showInPercent(config, headers) {
-    return includes(get(propertiesToHeaders(config, headers), 'y.format', ''), '%');
+function showInPercent(config, data) {
+    return includes(get(propertiesToHeaders(config, data), 'y.format', ''), '%');
 }
 
 export function getColumnChartOptions(config, data) {
@@ -79,16 +86,16 @@ export function getColumnChartOptions(config, data) {
         // stacking: controller.get('properties.stacking'),
         stacking: false, // TODO
         colorPalette: config.colorPalette,
-        legendLayout: getLegendLayout(config, data.headers),
+        legendLayout: getLegendLayout(config, data),
         // actions: {
         //     tooltip: this.get('tooltip').bind(this),
         //     error: this.get('error').bind(this)
         // },
         title: {
-            x: getCategoryAxisLabel(config, data.headers),
-            y: getMetricAxisLabel(config, data.headers),
-            yFormat: get(propertiesToHeaders(config, data.headers), 'y.format')
+            x: getCategoryAxisLabel(config, data),
+            y: getMetricAxisLabel(config, data),
+            yFormat: get(propertiesToHeaders(config, data), 'y.format')
         },
-        showInPercent: showInPercent(config, data.headers)
+        showInPercent: showInPercent(config, data)
     };
 }
