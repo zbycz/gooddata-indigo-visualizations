@@ -7,7 +7,6 @@ import keys from 'lodash/keys';
 import includes from 'lodash/includes';
 
 import {
-    _transformMetrics,
     transformData,
     getChartData
 } from './transformation';
