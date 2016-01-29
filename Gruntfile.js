@@ -21,7 +21,7 @@ module.exports = function(grunt) {
             webpackOptions: {
                 progress: true,
                 colors: true,
-                publicPath: '/analyze/',
+                publicPath: '/analyze-new/',
                 keepAlive: true,
                 stats: {
                     hash: false,

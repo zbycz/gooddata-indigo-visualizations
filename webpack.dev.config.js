@@ -9,10 +9,10 @@ module.exports = function createDevConfig(config) {
         devtool: 'cheap-inline-source-map',
 
         output: {
-            path: path.join(__dirname, 'analyze'),
+            path: path.join(__dirname, 'analyze-new'),
             // Specify complete path to force
             // chrome/FF load the images
-            publicPath: 'https://localhost:' + config.port + '/analyze/',
+            publicPath: 'https://localhost:' + config.port + '/analyze-new/',
             filename: '[name].js'
         }
     });
