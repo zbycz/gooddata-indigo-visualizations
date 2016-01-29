@@ -10,7 +10,7 @@
 Name: gdc-analyze
 Version: %{_version}
 Release: %{_release}
-Summary: GD Analyzer Application
+Summary: Indigo Analytical Designer
 
 Group: Applications/Productivity
 License: Proprietary
@@ -34,9 +34,9 @@ grunt dist
 %install
 rm -rf $RPM_BUILD_ROOT
 
-mkdir -p $RPM_BUILD_ROOT%{gdc_prefix}/analyze/
+mkdir -p $RPM_BUILD_ROOT%{gdc_prefix}/analyze-new/
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
-cp -a dist/* $RPM_BUILD_ROOT%{gdc_prefix}/analyze/
+cp -a dist/* $RPM_BUILD_ROOT%{gdc_prefix}/analyze-new/
 
 # httpd configuration
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/httpd/conf.d
@@ -49,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(0644,root,root,0755)
 %{_sysconfdir}/httpd/conf.d/*
-%dir %{gdc_prefix}/analyze
-%{gdc_prefix}/analyze/*
+%dir %{gdc_prefix}/analyze-new
+%{gdc_prefix}/analyze-new/*
 
 %changelog

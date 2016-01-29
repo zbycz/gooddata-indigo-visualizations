@@ -25,7 +25,6 @@ var uglifyOptions = {
 var distConfig = _.assign(getWebpackConfig(), {
     output: {
         path: path.join(__dirname, '/dist/'),
-        publicPath: '/analyze/',
         filename: '[name].[chunkgitsha].[hash].js'
     }
 });

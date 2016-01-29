@@ -11,7 +11,7 @@ module.exports = {
 
             app.use(require('webpack-hot-middleware')(compiler));
 
-            app.get('/analyze/', function(req, res) {
+            app.get('/analyze-new/', function(req, res) {
                 res.sendfile(path.join(__dirname, '/index.html'));
             });
         };

@@ -17,7 +17,7 @@ $ npm install
 ## Develop
 Run the app with ```grunt dev```
 
-Open **https://localhost:8443/analyze/** in your favorite browser.
+Open **https://localhost:8443/analyze-new/** in your favorite browser.
 
 It starts proxy that allows app to communicate with [secure.gooddata.com](https://secure.gooddata.com).
 
