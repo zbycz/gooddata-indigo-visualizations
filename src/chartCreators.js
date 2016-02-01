@@ -5,15 +5,22 @@ import set from 'lodash/set';
 import find from 'lodash/find';
 import keys from 'lodash/keys';
 import includes from 'lodash/includes';
+import isNumber from 'lodash/isNumber';
+import escape from 'lodash/escape';
 
 import {
     transformData,
+    enrichHeaders,
     getChartData
 } from './transformation';
 
-export function propertiesToHeaders(config, data) { // TODO export for test only
+import {
+    colors2Object,
+    numberFormat
+} from 'gdc-numberjs/lib/number';
 
-    let headers = transformData(data).headers;
+export function propertiesToHeaders(config, _headers) { // TODO export for test only
+    let { headers } = enrichHeaders(_headers);
     const res = keys(config).reduce(function(result, field) {
         var fieldContent = get(config, field);
         return set(result, field, find(headers, ['id', fieldContent]));
@@ -30,18 +37,13 @@ export function getIndices(config, headers) { // TODO export only for test
     return { metric, category, series };
 }
 
-export function isMetricNamesInSeries(config, data) { // TODO export only for test
-    return !(get(propertiesToHeaders(config, data), 'color.id') === 'metricNames');
+export function isMetricNamesInSeries(config, headers) { // TODO export only for test
+    return !(get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames');
 }
 
-export function getColumnChartData(config, rawData) {
+export function getLineFamilyChartData(config, rawData) {
     var data = transformData(rawData);
     if (!data || data.isLoading) return false; // TODO handle errors
-
-    // TODO
-    // reset data error flags, for example if new data is large, it will be reported
-    // from the chart itself again
-    // this.resetErrors();
 
     // prepare series, categories and data
     var indices = getIndices(config, data.headers);
@@ -49,25 +51,25 @@ export function getColumnChartData(config, rawData) {
     // configure transformation. Sort data only if metric names not in series.
     var configuration = {
         indices,
-        sortSeries: isMetricNamesInSeries(config, data)
+        sortSeries: isMetricNamesInSeries(config, data.headers)
     };
 
     return getChartData(data, configuration);
 }
 
-export function getLegendLayout(config, data) { // TODO export only for test
-    return (isMetricNamesInSeries(config, data)) ? 'horizontal' : 'vertical';
+export function getLegendLayout(config, headers) { // TODO export only for test
+    return (isMetricNamesInSeries(config, headers)) ? 'horizontal' : 'vertical';
 }
 
-export function getCategoryAxisLabel(config, data) { // TODO export only for test
-    return get(propertiesToHeaders(config, data), 'x.title', '');
+export function getCategoryAxisLabel(config, headers) { // TODO export only for test
+    return get(propertiesToHeaders(config, headers), 'x.title', '');
 }
 
-export function getMetricAxisLabel(config, data) {
-    var metrics = get(propertiesToHeaders(config, data), 'color.metrics', []);
+export function getMetricAxisLabel(config, headers) {
+    var metrics = get(propertiesToHeaders(config, headers), 'color.metrics', []);
 
     if (!metrics.length) {
-        return get(propertiesToHeaders(config, data), 'y.title', '');
+        return get(propertiesToHeaders(config, headers), 'y.title', '');
     } else if (metrics.length === 1) {
         return get(metrics, '0.header.title', '');
     }
@@ -75,26 +77,52 @@ export function getMetricAxisLabel(config, data) {
     return '';
 }
 
-export function showInPercent(config, data) { // TODO export only for test
-    return includes(get(propertiesToHeaders(config, data), 'y.format', ''), '%');
+export function showInPercent(config, headers) { // TODO export only for test
+    return includes(get(propertiesToHeaders(config, headers), 'y.format', ''), '%');
 }
 
-export function getColumnChartOptions(config, data) {
+let unEscapeAngleBrackets = (str) => str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+function generateTooltipFn(options) {
+    const { categoryAxisLabel } = options;
+    const formatValue = (val, format) => {
+        return colors2Object(numberFormat(val, format));
+    };
+
+    return function(point) {
+        const formattedValue = escape(formatValue(point.y, point.format).label);
+
+        return `<table class="tt-values"><tr>
+            <td class="title">${escape(categoryAxisLabel)}</td>
+            <td class="value">${isNumber(point.category) ? '' : escape(point.category)}</td>
+        </tr>
+        <tr>
+            <td class="title">${escape(unEscapeAngleBrackets(point.series.name))}</td>
+            <td class="value">${formattedValue}</td>
+        </tr></table>`;
+    };
+}
+
+export function getLineFamilyChartOptions(config, data) {
+    const categoryAxisLabel = getCategoryAxisLabel(config, data.headers);
+    const metricAxisLabel = getMetricAxisLabel(config, data.headers);
+
     return {
         type: 'column',
-        // stacking: controller.get('properties.stacking'),
-        stacking: false, // TODO
+        stacking: config.stacking,
         colorPalette: config.colorPalette,
-        legendLayout: getLegendLayout(config, data),
-        // actions: {
-        //     tooltip: this.get('tooltip').bind(this),
-        //     error: this.get('error').bind(this)
-        // },
-        title: {
-            x: getCategoryAxisLabel(config, data),
-            y: getMetricAxisLabel(config, data),
-            yFormat: get(propertiesToHeaders(config, data), 'y.format')
+        legendLayout: getLegendLayout(config, data.headers),
+        actions: {
+            tooltip: generateTooltipFn({
+                categoryAxisLabel
+                // TODO: pass formatValue fn here
+            })
         },
-        showInPercent: showInPercent(config, data)
+        title: {
+            x: categoryAxisLabel,
+            y: metricAxisLabel,
+            yFormat: get(propertiesToHeaders(config, data.headers), 'y.format')
+        },
+        showInPercent: showInPercent(config, data.headers)
     };
 }

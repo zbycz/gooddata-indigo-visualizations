@@ -13,7 +13,7 @@ import {
 } from '../src/transformation';
 
 describe('chartCreators', () => {
-    let config, mockData;
+    let config, mockData, mockHeaders;
     beforeEach(() => {
         config = {
             type: 'column',
@@ -43,11 +43,12 @@ describe('chartCreators', () => {
                 format: '#,##0.00'
             }
         ], rawData: [] });
+        mockHeaders = mockData.headers;
     });
 
     describe('propertiesToHeaders', () => {
         it('converts vis ctrl properties to header format', () => {
-            const res = propertiesToHeaders(config, mockData);
+            const res = propertiesToHeaders(config, mockHeaders);
             expect(res.x).to.eql({
                 type: 'attrLabel',
                 id: 'healthdata_finish.aci81lMifn6q',
@@ -73,44 +74,44 @@ describe('chartCreators', () => {
 
     describe('isMetricNamesInSeries', () => {
         it('works', () => {
-            expect(isMetricNamesInSeries(config, mockData)).to.be(false);
+            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(false);
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(isMetricNamesInSeries(config, mockData)).to.be(true);
+            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(true);
         });
     });
 
     describe('getLegendLayout', () => {
         it('works', () => {
-            expect(getLegendLayout(config, mockData)).to.be('vertical');
+            expect(getLegendLayout(config, mockHeaders)).to.be('vertical');
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(getLegendLayout(config, mockData)).to.be('horizontal');
+            expect(getLegendLayout(config, mockHeaders)).to.be('horizontal');
         });
     });
 
     describe('getCategoryAxisLabel', () => {
         it('works', () => {
-            expect(getCategoryAxisLabel(config, mockData))
+            expect(getCategoryAxisLabel(config, mockHeaders))
                 .to.be('Quarter/Year (Health Data_finish)');
-            mockData.headers[0].title = undefined;
-            expect(getCategoryAxisLabel(config, mockData)).to.be('');
+            mockHeaders[0].title = undefined;
+            expect(getCategoryAxisLabel(config, mockHeaders)).to.be('');
         });
     });
 
     describe('getMetricAxisLabel', () => {
         it('works', () => {
-            expect(getMetricAxisLabel(config, mockData)).to.be('Average kilometers');
-            mockData.headers[1].metrics = [];
-            expect(getMetricAxisLabel(config, mockData)).to.be('Average kilometers');
+            expect(getMetricAxisLabel(config, mockHeaders)).to.be('Average kilometers');
+            mockHeaders[1].metrics = [];
+            expect(getMetricAxisLabel(config, mockHeaders)).to.be('Average kilometers');
         });
     });
 
     describe('showInPercent', () => {
         it('works', () => {
-            expect(showInPercent(config, mockData)).to.be(false);
-            mockData.headers[2].format = '#,##0.00 %';
-            expect(showInPercent(config, mockData)).to.be(true);
+            expect(showInPercent(config, mockHeaders)).to.be(false);
+            mockHeaders[2].format = '#,##0.00 %';
+            expect(showInPercent(config, mockHeaders)).to.be(true);
         });
     });
 });

@@ -38,6 +38,42 @@ export function _splitHeaders(headers) {
     };
 }
 
+export function getMetricNamesValuesHeaderItems(headers, metrics) {
+    // Need to transform the headers to match the rawData transformation
+    return [{
+        id: 'metricNames',
+        title: 'Metric',
+        type: 'attrLabel',
+        uri: '/metricGroup',
+        metrics
+    }, {
+        id: 'metricValues',
+        type: 'metric',
+        uri: '/metricValues',
+
+        // For axis formatting, use first metric's formatting.
+        // For individual series tooltips and labels, formats are
+        // handled separately in metricNames
+        format: get(metrics, '0.header.format', DEFAULT_FORMAT),
+
+        // use first metric title as default
+        title: get(metrics, '0.header.title', '')
+    }];
+}
+
+function addMetricNamesValues(headers, metrics) {
+    return {
+        headers: headers.concat(getMetricNamesValuesHeaderItems(headers, metrics)),
+        metrics
+    };
+}
+
+export function enrichHeaders(_headers) {
+    const { headers, metrics } = _splitHeaders(_headers);
+
+    return addMetricNamesValues(headers, metrics);
+}
+
 export function _transposeData(headers, metrics, rawData) {
     var data = [];
 
@@ -119,38 +155,14 @@ export function _transformMetrics(data) {
     // don't modify original data structure
     var dataCopy = cloneDeep(data);
 
-    var { headers, metrics } = _splitHeaders(dataCopy.headers);
+    var { headers, metrics } = enrichHeaders(dataCopy.headers);
 
     if (metrics.length < 1) return dataCopy;
 
     var transposedData = _transposeData(dataCopy.headers, metrics, dataCopy.rawData);
 
-    // Need to transform the headers to match the rawData transformation
-    headers.push({
-        id: 'metricNames',
-        title: 'Metric',
-        type: 'attrLabel',
-        uri: '/metricGroup',
-        metrics
-    });
-
-    headers.push({
-        id: 'metricValues',
-        type: 'metric',
-        uri: '/metricValues',
-
-        // For axis formatting, use first metric's formatting.
-        // For individual series tooltips and labels, formats are
-        // handled separately in metricNames
-        format: get(metrics, '0.header.format', DEFAULT_FORMAT),
-
-        // use first metric title as default
-        title: get(metrics, '0.header.title', '')
-    });
-
     dataCopy.rawData = transposedData;
     dataCopy.headers = headers;
-
     return dataCopy;
 }
 

@@ -1,13 +1,20 @@
 import React, { Component, PropTypes } from 'react';
 import {
-    getColumnChartData,
-    getColumnChartOptions
+    transformConfigToLine
+} from './chartConfigCreators';
+
+import {
+    getLineFamilyChartData,
+    getLineFamilyChartOptions
 } from './chartCreators';
 import {
-    getLineChartConfiguration
+    getLineChartConfiguration,
+    getColumnChartConfiguration,
+    isDataOfReasonableSize
 } from './highChartsCreators';
 
 import ReactHighcharts from 'react-highcharts/bundle/highcharts';
+import './styles/chart.scss';
 
 export default class extends Component {
     static propTypes = {
@@ -26,12 +33,25 @@ export default class extends Component {
         let chartOptions,
             hcOptions,
             component;
-        if (config.type === 'column') {
-            chartOptions = getColumnChartOptions(config, data);
-            chartOptions.data = getColumnChartData(config, data);
-            hcOptions = getLineChartConfiguration(chartOptions);
+        if (config.visualizationType === 'column' ||
+            config.visualizationType === 'line' ||
+            config.visualizationType === 'bar') {
+            let lineConfig = transformConfigToLine(config);
+            chartOptions = getLineFamilyChartOptions(lineConfig, data);
+            chartOptions.data = getLineFamilyChartData(lineConfig, data);
+
+            if (!isDataOfReasonableSize(chartOptions.data)) {
+                return <div>Too big</div>;
+            }
+
+            if (config.visualizationType === 'column') {
+                hcOptions = getColumnChartConfiguration(chartOptions);
+            } else if (config.visualizationType === 'line') {
+                hcOptions = getLineChartConfiguration(chartOptions);
+            }
             component = <ReactHighcharts config={hcOptions} />;
         }
+
         return (<div className="indigo-component">
             <h2>Chart</h2>
             {component}

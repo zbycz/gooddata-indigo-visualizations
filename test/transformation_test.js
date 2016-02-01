@@ -35,6 +35,50 @@ describe('Transformation', function() {
             var newHeaders = Transformation._splitHeaders(headers).headers;
             expect(newHeaders).to.eql(headers.slice(2));
         });
+
+        describe('getMetricNamesValuesHeaderItems', () => {
+            it('adds metricNames and metricValues headers', () => {
+                let headersWithoutMetrics = [{
+                    id: 'metricNames',
+                    title: 'Metric',
+                    type: 'attrLabel',
+                    uri: '/metricGroup',
+                    metrics: []
+                }, {
+                    id: 'metricValues',
+                    type: 'metric',
+                    uri: '/metricValues',
+                    format: Transformation.DEFAULT_FORMAT,
+                    title: ''
+                }];
+                let actual = Transformation.getMetricNamesValuesHeaderItems([], []);
+                expect(actual).to.eql(headersWithoutMetrics);
+            });
+
+            it('uses first metric format when metric present', () => {
+                let metrics = [{
+                    header: {
+                        title: 'Metric 1',
+                        format: '00##00'
+                    }
+                }];
+                let mockHeaders = [{
+                    id: 'metricNames',
+                    title: 'Metric',
+                    type: 'attrLabel',
+                    uri: '/metricGroup',
+                    metrics
+                }, {
+                    id: 'metricValues',
+                    type: 'metric',
+                    uri: '/metricValues',
+                    format: '00##00',
+                    title: 'Metric 1'
+                }];
+                let actual = Transformation.getMetricNamesValuesHeaderItems([], metrics);
+                expect(actual).to.eql(mockHeaders);
+            });
+        });
     });
 
     describe('transposing data', function() {

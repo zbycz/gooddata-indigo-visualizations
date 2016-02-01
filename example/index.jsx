@@ -2,10 +2,13 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 
 import Visualization from '../src/Visualization';
-import testConfig from './test_config';
-import testData from './test_data';
+import * as TestConfig from './test_config';
+import * as TestData from './test_data';
 
 ReactDOM.render(
-    <Visualization config={testConfig} data={testData[1]} />,
+    <div>
+        <Visualization config={TestConfig.barChart2Series} data={TestData.barChart2Series} />
+        <Visualization config={TestConfig.stackedBar} data={TestData.stackedBar} />
+    </div>,
     document.getElementById('viz-example')
 );
