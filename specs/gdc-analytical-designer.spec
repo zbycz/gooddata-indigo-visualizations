@@ -1,33 +1,28 @@
 %global gdc_prefix /opt
 
-%define _builddir %(pwd)
+Name:           gdc-analytical-designer
+Version:        3.%{gdcversion}
+Release:        1%{dist}
+Summary:        Indigo Analytical Designer
 
-%define _rpmfilename %{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}.rpm
+Group:          Applications/Productivity
+License:        Proprietary
+URL:            http://gooddata.com/
+Source0:        %{name}.tar.gz
+BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-# Release tag updates
-%define branchname "%{?branch:%(echo %{branch} |sed 's/\.//')}%{!?branch:snapshot}"
-
-Name: gdc-analyze
-Version: %{_version}
-Release: %{_release}
-Summary: Indigo Analytical Designer
-
-Group: Applications/Productivity
-License: Proprietary
-URL: http://gooddata.com/
-BuildArch: noarch
-
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Requires: httpd
-BuildRequires: npm
+Requires:       httpd
+BuildRequires:  npm, git
 
 %description
 %{summary}
 
 %prep
+%setup -q -n %{name} -c
 
 %build
+export PATH="$PATH:$PWD/node_modules/.bin/"
 . ci/lib.sh
 grunt dist
 
