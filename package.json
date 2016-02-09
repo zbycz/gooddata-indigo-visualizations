@@ -86,7 +86,7 @@
     "crossroads": "0.12.2",
     "eventemitter3": "1.1.1",
     "foundation-sites": "5.5.2",
-    "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.1.0",
+    "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.3.0",
     "gooddata": "git+ssh://git@github.com:gooddata/gooddata-js.git#v0.1.16",
     "goodstrap": "git+ssh://git@github.com:gooddata/gdc-goodstrap.git#v0.73.1",
     "jquery": "2.1.4",
