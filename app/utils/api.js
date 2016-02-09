@@ -1,9 +1,9 @@
 import Promise from 'bluebird';
-import { xhr } from 'gooddata';
+import { xhr, user } from 'gooddata';
 import { string } from 'js-utils';
 import { sortBy, omit, get } from 'lodash';
 import deserializeItems from '../services/catalogue_item_deserializer';
-import * as Errors from '../constants/Errors';
+import { LOAD_ERROR, NOT_AUTHORIZED_ERROR } from '../constants/Errors';
 import { t } from '../utils/translations';
 
 // Setup SDK's session id before first usage
@@ -37,20 +37,21 @@ export function bootstrap(projectId) {
         uri = uri + `?projectUri=/gdc/projects/${projectId}`;
     }
 
-    return new Promise((resolve, reject) => {
-        xhr.get(uri).then(data => {
+    return wrapPromise(xhr.get(uri)).then(
+        data => {
             let currentProject = get(data, 'bootstrapResource.current.project');
 
-            if (currentProject) {
-                resolve(data);
-            } else {
-                reject({
-                    type: Errors.LOAD_ERROR,
+            if (!currentProject) {
+                return Promise.reject({
+                    type: LOAD_ERROR,
                     errorMessage: t('error.project.not_found', { projectId })
                 });
             }
-        });
-    });
+
+            return data;
+        },
+        () => Promise.reject({ type: NOT_AUTHORIZED_ERROR })
+    );
 }
 
 export function loadDateDimensions(pid, options) {
@@ -124,4 +125,8 @@ export function loadCatalogue(projectId, options) {
         catalog: loadCatalogueItems(projectId, options),
         dateDimensions: loadDateDimensions(projectId, options)
     });
+}
+
+export function logout() {
+    return wrapPromise(user.logout());
 }

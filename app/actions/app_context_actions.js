@@ -24,17 +24,16 @@ function bootstrapDataReceived(bootstrapData, windowInstance) {
     };
 }
 
-function bootstrapError(error) {
+function bootstrapError(error, location) {
     return {
         type: Actions.BOOTSTRAP_ERROR,
+        location,
         error
     };
 }
 
-function loggedOut() {
-    return {
-        type: Actions.LOGOUT_DATA
-    };
+function loggedOut(location) {
+    return { type: Actions.LOGOUT_DATA, location };
 }
 
 export function bootstrap(windowInstance, projectId, loadBootstrap = API.bootstrap) {
@@ -45,6 +44,7 @@ export function bootstrap(windowInstance, projectId, loadBootstrap = API.bootstr
             .then(
                 bootstrapData => {
                     dispatch(bootstrapDataReceived(bootstrapData, windowInstance));
+
                     let state = getState().get('appState');
 
                     if (isCsvUploaderEnabled(state)) {
@@ -55,20 +55,15 @@ export function bootstrap(windowInstance, projectId, loadBootstrap = API.bootstr
                 }
             )
             .catch(error => {
-                dispatch(bootstrapError(error));
-            })
-        ;
+                return dispatch(bootstrapError(error, windowInstance.location));
+            });
     };
 }
 
-export function logoutRequested() {
+export function logoutRequested(windowInstance) {
     return dispatch => {
-        dispatch({
-            type: Actions.LOGOUT
-        });
+        dispatch({ type: Actions.LOGOUT });
 
-        API.logout().then(() => {
-            dispatch(loggedOut());
-        });
+        API.logout().finally(() => dispatch(loggedOut(windowInstance.location)));
     };
 }

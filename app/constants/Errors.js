@@ -1,1 +1,2 @@
 export const LOAD_ERROR = 'LOAD_ERROR';
+export const NOT_AUTHORIZED_ERROR = 'NOT_AUTHORIZED_ERROR';

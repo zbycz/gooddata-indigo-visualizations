@@ -10,6 +10,7 @@ import * as Effects from '../constants/Effects';
 import * as BootstrapService from '../services/bootstrap_service';
 import * as StatePaths from '../constants/StatePaths';
 import * as MenuConstants from '../constants/Menu';
+import { NOT_AUTHORIZED_ERROR } from '../constants/Errors';
 
 const BootstrapDataRecord = new Record({
     project: {},
@@ -143,12 +144,18 @@ function bootstrap(state, action) {
 }
 
 function bootstrapError(state, action) {
+    if (action.error.type === NOT_AUTHORIZED_ERROR) {
+        const url = encodeURIComponent(action.location.href);
+        action.location.href = `/account.html?lastUrl=${url}`;
+        return state;
+    }
+
     return state.setIn(['appState', 'errors'], state.getIn(['appState', 'errors']).push(action.error));
 }
 
-function loggedOut(state) {
-    var logoutRedirectionEffect = buildMessage(Effects.REDIRECTION, '/');
-    return state.set('effects', [logoutRedirectionEffect]);
+function loggedOut(state, action) {
+    action.location.href = '/';
+    return state;
 }
 
 export default (state, action) => {
@@ -158,7 +165,7 @@ export default (state, action) => {
         case Actions.BOOTSTRAP_ERROR:
             return bootstrapError(state, action);
         case Actions.LOGOUT_DATA:
-            return loggedOut(state);
+            return loggedOut(state, action);
         default:
             return state;
     }
