@@ -28,7 +28,7 @@ class Root extends Component {
     }
 
     onLogoutRequest() {
-        this.props.dispatch(logoutRequested());
+        this.props.dispatch(logoutRequested(window));
     }
 
     render() {
