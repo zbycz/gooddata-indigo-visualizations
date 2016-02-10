@@ -54,7 +54,7 @@ class Root extends Component {
             );
         }
 
-        return <div className="gd-loading-equalizer gd-loading-equalizer-fade">Loading…</div>;
+        return <div className="main-loading"></div>;
     }
 }
 
