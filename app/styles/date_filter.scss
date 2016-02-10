@@ -1,0 +1,104 @@
+@import "variables";
+
+.adi-date-filter-picker {
+    padding: 0;
+    line-height: 1.7rem;
+
+    .adi-date-filter-tabs {
+        margin-top: 5px;
+        padding: 0 0 0 8px;
+    }
+
+    .adi-dimension-select {
+        background-color: $is-focused-background;
+        padding: 8px;
+
+        font-size: 12px;
+        color: $gd-color-label;
+
+        select {
+            max-width: 155px;
+            margin-right: 2px;
+        }
+    }
+
+    &.adi-date-filter-picker-wide {
+        width: 282px;
+
+        .adi-dimension-select select {
+            max-width: 250px;
+        }
+    }
+
+    section {
+        padding: 10px;
+
+        &.adi-tab-presets {
+            padding: 10px 0 7px 0;
+        }
+
+        &.adi-tab-date-range {
+            font-size: 14px;
+            color: $gd-color-label;
+        }
+    }
+
+    footer {
+        margin-top: 20px;
+
+        text-align: right;
+
+        button:first-of-type {
+            margin-right: 10px;
+        }
+    }
+
+    .adi-date-input-from,
+    .adi-date-input-to {
+        width: 110px;
+        display: inline-block;
+    }
+
+    .adi-date-input-from {
+        margin-right: 5px;
+    }
+
+    .adi-date-input-to {
+        margin-left: 5px;
+    }
+
+    .filter-picker-text {
+        padding-left: 10px;
+        padding-right: 10px;
+        min-width: 130px;
+
+        cursor: pointer;
+        font-size: 12px;
+        line-height: 23px;
+
+        &:hover {
+            background-color: #EBEFF4;
+        }
+    }
+
+    .filter-picker-empty-space {
+        height: 14px;
+    }
+
+    .filter-picker-header {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 10px;
+
+        text-transform: uppercase;
+
+        font-size: 10px;
+        line-height: 16px;
+        color: #94A1AD;
+    }
+
+    // disabled today highlight as pickadate does not allow us to provide project timezone's date
+    .gd-datepicker-picker .picker__day--today:not(.picker__day--highlighted) {
+        color: #464e56;
+    }
+}

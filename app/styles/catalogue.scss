@@ -1,5 +1,4 @@
 @import "variables";
-@import "../../node_modules/goodstrap/packages/theme-indigo";
 @import "bucket_item";
 
 .infinite-list {
@@ -375,6 +374,7 @@
             &.fact { color: #00c08e; }
             &.metric { color: #00c08e; }
             &.attribute { color: #bc5ab2; }
+            &.attributeDisplayForm { color: #bc5ab2; }
             &.attribute_element { color: #ef8600; }
         }
 

@@ -1,18 +1,15 @@
-import '../styles/dashboard';
-import '../styles/dashboard_edit';
-import React, { Component } from 'react';
-import CataloguePanel from './CataloguePanel.jsx';
-import EditorHeader from './EditorHeader.jsx';
-import EditorMain from './EditorMain.jsx';
+import React from 'react';
 
-export default class Editor extends Component {
-    render() {
-        return (
-            <div className="adi-editor">
-                <EditorHeader />
-                <CataloguePanel />
-                <EditorMain />
-            </div>
-        );
-    }
+import Catalogue from '../containers/Catalogue';
+import EditorHeader from './EditorHeader';
+import EditorMain from './EditorMain';
+
+export default function() {
+    return (
+        <div className="adi-editor">
+            <EditorHeader {...this.props} />
+            <Catalogue />
+            <EditorMain {...this.props}/>
+        </div>
+    );
 }

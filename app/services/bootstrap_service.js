@@ -24,6 +24,10 @@ export function getBootstrapData(state) {
     return state.getIn(StatePaths.BOOTSTRAP);
 }
 
+export function isBootstrapLoaded(appState) {
+    return appState.getIn(StatePaths.BOOTSTRAP_IS_LOADED);
+}
+
 export function getUserEmail(bootstrap) {
     return bootstrap.getIn(StatePaths.USER_EMAIL);
 }
@@ -128,4 +132,8 @@ export function isMobileDevice(appState) {
 
 export function getSeparators(appState) {
     return appState.getIn(StatePaths.PROFILE_SETTING_SEPARATORS);
+}
+
+export function isCsvUploaderEnabled(appState) {
+    return appState.getIn(StatePaths.FEATURE_FLAGS).get('enableCsvUploader');
 }

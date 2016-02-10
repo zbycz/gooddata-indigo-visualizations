@@ -16,8 +16,7 @@ module.exports = function getWebpackConfig() {
 
         module: {
             noParse: [
-                'jquery',
-                'react-infinite-list'
+                'jquery'
             ],
 
             loaders: [
@@ -85,13 +84,15 @@ module.exports = function getWebpackConfig() {
             // Allow to omit extensions when requiring these files
             extensions: ['', '.js', '.jsx', '.styl', '.scss'],
             modulesDirectories: [
-                'node_modules'
+                'node_modules',
+                path.join('node_modules/goodstrap/packages')
             ],
             alias: {
                 'react': path.join(__dirname, 'node_modules/react/'),
                 'gooddata': path.join(__dirname, 'node_modules/gooddata/src/gooddata'),
                 'jquery-browser': path.join(__dirname, 'node_modules/jquery.browser/dist/jquery.browser'),
-                'jquery-extensions': path.join(__dirname, 'node_modules/goodstrap/packages/core/jquery-extensions')
+                'jquery-extensions': path.join(__dirname, 'node_modules/goodstrap/packages/core/jquery-extensions'),
+                'react-infinite-list': 'react-infinite-list/dist/react-infinite-list'
             }
         },
 

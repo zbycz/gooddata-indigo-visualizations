@@ -26,7 +26,10 @@
         "vars-on-top": [0],
         "func-names": [0],
         "space-before-function-paren": [2, "never"],
-        "react/jsx-indent-props": [2, 4]
+        "react/jsx-indent-props": [2, 4],
+        "new-cap": [2, {
+          "capIsNewExceptions": ["Immutable", "Map", "List", "Record"]
+        }]
     },
 
     "globals": {
