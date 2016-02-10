@@ -15,7 +15,8 @@ class RootDom extends Component {
         branding: PropTypes.object.isRequired,
         onLogout: PropTypes.func.isRequired,
         onMenuItemClick: PropTypes.func.isRequired,
-        intl: PropTypes.object.isRequired
+        intl: PropTypes.object.isRequired,
+        log: PropTypes.func
     };
 
     render() {
@@ -26,7 +27,7 @@ class RootDom extends Component {
                 <Header
                     profileUri={BootstrapService.getUserUri(this.props.appState)}
                     branding={this.props.branding}
-                    project={BootstrapService.getProject(this.props.appState)}
+                    project={{ title: BootstrapService.getProjectTitle(this.props.appState) }}
                     menuItems={BootstrapService.getLocalizedMenuItems(this.props.appState, intl).toJS()}
                     accountMenuItems={BootstrapService.getLocalizedAccountMenuItems(this.props.appState, intl).toJS()}
                     userName={BootstrapService.getUserFullName(this.props.appState)}
@@ -34,7 +35,7 @@ class RootDom extends Component {
                     onMenuItemClick={this.props.onMenuItemClick}
                     onProjectSelect={onProjectSelect}
                 />
-                <Dashboard />
+                <Dashboard log={this.props.log}/>
             </div>
         );
     }

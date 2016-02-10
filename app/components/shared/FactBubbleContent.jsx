@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
+import pureRender from 'pure-render-decorator';
 
+@pureRender
 export default class FactBubbleContent extends React.Component {
     static propTypes = {
         dataset: PropTypes.object

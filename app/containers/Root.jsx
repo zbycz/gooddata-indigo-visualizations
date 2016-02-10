@@ -8,6 +8,7 @@ import { bootstrap, logoutRequested } from '../actions/app_context_actions';
 
 import { isBootstrapLoaded, getBranding } from '../services/bootstrap_service';
 import { isError } from '../services/error_service';
+import logger from '../services/logger_service';
 
 class Root extends Component {
     static propTypes = {
@@ -48,6 +49,7 @@ class Root extends Component {
                     branding={branding.toJS()}
                     onLogout={onLogout}
                     onMenuItemClick={onMenuItemClick}
+                    log={logger.log.bind(logger)}
                 />
             );
         }

@@ -24,8 +24,7 @@ export default class CatalogueList extends Component {
         isItemLoading: PropTypes.func.isRequired,
         onDragStart: PropTypes.func.isRequired,
         onDragStop: PropTypes.func.isRequired,
-        onMouseOver: PropTypes.func.isRequired,
-        onMouseOut: PropTypes.func.isRequired,
+        onShowBubble: PropTypes.func.isRequired,
         onRangeChange: PropTypes.func.isRequired,
         end: PropTypes.number
     };
@@ -105,8 +104,7 @@ export default class CatalogueList extends Component {
                 'search',
                 'onDragStart',
                 'onDragStop',
-                'onMouseOver',
-                'onMouseOut'
+                'onShowBubble'
             ]);
 
             let id = (item.get('type') === 'date') ? 'date' : item.get('identifier');
@@ -143,8 +141,7 @@ export default class CatalogueList extends Component {
                     search={this.props.search}
                     onDragStart={this.props.onDragStart}
                     onDragStop={this.props.onDragStop}
-                    onMouseOver={this.props.onMouseOver}
-                    onMouseOut={this.props.onMouseOut}
+                    onShowBubble={this.props.onShowBubble}
                     onRangeChange={this.props.onRangeChange}
                     isItemLoading={this.props.isItemLoading}
                     paging

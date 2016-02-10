@@ -36,7 +36,9 @@ module.exports = function createDevConfig(config) {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin({
-            DEBUG: true
+            DEBUG: true,
+            TESTING: false,
+            PRODUCTION: false
         }),
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({

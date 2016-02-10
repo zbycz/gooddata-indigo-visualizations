@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import classNames from 'classnames';
 
-import { getCssClass } from '../utils/CssClass';
+import { getCssClass } from '../utils/css_class';
 
 export default class Dataset extends Component {
     static propTypes = {

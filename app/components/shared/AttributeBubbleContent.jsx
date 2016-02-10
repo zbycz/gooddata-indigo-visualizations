@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
+import pureRender from 'pure-render-decorator';
 
+@pureRender
 export default class AttributeBubbleContent extends Component {
     static propTypes = {
         totalElementsCount: PropTypes.number,

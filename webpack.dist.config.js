@@ -41,6 +41,9 @@ distConfig.plugins = distConfig.plugins.concat(
     new GitSHAPlugin({ length: 7 }),
     new ExtractTextPlugin('[name].[chunkgitsha].[hash].css'),
     new webpack.DefinePlugin({
+        DEBUG: false,
+        TESTING: false,
+        PRODUCTION: true,
         'process.env': {
             // This has effect on the react lib size
             'NODE_ENV': JSON.stringify('production')

@@ -4,12 +4,12 @@ import Catalogue from '../containers/Catalogue';
 import EditorHeader from './EditorHeader';
 import EditorMain from './EditorMain';
 
-export default function() {
+export default function(props) {
     return (
         <div className="adi-editor">
-            <EditorHeader {...this.props} />
+            <EditorHeader {...props} />
             <Catalogue />
-            <EditorMain {...this.props}/>
+            <EditorMain {...props}/>
         </div>
     );
 }
