@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import sdk from 'sdk';
+import sdk from 'gooddata';
 import { string } from 'js-utils';
 
 // Setup SDK's session id before first usage

@@ -3,7 +3,7 @@ import reduxThunk from 'redux-thunk';
 import * as Actions from '../AppContextActions';
 import * as ActionNames from '../../constants/Actions';
 import $ from 'jquery';
-import sdk from 'sdk';
+import sdk from 'gooddata';
 
 const mockStoreComposer = configureMockStore([reduxThunk]);
 

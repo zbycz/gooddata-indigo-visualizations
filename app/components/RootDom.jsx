@@ -4,6 +4,11 @@ import * as BootstrapService from '../services/bootstrap_service';
 import Dashboard from './Dashboard.jsx';
 import Header from '../../node_modules/goodstrap/packages/Header/ReactHeader';
 
+function onProjectSelect(project) {
+    let uri = `${window.location.pathname}#/${project.hash}/reportId/edit`;
+    window.location = uri;
+}
+
 class RootDom extends Component {
     static propTypes = {
         appState: PropTypes.object.isRequired,
@@ -15,16 +20,19 @@ class RootDom extends Component {
 
     render() {
         let intl = this.props.intl;
+
         return (
             <div className="app-root">
                 <Header
+                    profileUri={BootstrapService.getUserUri(this.props.appState)}
                     branding={this.props.branding}
-                    projectTitle={BootstrapService.getProjectTitle(this.props.appState)}
-                    menuItems={BootstrapService.getLocalizedMenuItems(this.props.appState, intl)}
-                    accountMenuItems={BootstrapService.getLocalizedAccountMenuItems(this.props.appState, intl)}
+                    project={BootstrapService.getProject(this.props.appState)}
+                    menuItems={BootstrapService.getLocalizedMenuItems(this.props.appState, intl).toJS()}
+                    accountMenuItems={BootstrapService.getLocalizedAccountMenuItems(this.props.appState, intl).toJS()}
                     userName={BootstrapService.getUserFullName(this.props.appState)}
                     onLogout={this.props.onLogout}
                     onMenuItemClick={this.props.onMenuItemClick}
+                    onProjectSelect={onProjectSelect}
                 />
                 <Dashboard />
             </div>

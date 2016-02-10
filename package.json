@@ -88,7 +88,7 @@
     "foundation-sites": "5.5.2",
     "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.3.0",
     "gooddata": "git+ssh://git@github.com:gooddata/gooddata-js.git#v0.1.16",
-    "goodstrap": "git+ssh://git@github.com:gooddata/gdc-goodstrap.git#v0.73.1",
+    "goodstrap": "git+ssh://git@github.com:gooddata/gdc-goodstrap.git#v0.79.2",
     "jquery": "2.1.4",
     "jquery.browser": "0.1.0",
     "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils.git#0d6a679",

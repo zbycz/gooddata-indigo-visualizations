@@ -39,9 +39,11 @@ function transformBootstrapData(bootstrapData) {
     function transformProject(current) {
         const project = current.project;
         const projectTemplate = get(current, ['projectTemplates', 0, 'url']);
+        const uri = project.links.self;
 
         return new Map({
             id: project.links.self.split('/').pop(),
+            uri,
             title: project.meta.title,
             template: projectTemplate
         });

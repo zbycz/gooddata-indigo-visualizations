@@ -89,7 +89,7 @@ module.exports = function getWebpackConfig() {
             ],
             alias: {
                 'react': path.join(__dirname, 'node_modules/react/'),
-                'sdk': path.join(__dirname, 'node_modules/gooddata/src/gooddata'),
+                'gooddata': path.join(__dirname, 'node_modules/gooddata/src/gooddata'),
                 'jquery-browser': path.join(__dirname, 'node_modules/jquery.browser/dist/jquery.browser'),
                 'jquery-extensions': path.join(__dirname, 'node_modules/goodstrap/packages/core/jquery-extensions')
             }
