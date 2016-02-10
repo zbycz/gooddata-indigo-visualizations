@@ -8,13 +8,17 @@ import compact from 'lodash/compact';
 import cloneDeep from 'lodash/cloneDeep';
 import every from 'lodash/every';
 
-// import Highcharts from 'highcharts-release';
+import {
+    stripColors,
+    numberFormat
+} from 'gdc-numberjs/lib/number';
+
 // import Status from '../utils/status';
 //
 // import './plugins/legend_render_plugin';
-// import './styles/chart.scss';
 
 export const DEFAULT_SERIES_LIMIT = 1000;
+export const DEFAULT_CATEGORIES_LIMIT = 365;
 export const EMPTY_DATA = { categories: [], series: [] };
 
 const CONFIG_TEMPLATE = {
@@ -93,7 +97,7 @@ const CONFIG_TEMPLATE = {
     plotOptions: {
         series: {
             enableMouseTracking: true, // !Status.exportMode,
-            turboThreshold: 365
+            turboThreshold: DEFAULT_CATEGORIES_LIMIT
         }
     }
 };
@@ -108,7 +112,7 @@ export const DEFAULT_COLOR_PALETTE = [
 ];
 
 export function getCommonChartConfiguration() { // chartOptions) {
-    return merge(CONFIG_TEMPLATE, {}); // TODO create config
+    return merge({}, CONFIG_TEMPLATE); // TODO create config
 }
 
 
@@ -134,7 +138,7 @@ const cancelLegendItemClick = {
     legendItemClick: () => false
 };
 
-const escapeAngleBrackets = str => str; // TODO import from utils
+const escapeAngleBrackets = str => str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 
 
 const LINE_CONFIG_TEMPLATE = {
@@ -367,8 +371,17 @@ function formatTooltip(tooltipCallback) {
         '</div><div class="tail1"></div><div class="tail2"></div>';
 }
 
+function _labelFormatter(value, format) {
+    // no labels for missing values
+    if (value === null) {
+        return null;
+    }
+
+    var stripped = stripColors(format || '');
+    return String(numberFormat(value, stripped));
+}
 function labelFormatter() {
-    return labelFormatter(this.y, get(this, 'point.format'));
+    return _labelFormatter(this.y, get(this, 'point.format'));
 }
 
 // check whether series contains only positive values, not consider nulls
@@ -386,7 +399,7 @@ function stackLabelFormatter() {
     var showStackLabel =
         this.isNegative || hasOnlyPositiveValues(this.axis.series, this.x) || this.total !== 0;
     return showStackLabel ?
-        labelFormatter(this.total, get(this, 'axis.userOptions.defaultFormat')) : null;
+        _labelFormatter(this.total, get(this, 'axis.userOptions.defaultFormat')) : null;
 }
 
 export function getLineChartConfiguration(chartOptions) {
@@ -405,14 +418,17 @@ export function getLineChartConfiguration(chartOptions) {
         return merge(config, configurator(chartOptions));
     }, {});
 
-    // TODO massage data with all line specific stuff
-    return merge(LINE_CONFIG_TEMPLATE, commonData);
+    return merge({}, LINE_CONFIG_TEMPLATE, commonData);
 }
 
 export function getColumnChartConfiguration(chartOptions) {
     var lineData = getLineChartConfiguration(chartOptions);
-    // TODO
-    return merge(COLUMN_CONFIG_TEMPLATE, lineData);
+    return merge({}, COLUMN_CONFIG_TEMPLATE, lineData);
+}
+
+export function isDataOfReasonableSize(chartData) {
+    return chartData.series.length <= DEFAULT_SERIES_LIMIT &&
+        chartData.categories.length <= DEFAULT_CATEGORIES_LIMIT;
 }
 
 // Setting legend:

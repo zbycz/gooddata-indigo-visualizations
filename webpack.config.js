@@ -23,10 +23,10 @@ module.exports = function getWebpackConfig() {
                     include: /src\/|test\/|example\//
                 },
 
-                // {
-                //     test: /\.scss$/,
-                //     loader: 'style!css?sourceMap!autoprefixer!sass?includePaths[]=./node_modules&includePaths[]=./node_modules/foundation-sites/scss'
-                // },
+                {
+                    test: /\.scss$/,
+                    loader: 'style!css?sourceMap!autoprefixer!sass?includePaths[]=./node_modules&includePaths[]=./node_modules/foundation-sites/scss'
+                },
 
                 {
                     test: /\.css$/,
