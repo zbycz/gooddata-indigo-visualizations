@@ -87,6 +87,17 @@ export function getProjectTitle(appState) {
     return appState.getIn(StatePaths.PROJECT_TITLE);
 }
 
+export function getProjectUri(appState) {
+    return appState.getIn(StatePaths.PROJECT_URI);
+}
+
+export function getProject(appState) {
+    return {
+        title: getProjectTitle(appState),
+        uri: getProjectUri(appState)
+    };
+}
+
 export function getMenuItems(appState) {
     return appState.getIn(StatePaths.MENU_ITEMS);
 }
