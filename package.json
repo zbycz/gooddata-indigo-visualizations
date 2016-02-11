@@ -70,7 +70,6 @@
     "react-pure-render": "1.0.2",
     "react-responsive": "1.0.1",
     "redux-mock-store": "0.0.4",
-    "reselect": "2.0.2",
     "sass-loader": "3.1.2",
     "sinon": "1.17.1",
     "style-loader": "0.13.0",
@@ -110,7 +109,7 @@
     "react-textarea-autosize": "3.2.0",
     "redux": "^3.0.5",
     "redux-thunk": "^1.0.3",
-    "reselect": "^2.0.2",
+    "reselect": "2.0.2",
     "uniqueid": "0.1.0",
     "wolfy87-eventemitter": "^4.3.0"
   }
