@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+
 import {
     transformConfigToLine
 } from './chartConfigCreators';
@@ -7,62 +8,89 @@ import {
     getLineFamilyChartData,
     getLineFamilyChartOptions
 } from './chartCreators';
+
 import {
     getLineChartConfiguration,
     getColumnChartConfiguration,
     isDataOfReasonableSize
 } from './highChartsCreators';
 
-import ReactHighcharts from 'react-highcharts/bundle/highcharts';
 import './styles/chart.scss';
+
+import LineFamilyChart from './LineFamilyChart';
+import Table from './Table';
+import DataTooLarge from './DataTooLarge';
+
+function isLineFamily(visType) {
+    return ['column', 'line', 'bar'].includes(visType);
+}
+
+export function renderLineFamilyChart(props) {
+    return <LineFamilyChart {...props} />;
+}
+export function renderTable(props) {
+    return <Table {...props} />;
+}
 
 export default class extends Component {
     static propTypes = {
-        config: PropTypes.object.required,
+        config: PropTypes.object.isRequired,
         data: PropTypes.shape({
-            isLoaded: PropTypes.bool.required,
-            isLoading: PropTypes.bool.required,
-            isLoadError: PropTypes.bool.required,
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
-        })
+        }).isRequired,
+
+        lineFamilyChartRenderer: PropTypes.func.isRequired,
+        tableRenderer: PropTypes.func.isRequired
     };
 
-    render() {
+    static defaultProps = {
+        lineFamilyChartRenderer: renderLineFamilyChart,
+        tableRenderer: renderTable
+    };
+
+    renderLineFamily() {
         let { config, data } = this.props;
-        let chartOptions,
-            hcOptions,
-            component;
-        if (config.visualizationType === 'column' ||
-            config.visualizationType === 'line' ||
-            config.visualizationType === 'bar') {
-            let lineConfig = transformConfigToLine(config);
-            chartOptions = getLineFamilyChartOptions(lineConfig, data);
-            chartOptions.data = getLineFamilyChartData(lineConfig, data);
 
-            if (!isDataOfReasonableSize(chartOptions.data)) {
-                return <div>Too big</div>;
-            }
+        let lineConfig = transformConfigToLine(config);
+        let chartOptions = getLineFamilyChartOptions(lineConfig, data);
+        chartOptions.data = getLineFamilyChartData(lineConfig, data);
 
-            if (config.visualizationType === 'column') {
-                hcOptions = getColumnChartConfiguration(chartOptions);
-            } else if (config.visualizationType === 'line') {
-                hcOptions = getLineChartConfiguration(chartOptions);
-            }
-            component = <ReactHighcharts config={hcOptions} />;
+        if (!isDataOfReasonableSize(chartOptions.data)) {
+            return <DataTooLarge />;
         }
 
-        return (<div className="indigo-component">
-            <h2>Chart</h2>
-            {component}
-            <h2>ChartOptions</h2>
-            <pre>
-                {JSON.stringify(chartOptions, null, 2)}
-            </pre>
-            <h2>hcOptions</h2>
-            <pre>
-                {JSON.stringify(hcOptions, null, 2)}
-            </pre>
-        </div>);
+        let visType = config.visualizationType,
+            hcOptions;
+
+        if (visType === 'column') {
+            hcOptions = getColumnChartConfiguration(chartOptions);
+        } else if (visType === 'line') {
+            hcOptions = getLineChartConfiguration(chartOptions);
+        }
+
+        return this.props.lineFamilyChartRenderer({ chartOptions, hcOptions });
+    }
+
+    renderTable() {
+        let { headers, rawData } = this.props.data;
+
+        return this.props.tableRenderer({
+            rows: rawData,
+            headers
+        });
+    }
+
+    render() {
+        let visType = this.props.config.visualizationType,
+            component;
+
+        if (isLineFamily(visType)) {
+            component = this.renderLineFamily();
+        } else if (visType === 'table') {
+            component = this.renderTable();
+        }
+
+        return component;
     }
 }

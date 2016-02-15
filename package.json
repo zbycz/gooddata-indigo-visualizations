@@ -66,10 +66,13 @@
     "webpack-hot-middleware": "2.6.0"
   },
   "dependencies": {
-    "jquery": "2.2.0",
+    "classnames": "^2.2.3",
+    "fixed-data-table": "0.6.0",
+    "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils#v0.2.0",
     "lodash": "4.0.0",
     "numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs#v2.3.0",
     "react": "0.14.6",
+    "react-dimensions": "^1.0.2",
     "react-dom": "0.14.6",
     "react-highcharts": "6.0.0"
   }

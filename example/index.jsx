@@ -1,14 +1,17 @@
-import ReactDOM from 'react-dom';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
-import Visualization from '../src/Visualization';
+import ExampleVisualization from './ExampleVisualization';
 import * as TestConfig from './test_config';
 import * as TestData from './test_data';
 
 ReactDOM.render(
     <div>
-        <Visualization config={TestConfig.barChart2Series} data={TestData.barChart2Series} />
-        <Visualization config={TestConfig.stackedBar} data={TestData.stackedBar} />
+        <h1>Examples</h1>
+
+        <ExampleVisualization config={TestConfig.barChart2Series} data={TestData.barChart2Series} />
+        <ExampleVisualization config={TestConfig.stackedBar} data={TestData.stackedBar} />
+        <ExampleVisualization config={TestConfig.table} data={TestData.stackedBar} />
     </div>,
     document.getElementById('viz-example')
 );

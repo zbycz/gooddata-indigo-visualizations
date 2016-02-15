@@ -12,7 +12,6 @@ module.exports = function getWebpackConfig() {
 
         module: {
             // noParse: [
-            //     'jquery',
             //     'react-infinite-list'
             // ],
             //
@@ -54,16 +53,6 @@ module.exports = function getWebpackConfig() {
                     loader: 'file-loader'
                 },
 
-                // {
-                //     test: /jquery\.js$/,
-                //     loader: 'expose?jQuery'
-                // },
-
-                // {
-                //     test: /jquery\.browser\.js$/,
-                //     loader: 'exports?window.jQBrowser'
-                // },
-
                 {
                     test: require.resolve('react'),
                     loader: 'expose?React'
@@ -79,9 +68,6 @@ module.exports = function getWebpackConfig() {
             ],
             alias: {
                 react: path.join(__dirname, 'node_modules/react/')
-                // 'sdk': path.join(__dirname, 'node_modules/gooddata/src/gooddata'),
-                // 'jquery-browser': path.join(__dirname, 'node_modules/jquery.browser/dist/jquery.browser'),
-                // 'jquery-extensions': path.join(__dirname, 'node_modules/goodstrap/packages/core/jquery-extensions')
             }
         },
 
@@ -94,11 +80,8 @@ module.exports = function getWebpackConfig() {
                 );
                 /* eslint-enable no-param-reassign */
             }),
-            new webpack.NormalModuleReplacementPlugin(/^\$$/, 'jquery'),
-            new webpack.NormalModuleReplacementPlugin(/^jQuery$/, 'jquery'),
             new webpack.ProvidePlugin({
-                React: 'react',
-                $: 'jquery'
+                React: 'react'
             })
         ]
     };

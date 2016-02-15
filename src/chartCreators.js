@@ -43,7 +43,6 @@ export function isMetricNamesInSeries(config, headers) { // TODO export only for
 
 export function getLineFamilyChartData(config, rawData) {
     var data = transformData(rawData);
-    if (!data || data.isLoading) return false; // TODO handle errors
 
     // prepare series, categories and data
     var indices = getIndices(config, data.headers);
