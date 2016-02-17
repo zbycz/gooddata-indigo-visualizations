@@ -68,7 +68,7 @@
   "dependencies": {
     "jquery": "2.2.0",
     "lodash": "4.0.0",
-    "numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs#v2.3.0",
+    "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.3.0",
     "react": "0.14.6",
     "react-dom": "0.14.6",
     "react-highcharts": "6.0.0"
