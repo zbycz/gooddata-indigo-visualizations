@@ -6,9 +6,13 @@ setupGrunt () {
 
     # install dependencies
     npm install
+
+    export SETUP="1"
 }
 
 export PATH=$PATH:$WORKSPACE/node_modules/.bin
 
 # initiate
-setupGrunt
+if [ -z "$SETUP" ]; then
+    setupGrunt
+fi
