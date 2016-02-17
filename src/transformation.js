@@ -1,4 +1,3 @@
-// Copyright (C) 2007-2016, GoodData(R) Corporation. All rights reserved.
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import map from 'lodash/map';
