@@ -1,4 +1,5 @@
 import 'fixed-data-table/dist/fixed-data-table.css';
+import './styles/table.scss';
 
 import React, { Component, PropTypes } from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
@@ -106,15 +107,19 @@ export class TableVisualization extends Component {
         let columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
 
         return (
-            <Table
-                headerHeight={DEFAULT_HEADER_HEIGHT}
-                rowHeight={DEFAULT_ROW_HEIGHT}
-                rowsCount={this.props.rows.length}
-                width={containerWidth || DEFAULT_WIDTH}
-                height={containerHeight || DEFAULT_HEIGHT}
-            >
-                {this.renderColumns(columnWidth)}
-            </Table>
+            <div className="indigo-table-component">
+                <div className="indigo-table-component-content">
+                    <Table
+                        headerHeight={DEFAULT_HEADER_HEIGHT}
+                        rowHeight={DEFAULT_ROW_HEIGHT}
+                        rowsCount={this.props.rows.length}
+                        width={containerWidth || DEFAULT_WIDTH}
+                        height={containerHeight || DEFAULT_HEIGHT}
+                    >
+                        {this.renderColumns(columnWidth)}
+                    </Table>
+                </div>
+            </div>
         );
     }
 
