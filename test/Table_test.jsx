@@ -1,4 +1,12 @@
 import { TableVisualization } from '../src/Table';
+import { Table } from 'fixed-data-table';
+import React from 'react';
+import ReactTestUtils from 'react-addons-test-utils';
+
+let {
+    renderIntoDocument,
+    findRenderedComponentWithType
+} = ReactTestUtils;
 
 const FIXTURE = {
     headers: [
@@ -24,14 +32,15 @@ describe('Table', () => {
     let table;
 
     beforeEach(() => {
-        let instance = new TableVisualization({
-            containerWidth: 600,
-            containerHeight: 400,
-            rows: FIXTURE.rawData,
-            headers: FIXTURE.headers
-        });
-
-        table = instance.render();
+        let instance = renderIntoDocument(
+            <TableVisualization
+                containerWidth={600}
+                containerHeight={400}
+                rows={FIXTURE.rawData}
+                headers={FIXTURE.headers}
+            />
+        );
+        table = findRenderedComponentWithType(instance, Table);
     });
 
     it('should fit container dimensions', () => {
