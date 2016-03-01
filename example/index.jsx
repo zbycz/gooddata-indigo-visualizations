@@ -11,6 +11,7 @@ ReactDOM.render(
 
         <ExampleVisualization config={TestConfig.barChart2Series} data={TestData.barChart2Series} />
         <ExampleVisualization config={TestConfig.stackedBar} data={TestData.stackedBar} />
+        <ExampleVisualization config={TestConfig.bar} data={TestData.barChart2Series} />
         <ExampleVisualization config={TestConfig.table} data={TestData.stackedBar} />
     </div>,
     document.getElementById('viz-example')

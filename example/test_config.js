@@ -153,3 +153,4 @@ export const stackedBar = {
 };
 
 export const table = merge({}, stackedBar, { visualizationType: 'table' });
+export const bar = merge({}, barChart2Series, { visualizationType: 'bar' });

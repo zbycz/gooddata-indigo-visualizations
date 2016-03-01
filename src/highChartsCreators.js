@@ -206,6 +206,32 @@ const COLUMN_CONFIG_TEMPLATE = {
     }
 };
 
+const BAR_CONFIG_TEMPLATE = {
+    chart: {
+        type: 'bar'
+    },
+    plotOptions: {
+        bar: {
+            maxPointWidth: MAX_POINT_WIDTH,
+            dataLabels: {
+                enabled: true
+            }
+        },
+        series: {
+            states: {
+                hover: {
+                    enabled: false
+                }
+            }
+        }
+    },
+    yAxis: {
+        stackLabels: {
+            enabled: false
+        }
+    }
+};
+
 function getStackingConfiguration(chartOptions) {
     var stacking = chartOptions.stacking;
 
@@ -424,6 +450,11 @@ export function getLineChartConfiguration(chartOptions) {
 export function getColumnChartConfiguration(chartOptions) {
     var lineData = getLineChartConfiguration(chartOptions);
     return merge({}, COLUMN_CONFIG_TEMPLATE, lineData);
+}
+
+export function getBarChartConfiguration(chartOptions) {
+    var lineData = getLineChartConfiguration(chartOptions);
+    return merge({}, BAR_CONFIG_TEMPLATE, lineData);
 }
 
 export function isDataOfReasonableSize(chartData) {

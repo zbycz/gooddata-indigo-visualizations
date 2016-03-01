@@ -12,6 +12,7 @@ import {
 import {
     getLineChartConfiguration,
     getColumnChartConfiguration,
+    getBarChartConfiguration,
     isDataOfReasonableSize
 } from './highChartsCreators';
 
@@ -65,6 +66,8 @@ export default class extends Component {
 
         if (visType === 'column') {
             hcOptions = getColumnChartConfiguration(chartOptions);
+        } else if (visType === 'bar') {
+            hcOptions = getBarChartConfiguration(chartOptions);
         } else if (visType === 'line') {
             hcOptions = getLineChartConfiguration(chartOptions);
         }
