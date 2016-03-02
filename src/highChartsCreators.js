@@ -111,8 +111,8 @@ export const DEFAULT_COLOR_PALETTE = [
     'rgba(137,77,148, 0.4)'
 ];
 
-export function getCommonChartConfiguration() { // chartOptions) {
-    return merge({}, CONFIG_TEMPLATE); // TODO create config
+export function getCommonChartConfiguration() {
+    return cloneDeep(CONFIG_TEMPLATE);
 }
 
 
@@ -202,6 +202,32 @@ const COLUMN_CONFIG_TEMPLATE = {
                     enabled: false
                 }
             }
+        }
+    }
+};
+
+const BAR_CONFIG_TEMPLATE = {
+    chart: {
+        type: 'bar'
+    },
+    plotOptions: {
+        bar: {
+            maxPointWidth: MAX_POINT_WIDTH,
+            dataLabels: {
+                enabled: true
+            }
+        },
+        series: {
+            states: {
+                hover: {
+                    enabled: false
+                }
+            }
+        }
+    },
+    yAxis: {
+        stackLabels: {
+            enabled: false
         }
     }
 };
@@ -408,22 +434,27 @@ export function getLineChartConfiguration(chartOptions) {
         getTitleConfiguration,
         getStackingConfiguration,
         getShowInPercentConfiguration,
-        getTooltipConfiguration,
         getLabelsConfiguration,
         getDataConfiguration,
-        getLegendConfiguration
+        getLegendConfiguration,
+        getTooltipConfiguration
     ];
 
     let commonData = configurators.reduce((config, configurator) => {
         return merge(config, configurator(chartOptions));
-    }, {});
+    }, cloneDeep(LINE_CONFIG_TEMPLATE));
 
-    return merge({}, LINE_CONFIG_TEMPLATE, commonData);
+    return merge({}, commonData);
 }
 
 export function getColumnChartConfiguration(chartOptions) {
     var lineData = getLineChartConfiguration(chartOptions);
-    return merge({}, COLUMN_CONFIG_TEMPLATE, lineData);
+    return merge({}, cloneDeep(COLUMN_CONFIG_TEMPLATE), lineData);
+}
+
+export function getBarChartConfiguration(chartOptions) {
+    var lineData = getLineChartConfiguration(chartOptions);
+    return merge({}, cloneDeep(BAR_CONFIG_TEMPLATE), lineData);
 }
 
 export function isDataOfReasonableSize(chartData) {
