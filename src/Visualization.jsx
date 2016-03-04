@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import includes from 'lodash/includes';
 
 import {
     transformConfigToLine
@@ -23,7 +24,7 @@ import Table from './Table';
 import DataTooLarge from './DataTooLarge';
 
 function isLineFamily(visType) {
-    return ['column', 'line', 'bar'].includes(visType);
+    return includes(['column', 'line', 'bar'], visType);
 }
 
 export function renderLineFamilyChart(props) {
