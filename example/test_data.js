@@ -9,7 +9,7 @@ export const barChart2Series = {
         type: 'metric',
         id: 'aaYh6Voua2yj',
         uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-        title: '# of Open Opps.',
+        title: 'aaa <b># of Open Opps.',
         format: '#,##0'
     }, {
         type: 'metric',
@@ -40,7 +40,7 @@ export const barChart2Series = {
             '74'
         ],
         [
-            '2014',
+            '2014 <a href="www.google.com">sdfs</a>',
             '4',
             '4'
         ],

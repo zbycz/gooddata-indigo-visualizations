@@ -1,5 +1,6 @@
 import merge from 'lodash/merge';
 import get from 'lodash/get';
+import map from 'lodash/map';
 import partial from 'lodash/partial';
 import isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
@@ -38,16 +39,18 @@ export const DEFAULT_COLOR_PALETTE = [
     'rgba(137,77,148, 0.4)'
 ];
 
+const escapeAngleBrackets = str => str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 function getTitleConfiguration(chartOptions) {
     return {
         yAxis: {
             title: {
-                text: get(chartOptions, 'title.y', '')
+                text: escapeAngleBrackets(get(chartOptions, 'title.y', ''))
             }
         },
         xAxis: {
             title: {
-                text: get(chartOptions, 'title.x', '')
+                text: escapeAngleBrackets(get(chartOptions, 'title.x', ''))
             }
         }
     };
@@ -186,8 +189,6 @@ function getStackingConfiguration(chartOptions) {
     } : {};
 }
 
-const escapeAngleBrackets = str => str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-
 function getSeries(series, colorPalette = []) {
     return series.map((seriesItem, index) => {
         const item = cloneDeep(seriesItem);
@@ -205,15 +206,16 @@ function getSeries(series, colorPalette = []) {
 
 function getDataConfiguration(chartOptions) {
     var data = chartOptions.data || EMPTY_DATA,
-        series = getSeries(data.series, chartOptions.colorPalette);
+        series = getSeries(data.series, chartOptions.colorPalette),
+        categories = map(data.categories, escapeAngleBrackets);
 
     return {
         series,
         xAxis: {
             labels: {
-                enabled: !isEmpty(compact(data.categories))
+                enabled: !isEmpty(compact(categories))
             },
-            categories: data.categories
+            categories
         }
     };
 }
