@@ -72,17 +72,18 @@ function getShowInPercentConfiguration(chartOptions) {
 function positionTooltip(chartType, boxWidth, boxHeight, _point) {
     // point.source requires patched highcharts
     // used to correctly position tooltip above bars in bar chart
-    const originalPoint = _point.source,
-        point = cloneDeep(_point);
+    //
+    // const originalPoint = _point.source;
+    const point = cloneDeep(_point);
 
-    if (originalPoint && originalPoint.shapeType === 'rect') {
-        if (chartType === 'bar') {
-            point.plotY = this.chart.plotHeight -
-            (originalPoint.shapeArgs.x + originalPoint.shapeArgs.width / 2);
-        } else {
-            point.plotX = originalPoint.shapeArgs.x + originalPoint.shapeArgs.width / 2;
-        }
-    }
+    // if (originalPoint && originalPoint.shapeType === 'rect') {
+    //     if (chartType === 'bar') {
+    //         point.plotY = this.chart.plotHeight -
+    //         (originalPoint.shapeArgs.x + originalPoint.shapeArgs.width / 2);
+    //     } else {
+    //         point.plotX = originalPoint.shapeArgs.x + originalPoint.shapeArgs.width / 2;
+    //     }
+    // }
 
     return {
         x: this.chart.plotLeft + point.plotX - boxWidth / 2,

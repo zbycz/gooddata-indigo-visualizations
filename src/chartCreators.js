@@ -107,7 +107,7 @@ export function getLineFamilyChartOptions(config, data) {
     const metricAxisLabel = getMetricAxisLabel(config, data.headers);
 
     return {
-        type: config.visualizationType,
+        type: config.type,
         stacking: config.stacking,
         colorPalette: config.colorPalette,
         legendLayout: getLegendLayout(config, data.headers),
