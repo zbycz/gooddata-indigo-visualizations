@@ -1,156 +1,105 @@
 /* eslint-disable max-len*/
 
-import { merge } from 'lodash';
-
 export const barChart2Series = {
+    type: 'line',
     buckets: {
-        metrics: [{
-            type: 'metric',
-            identifier: 'aaYh6Voua2yj',
-            title: '# of Open Opps.',
-            summary: '',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-            showInPercent: false,
-            showPoP: false,
-            format: '#,##0',
-            colorIndex: 0,
-            expression: 'select [/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/2825] where [/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1093]=[/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1093/elements?id=7]',
-            filters: [],
-            bucket: 'metrics'
-        }, {
-            type: 'metric',
-            identifier: 'afdV48ABh8CN',
-            title: '# of Opportunities',
-            summary: '',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/2825',
-            showInPercent: false,
-            showPoP: false,
-            format: '#,##0',
-            colorIndex: 1,
-            expression: 'SELECT count([/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/990],[/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1143]) where [/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1147]=[/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1275]',
-            filters: [],
-            bucket: 'metrics'
-        }],
-        categories: [{
-            type: 'date',
-            identifier: 'closed.year',
-            title: 'Date',
-            summary: 'Represents all your dates in project. Can group by Day, Week, Month, Quarter & Year.',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/323',
-            granularity: 'GDC.time.year',
-            dfIdentifier: 'closed.aag81lMifn6q',
-            bucket: 'categories'
-        }],
-        stacks: [],
-        filters: [{
-            type: 'date',
-            identifier: 'closed.year',
-            title: 'Date',
-            summary: 'Represents all your dates in project. Can group by Day, Week, Month, Quarter & Year.',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/323',
-            granularity: 'GDC.time.year',
-            dfUri: 'closed.aag81lMifn6q',
-            bucket: 'filters',
-            generatedFor: {
-                bucketKey: 'categories',
-                identifier: 'closed.year'
+        measures: [
+            {
+                type: 'metric',
+                objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+                metricAttributeFilters: [],
+                showInPercent: false,
+                showPoP: false,
+                format: '#,##0',
+                sorts: []
+            },
+            {
+                type: 'metric',
+                objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/2825',
+                metricAttributeFilters: [],
+                showInPercent: false,
+                showPoP: false,
+                format: '#,##0',
+                sorts: []
             }
-        }]
-    },
-    visualizationType: 'line',
-    sorting: {},
-    dateDimensionId: 'closed.dim_date'
+        ],
+        categories: [
+            {
+                category: {
+                    type: 'date',
+                    collection: 'attribute',
+                    displayForm: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/324',
+                    dateFilterSettings: {
+                        granularity: 'GDC.time.year'
+                    }
+                }
+            }
+        ],
+        filters: [
+            {
+                dateFilterSettings: {
+                    granularity: 'GDC.time.year',
+                    dataSet: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/324'
+                }
+            }
+        ]
+    }
 };
 
 export const stackedBar = {
+    type: 'column',
     buckets: {
-        metrics: [{
-            type: 'metric',
-            identifier: 'aaYh6Voua2yj',
-            title: '# of Open Opps.',
-            summary: '',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-            showInPercent: false,
-            showPoP: false,
-            format: '#,##0',
-            colorIndex: 0,
-            expression: 'select [/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/2825] where [/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1093]=[/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1093/elements?id=7]',
-            filters: [],
-            bucket: 'metrics'
-        }],
-        categories: [{
-            type: 'attribute',
-            identifier: 'attr.owner.id',
-            title: 'Sales Rep',
-            summary: '',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1025',
-            elementsUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028/elements',
-            dfUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028',
-            dfIdentifier: 'label.owner.id.name',
-            bucket: 'categories'
-        }],
-        stacks: [{
-            type: 'attribute',
-            identifier: 'attr.stage.name',
-            title: 'Stage Name',
-            summary: '',
-            uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1095',
-            elementsUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1805/elements',
-            dfUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1805',
-            dfIdentifier: 'label.stage.name.stagename',
-            bucket: 'stacks'
-        }],
-        filters: [{
-            isInverted: true,
-            title: 'Sales Rep: All',
-            allSelected: true,
-            selectionSize: 0,
-            generatedFor: {
-                bucketKey: 'categories',
-                identifier: 'attr.owner.id'
+        measures: [
+            {
+                type: 'metric',
+                objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+                metricAttributeFilters: [],
+                showInPercent: false,
+                showPoP: false,
+                format: '#,##0',
+                sorts: []
+            }
+        ],
+        categories: [
+            {
+                category: {
+                    type: 'attribute',
+                    collection: 'attribute',
+                    displayForm: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028'
+                }
             },
-            modified: false,
-            type: 'attribute',
-            selectedElements: [],
-            attribute: {
-                type: 'attribute',
-                identifier: 'attr.owner.id',
-                title: 'Sales Rep',
-                summary: '',
-                uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1025',
-                elementsUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028/elements',
-                dfUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028',
-                dfIdentifier: 'label.owner.id.name'
+            {
+                category: {
+                    type: 'attribute',
+                    collection: 'stack',
+                    displayForm: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1805'
+                }
+            }
+        ],
+        filters: [
+            {
+                listAttributeFilter: {
+                    attribute: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1025',
+                    displayForm: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028',
+                    default: {
+                        negativeSelection: true,
+                        attributeElements: []
+                    }
+                }
             },
-            bucket: 'filters'
-        }, {
-            isInverted: true,
-            title: 'Stage Name: All',
-            allSelected: true,
-            selectionSize: 0,
-            generatedFor: {
-                bucketKey: 'stacks',
-                identifier: 'attr.stage.name'
-            },
-            modified: false,
-            type: 'attribute',
-            selectedElements: [],
-            attribute: {
-                type: 'attribute',
-                identifier: 'attr.stage.name',
-                title: 'Stage Name',
-                summary: '',
-                uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1095',
-                elementsUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1805/elements',
-                dfUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1805',
-                dfIdentifier: 'label.stage.name.stagename'
-            },
-            bucket: 'filters'
-        }]
-    },
-    visualizationType: 'column',
-    sorting: {}
+            {
+                listAttributeFilter: {
+                    attribute: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1095',
+                    displayForm: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1805',
+                    default: {
+                        negativeSelection: true,
+                        attributeElements: []
+                    }
+                }
+            }
+        ]
+    }
 };
 
-export const table = merge({}, stackedBar, { visualizationType: 'table' });
-export const bar = merge({}, barChart2Series, { visualizationType: 'bar' });
+export const table = Object.assign({}, stackedBar, { type: 'table' });
+export const bar = Object.assign({}, barChart2Series, { type: 'bar' });
