@@ -17,9 +17,9 @@ describe('chartCreators', () => {
     beforeEach(() => {
         config = {
             type: 'column',
-            x: 'healthdata_finish.aci81lMifn6q',
-            y: 'metricValues',
-            color: 'metricNames',
+            x: '/gdc/md/zro9kxjp2hejksfug8qemqwx6d92c940/obj/2577',
+            y: '/metricValues',
+            color: '/metricGroup',
             colorPalette: [
                 'rgb(00,131,255)'
             ],

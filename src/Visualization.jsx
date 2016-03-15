@@ -62,7 +62,7 @@ export default class extends Component {
             return <DataTooLarge />;
         }
 
-        let visType = config.visualizationType,
+        let visType = config.type,
             hcOptions;
 
         if (visType === 'column') {
@@ -86,7 +86,7 @@ export default class extends Component {
     }
 
     render() {
-        let visType = this.props.config.visualizationType,
+        let visType = this.props.config.type,
             component;
 
         if (isLineFamily(visType)) {
