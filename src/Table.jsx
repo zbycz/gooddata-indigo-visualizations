@@ -15,8 +15,8 @@ import { getCssClass } from './utils';
 const MIN_COLUMN_WIDTH = 100;
 const DEFAULT_WIDTH = 640;
 const DEFAULT_HEIGHT = 480;
-const DEFAULT_ROW_HEIGHT = 24;
-const DEFAULT_HEADER_HEIGHT = 24;
+const DEFAULT_ROW_HEIGHT = 30;
+const DEFAULT_HEADER_HEIGHT = 26;
 
 function getHeaderClassName(column) {
     return getCssClass(column.id, 's-id-');
