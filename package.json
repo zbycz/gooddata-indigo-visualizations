@@ -70,7 +70,7 @@
   "dependencies": {
     "classnames": "^2.2.3",
     "fixed-data-table": "0.6.0",
-    "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils#v0.2.0",
+    "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils#v0.2.1",
     "lodash": "4.0.0",
     "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.3.0",
     "react": "0.14.6",
