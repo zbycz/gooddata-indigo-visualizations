@@ -23,22 +23,22 @@ export function propertiesToHeaders(config, _headers) { // TODO export for test 
     let { headers } = enrichHeaders(_headers);
     const res = keys(config).reduce(function(result, field) {
         var fieldContent = get(config, field);
-        return set(result, field, find(headers, ['id', fieldContent]));
+        return set(result, field, find(headers, ['uri', fieldContent]));
     }, {});
     return res;
 }
 
 export function getIndices(config, headers) { // TODO export only for test
-    var headerIndices = map(headers, 'id');
-    var metric = indexOf(headerIndices, 'metricValues');
-    var category = indexOf(headerIndices, config.x);
-    var series = indexOf(headerIndices, config.color);
+    var headerUris = map(headers, 'uri');
+    var metric = indexOf(headerUris, '/metricValues');
+    var category = indexOf(headerUris, config.x);
+    var series = indexOf(headerUris, config.color);
 
     return { metric, category, series };
 }
 
 export function isMetricNamesInSeries(config, headers) { // TODO export only for test
-    return !(get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames');
+    return !(get(propertiesToHeaders(config, headers), 'color.uri') === '/metricGroup');
 }
 
 export function getLineFamilyChartData(config, rawData) {
