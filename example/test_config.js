@@ -5,22 +5,26 @@ export const barChart2Series = {
     buckets: {
         measures: [
             {
-                type: 'metric',
-                objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-                metricAttributeFilters: [],
-                showInPercent: false,
-                showPoP: false,
-                format: '#,##0',
-                sorts: []
+                measure: {
+                    type: 'metric',
+                    objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+                    metricAttributeFilters: [],
+                    showInPercent: false,
+                    showPoP: false,
+                    format: '#,##0',
+                    sorts: []
+                }
             },
             {
-                type: 'metric',
-                objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/2825',
-                metricAttributeFilters: [],
-                showInPercent: false,
-                showPoP: false,
-                format: '#,##0',
-                sorts: []
+                measure: {
+                    type: 'metric',
+                    objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/2825',
+                    metricAttributeFilters: [],
+                    showInPercent: false,
+                    showPoP: false,
+                    format: '#,##0',
+                    sorts: []
+                }
             }
         ],
         categories: [
@@ -51,13 +55,15 @@ export const stackedBar = {
     buckets: {
         measures: [
             {
-                type: 'metric',
-                objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-                metricAttributeFilters: [],
-                showInPercent: false,
-                showPoP: false,
-                format: '#,##0',
-                sorts: []
+                measure: {
+                    type: 'metric',
+                    objectUri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+                    metricAttributeFilters: [],
+                    showInPercent: false,
+                    showPoP: false,
+                    format: '#,##0',
+                    sorts: []
+                }
             }
         ],
         categories: [
