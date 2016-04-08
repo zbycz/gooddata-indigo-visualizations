@@ -1,19 +1,20 @@
-import some from 'lodash/some';
+import { partial, includes, filter, first } from 'lodash';
+
+function getFirstCategoryItem(categories, collections) {
+    return first(
+        filter(categories, category => includes(collections, category.category.collection))
+    );
+}
 
 export function transformConfigToLine(config) {
-    let isStacking = some(
-        config.buckets.categories,
-        {
-            category: {
-                collection: 'stack'
-            }
-        }
-    );
+    let getItem = partial(getFirstCategoryItem, config.buckets.categories),
+        category = getItem(['attribute', 'view', 'trend']),
+        stack = getItem(['stack', 'segment']);
 
-    if (!isStacking) {
+    if (!stack) {
         return {
             type: config.type,
-            x: config.buckets.categories[0].category.displayForm,
+            x: category ? category.category.displayForm : '',
             y: '/metricValues',
             color: '/metricGroup',
             stacking: false,
@@ -23,11 +24,12 @@ export function transformConfigToLine(config) {
             // TODO: where to take colorPalette from?
         };
     }
+
     return {
         type: config.type,
-        x: config.buckets.categories[0].category.displayForm,
+        x: category ? category.category.displayForm : '',
         y: '/metricValues',
-        color: config.buckets.categories[0].category.displayForm,
+        color: stack.category.displayForm,
         stacking: true,
         // TODO: do the following only matter for data
         where: {},

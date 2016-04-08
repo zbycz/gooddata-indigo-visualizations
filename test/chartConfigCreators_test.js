@@ -30,7 +30,7 @@ describe('chartConfigCreators', () => {
             let lineConfig = transformConfigToLine(Object.assign({}, config));
             expect(lineConfig).to.eql({
                 type: 'column',
-                x: '/gdc/md/project/obj/2',
+                x: '',
                 y: '/metricValues',
                 color: '/gdc/md/project/obj/2',
                 stacking: true,
