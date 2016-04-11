@@ -19,8 +19,9 @@ const BASE_TEMPLATE = {
         floating: false,
         x: -10,
         y: -15,
-        symbolPadding: 0,
-        symbolWidth: 14,
+        symbolPadding: 6,
+        symbolWidth: 8,
+        symbolHeight: 8,
         itemStyle: {
             paddingTop: '2px',
             paddingBottom: '5px',
@@ -28,7 +29,7 @@ const BASE_TEMPLATE = {
             color: '#6D7680',
             textDecoration: 'none',
             textOverflow: 'ellipsis',
-            cursr: 'default'
+            cursor: 'default'
         },
         itemHoverStyle: {
             color: '#6D7680',

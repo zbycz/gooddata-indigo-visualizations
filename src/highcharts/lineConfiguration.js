@@ -45,7 +45,7 @@ const LINE_TEMPLATE = {
     },
     yAxis: {
         stackLabels: {
-            enabled: true
+            enabled: false
         }
     }
 };
