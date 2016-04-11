@@ -39,7 +39,7 @@ export const DEFAULT_COLOR_PALETTE = [
     'rgba(137,77,148, 0.4)'
 ];
 
-const escapeAngleBrackets = str => str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const escapeAngleBrackets = str => str && str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 function getTitleConfiguration(chartOptions) {
     return {
@@ -183,6 +183,7 @@ function getStackingConfiguration(chartOptions) {
         },
         yAxis: {
             stackLabels: {
+                enabled: true,
                 formatter: stackLabelFormatter
             }
         }

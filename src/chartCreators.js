@@ -38,7 +38,7 @@ export function getIndices(config, headers) { // TODO export only for test
 }
 
 export function isMetricNamesInSeries(config, headers) { // TODO export only for test
-    return !(get(propertiesToHeaders(config, headers), 'color.uri') === '/metricGroup');
+    return get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames';
 }
 
 export function getLineFamilyChartData(config, rawData) {
@@ -102,6 +102,32 @@ function generateTooltipFn(options) {
     };
 }
 
+var DEFAULT_COLOR_PALETTE = [
+    'rgb(00,131,255)',
+    'rgb(00,192,142)',
+    'rgb(241,35,61)',
+    'rgb(239,134,00)',
+    'rgb(188,90,178)',
+
+    'rgb(250,205,8)',
+    'rgb(148,161,173)',
+    'rgb(93,188,255)',
+    'rgb(216,141,206)',
+    'rgb(242,115,115)',
+
+    'rgb(254,178,92)',
+    'rgb(137,216,187)',
+    'rgb(0,107,184)',
+    'rgb(0,131,96)',
+    'rgb(173,11,33)',
+
+    'rgb(177,100,0)',
+    'rgb(133,54,125)',
+    'rgb(194,229,255)',
+    'rgb(201,238,225)',
+    'rgb(250,208,211)'
+];
+
 export function getLineFamilyChartOptions(config, data) {
     const categoryAxisLabel = getCategoryAxisLabel(config, data.headers);
     const metricAxisLabel = getMetricAxisLabel(config, data.headers);
@@ -109,7 +135,7 @@ export function getLineFamilyChartOptions(config, data) {
     return {
         type: config.type,
         stacking: config.stacking,
-        colorPalette: config.colorPalette,
+        colorPalette: config.colorPalette || DEFAULT_COLOR_PALETTE,
         legendLayout: getLegendLayout(config, data.headers),
         actions: {
             tooltip: generateTooltipFn({

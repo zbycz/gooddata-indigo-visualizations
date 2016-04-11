@@ -74,19 +74,19 @@ describe('chartCreators', () => {
 
     describe('isMetricNamesInSeries', () => {
         it('works', () => {
-            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(false);
+            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(true);
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(true);
+            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(false);
         });
     });
 
     describe('getLegendLayout', () => {
         it('works', () => {
-            expect(getLegendLayout(config, mockHeaders)).to.be('vertical');
+            expect(getLegendLayout(config, mockHeaders)).to.be('horizontal');
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(getLegendLayout(config, mockHeaders)).to.be('horizontal');
+            expect(getLegendLayout(config, mockHeaders)).to.be('vertical');
         });
     });
 
