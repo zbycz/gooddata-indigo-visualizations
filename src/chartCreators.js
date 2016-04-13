@@ -102,7 +102,7 @@ function generateTooltipFn(options) {
     };
 }
 
-var DEFAULT_COLOR_PALETTE = [
+export var DEFAULT_COLOR_PALETTE = [
     'rgb(00,131,255)',
     'rgb(00,192,142)',
     'rgb(241,35,61)',
