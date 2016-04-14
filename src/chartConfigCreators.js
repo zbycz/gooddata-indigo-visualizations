@@ -30,7 +30,7 @@ export function transformConfigToLine(config) {
         x: category ? category.category.displayForm : '',
         y: '/metricValues',
         color: stack.category.displayForm,
-        stacking: true,
+        stacking: config.type !== 'line',
         // TODO: do the following only matter for data
         where: {},
         orderBy: []
