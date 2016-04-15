@@ -5,7 +5,8 @@ import {
     getLegendLayout,
     getCategoryAxisLabel,
     getMetricAxisLabel,
-    showInPercent
+    showInPercent,
+    generateTooltipFn
 } from '../src/chartCreators';
 
 import {
@@ -112,6 +113,48 @@ describe('chartCreators', () => {
             expect(showInPercent(config, mockHeaders)).to.be(false);
             mockHeaders[2].format = '#,##0.00 %';
             expect(showInPercent(config, mockHeaders)).to.be(true);
+        });
+    });
+
+    describe('generateTooltipFn', () => {
+        const tooltipFnOptions = { categoryAxisLabel: 'category-label' };
+
+        describe('unescaping angle brackets and htmlescaping the whole value', () => {
+            const generatedTooltip = generateTooltipFn(tooltipFnOptions);
+
+            it('should keep &lt; and &gt; untouched (unescape -> escape)', () => {
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    series: {
+                        name: '&lt;series&gt;'
+                    }
+                });
+
+                expect(tooltip.includes('&lt;series&gt;')).to.be(true);
+            });
+
+            it('should escape other html chars and have output properly escaped', () => {
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    series: {
+                        name: '"&\'&lt;'
+                    }
+                });
+
+                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).to.be(true);
+            });
+
+            it('should unescape brackets and htmlescape category', () => {
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    category: '&gt;"&\'&lt;',
+                    series: {
+                        name: 'series'
+                    }
+                });
+
+                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.be(true);
+            });
         });
     });
 });

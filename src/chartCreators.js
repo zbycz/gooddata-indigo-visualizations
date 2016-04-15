@@ -80,9 +80,9 @@ export function showInPercent(config, headers) { // TODO export only for test
     return includes(get(propertiesToHeaders(config, headers), 'y.format', ''), '%');
 }
 
-let unEscapeAngleBrackets = (str) => str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const unEscapeAngleBrackets = str => str && str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 
-function generateTooltipFn(options) {
+export function generateTooltipFn(options) {
     const { categoryAxisLabel } = options;
     const formatValue = (val, format) => {
         return colors2Object(numberFormat(val, format));
@@ -90,10 +90,12 @@ function generateTooltipFn(options) {
 
     return function(point) {
         const formattedValue = escape(formatValue(point.y, point.format).label);
+        const category = isNumber(point.category) ? '' :
+            escape(unEscapeAngleBrackets(point.category));
 
         return `<table class="tt-values"><tr>
             <td class="title">${escape(categoryAxisLabel)}</td>
-            <td class="value">${isNumber(point.category) ? '' : escape(point.category)}</td>
+            <td class="value">${category}</td>
         </tr>
         <tr>
             <td class="title">${escape(unEscapeAngleBrackets(point.series.name))}</td>
