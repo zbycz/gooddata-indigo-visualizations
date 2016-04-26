@@ -6,7 +6,8 @@ import {
     getCategoryAxisLabel,
     getMetricAxisLabel,
     showInPercent,
-    generateTooltipFn
+    generateTooltipFn,
+    getLineFamilyChartData
 } from '../src/chartCreators';
 
 import {
@@ -155,6 +156,64 @@ describe('chartCreators', () => {
 
                 expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.be(true);
             });
+        });
+    });
+
+    describe('getLineFamilyChartData', () => {
+        beforeEach(() => {
+            config = {
+                color: '/metricGroup',
+                orderBy: [],
+                stacking: false,
+                type: 'column',
+                where: {},
+                x: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
+                y: '/metricValues'
+            };
+
+            mockData = {
+                isLoaded: true,
+                headers: [
+                    {
+                        type: 'attrLabel',
+                        id: 'date.aag81lMifn6q',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
+                        title: 'Year (Date)'
+                    }, {
+                        type: 'metric',
+                        id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                        title: 'Email Click Rate - previous year', format: '#,##0.0%'
+                    }, {
+                        type: 'metric',
+                        id: 'bHPCwcn7cGns',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/16206',
+                        title: 'Email Click Rate',
+                        format: '#,##0.0%'
+                    }
+                ],
+                rawData: [
+                    ['2013', null, '0.0126946885814334'],
+                    ['2014', '0.0126946885814334', '0.0261557203220383'],
+                    ['2015', '0.0261557203220383', '0.0348732552824948'],
+                    ['2016', '0.0348732552824948', null]
+                ],
+                isEmpty: false,
+                isLoading: false
+            };
+        });
+
+        it('should get chart data', () => {
+            const chartData = getLineFamilyChartData(config, mockData);
+
+            expect(chartData).to.be.ok();
+        });
+
+        it('should not sort data', () => {
+            const chartData = getLineFamilyChartData(config, mockData);
+
+            expect(chartData.series[0].name).to.eql('Email Click Rate - previous year');
+            expect(chartData.series[1].name).to.eql('Email Click Rate');
         });
     });
 });
