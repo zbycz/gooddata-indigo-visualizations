@@ -50,7 +50,7 @@ export function getLineFamilyChartData(config, rawData) {
     // configure transformation. Sort data only if metric names not in series.
     var configuration = {
         indices,
-        sortSeries: isMetricNamesInSeries(config, data.headers)
+        sortSeries: !isMetricNamesInSeries(config, data.headers)
     };
 
     return getChartData(data, configuration);
