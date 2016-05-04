@@ -329,4 +329,52 @@ describe('Transformation', function() {
             expect(series).to.eql(expectedSeries);
         });
     });
+
+    describe('Generating palette', function() {
+        it('should insert lightened color for pop metrics', function() {
+            var data = {
+                headers: [
+                    { id: 'a1', type: 'attrLabel' },
+                    {
+                        id: 'metricNames',
+                        type: 'attrLabel',
+                        metrics: {
+                            M1: { header: { format: '#.## M1' } },
+                            M2: { header: { format: '#.## M2' } },
+                            M3: { header: { } }
+                        }
+                    },
+                    { id: 'metricValues', type: 'metric' },
+                    { id: 'abc.generated.pop.123', type: 'metric' }
+                ]
+            };
+            var palette = [
+                'rgb(00,131,255)',
+                'rgb(00,128,255)',
+                'rgb(241,35,61)',
+                'rgb(239,134,00)',
+                'rgb(188,90,178)'
+            ];
+
+            var expectedData = [
+                'rgb(00,131,255)',
+                'rgb(153,204,255)',
+                'rgb(00,128,255)',
+                'rgb(241,35,61)',
+                'rgb(239,134,00)',
+                'rgb(188,90,178)'
+            ];
+
+            expect(Transformation.getColorPalette(data, palette)).to.eql(expectedData);
+        });
+    });
+
+    describe('Lighten color', function() {
+        it('should lighten and darken color correctly', function() {
+            const getLighterColor = Transformation._getLighterColor;
+
+            expect(getLighterColor('rgb(00,128,255)', 0.5)).to.eql('rgb(128,192,255)');
+            expect(getLighterColor('rgb(00,128,255)', -0.5)).to.eql('rgb(0,64,128)');
+        });
+    });
 });

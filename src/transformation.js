@@ -7,6 +7,7 @@ import findIndex from 'lodash/findIndex';
 import uniqBy from 'lodash/uniqBy';
 import times from 'lodash/times';
 import constant from 'lodash/constant';
+import filter from 'lodash/filter';
 
 // default format used when creating metric
 export const DEFAULT_FORMAT = '#,##0.00';
@@ -207,6 +208,34 @@ export function _getSeries(data, seriesNames, categories, indices) {
             data: seriesData[name.id]
         };
     });
+}
+
+/**
+ * Source:
+ *     http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+ */
+export function _getLighterColor(color, percent) {
+    var f = color.split(','),
+        t = percent < 0 ? 0 : 255,
+        p = percent < 0 ? percent * -1 : percent,
+        R = parseInt(f[0].slice(4), 10),
+        G = parseInt(f[1], 10),
+        B = parseInt(f[2], 10);
+
+    return 'rgb(' + (Math.round((t - R) * p) + R) + ',' + (Math.round((t - G) * p) + G) + ',' + (Math.round((t - B) * p) + B) + ')';
+}
+
+export function getColorPalette(data, palette) {
+    let newPalette = cloneDeep(palette);
+
+    filter(data.headers, header => header.type === 'metric')
+        .forEach((metric, idx) => {
+            if (metric.id && metric.id.match(/\.generated\.pop\./)) {
+                newPalette.splice(idx, 0, _getLighterColor(newPalette[idx % newPalette.length], 0.6));
+            }
+        });
+
+    return newPalette;
 }
 
 /**
