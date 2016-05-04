@@ -11,7 +11,8 @@ import escape from 'lodash/escape';
 import {
     transformData,
     enrichHeaders,
-    getChartData
+    getChartData,
+    getColorPalette
 } from './transformation';
 
 import {
@@ -137,7 +138,7 @@ export function getLineFamilyChartOptions(config, data) {
     return {
         type: config.type,
         stacking: config.stacking,
-        colorPalette: config.colorPalette || DEFAULT_COLOR_PALETTE,
+        colorPalette: getColorPalette(data, config.colorPalette || DEFAULT_COLOR_PALETTE),
         legendLayout: getLegendLayout(config, data.headers),
         actions: {
             tooltip: generateTooltipFn({
