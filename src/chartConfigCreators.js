@@ -1,7 +1,7 @@
-import { partial, includes, filter, first } from 'lodash';
+import { partial, includes, filter, head } from 'lodash';
 
 function getFirstCategoryItem(categories, collections) {
-    return first(
+    return head(
         filter(categories, category => includes(collections, category.category.collection))
     );
 }
