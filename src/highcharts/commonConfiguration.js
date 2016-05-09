@@ -83,6 +83,11 @@ const BASE_TEMPLATE = {
             enableMouseTracking: true, // !Status.exportMode,
             turboThreshold: DEFAULT_CATEGORIES_LIMIT
         }
+    },
+    chart: {
+        style: {
+            fontFamily: 'Avenir, "Helvetica Neue", Arial, sans-serif'
+        }
     }
 };
 
