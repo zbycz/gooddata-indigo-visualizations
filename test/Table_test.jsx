@@ -89,7 +89,59 @@ describe('Table', () => {
         it('should render title into header', () => {
             let columns = table.props.children;
             let header = columns[0].props.header({ columnKey: 0 });
-            expect(header.props.children).to.be('Name');
+            expect(header.props.children[0]).to.be('Name');
+        });
+    });
+
+    describe('sort', () => {
+        function renderTable(sortBy, sortDir) {
+            let instance = renderIntoDocument(
+                <TableVisualization
+                    containerWidth={600}
+                    containerHeight={400}
+                    rows={FIXTURE.rawData}
+                    headers={FIXTURE.headers}
+                    sortBy={sortBy}
+                    sortDir={sortDir}
+                />
+            );
+            return findRenderedComponentWithType(instance, Table);
+        }
+
+        it('should render up arrow', () => {
+            table = renderTable(0, 'asc');
+            let columns = table.props.children;
+            let header = columns[0].props.header({ columnKey: 0 });
+            let sort = header.props.children[1];
+
+            expect(sort.props.className).to.be('gd-table-arrow-up');
+        });
+
+        it('should render down arrow', () => {
+            table = renderTable(0, 'desc');
+            let columns = table.props.children;
+            let header = columns[0].props.header({ columnKey: 0 });
+            let sort = header.props.children[1];
+
+            expect(sort.props.className).to.be('gd-table-arrow-down');
+        });
+
+        it('should render arrow on second column', () => {
+            table = renderTable(1, 'asc');
+            let columns = table.props.children;
+            let header = columns[1].props.header({ columnKey: 0 });
+            let sort = header.props.children[1];
+
+            expect(sort.props.className).to.be('gd-table-arrow-up');
+        });
+
+        it('should not render arrow if sort info is missing', () => {
+            table = renderTable(0, null);
+            let columns = table.props.children;
+            let header = columns[0].props.header({ columnKey: 0 });
+            let sort = header.props.children[1];
+
+            expect(sort.props.className).to.be('');
         });
     });
 });

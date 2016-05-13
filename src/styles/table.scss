@@ -134,6 +134,7 @@
 .gd-table-header-ordering {
     span {
         display: none;
+        cursor: pointer;
 
         &:first-child {
             display: inline-block;

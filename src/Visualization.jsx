@@ -17,6 +17,8 @@ import {
     isDataOfReasonableSize
 } from './highChartsCreators';
 
+import { getSortInfo } from './utils';
+
 import './styles/chart.scss';
 
 import LineFamilyChart from './LineFamilyChart';
@@ -77,11 +79,14 @@ export default class extends Component {
     }
 
     renderTable() {
-        let { headers, rawData } = this.props.data;
+        let { data: { headers, rawData }, config } = this.props;
+        let { sortBy, sortDir } = getSortInfo(config);
 
         return this.props.tableRenderer({
             rows: rawData,
-            headers
+            headers,
+            sortBy,
+            sortDir
         });
     }
 

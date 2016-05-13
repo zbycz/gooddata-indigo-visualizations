@@ -4,6 +4,8 @@ import './styles/table.scss';
 import React, { Component, PropTypes } from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import Dimensions from 'react-dimensions';
+import classNames from 'classnames';
+import { noop } from 'lodash';
 
 import {
     colors2Object,
@@ -18,8 +20,18 @@ const DEFAULT_HEIGHT = 480;
 const DEFAULT_ROW_HEIGHT = 30;
 const DEFAULT_HEADER_HEIGHT = 26;
 
+const SORT_DIR_ASC = 'asc';
+const SORT_DIR_DESC = 'desc';
+
 function getHeaderClassName(column) {
-    return getCssClass(column.id, 's-id-');
+    return classNames('gd-table-header-ordering', getCssClass(column.id, 's-id-'));
+}
+
+function getHeaderSortClassName(sortDir) {
+    return classNames({
+        'gd-table-arrow-up': sortDir === SORT_DIR_ASC,
+        'gd-table-arrow-down': sortDir === SORT_DIR_DESC
+    });
 }
 
 function getCellClassName(row, column) {
@@ -35,22 +47,32 @@ export class TableVisualization extends Component {
         containerWidth: PropTypes.number.isRequired,
         containerHeight: PropTypes.number.isRequired,
         rows: PropTypes.array.isRequired,
-        headers: PropTypes.array.isRequired
+        headers: PropTypes.array.isRequired,
+        sortDir: PropTypes.string,
+        sortBy: PropTypes.number,
+        onSortChange: PropTypes.func
     };
 
     static defaultProps = {
         rows: [],
-        headers: []
+        headers: [],
+        onSortChange: noop
     };
 
-    getHeaderRenderer(column) {
-        return props => {
-            let headerClasses = getHeaderClassName(column);
+    getHeaderRenderer(column, index) {
+        const { sortBy, sortDir } = this.props;
+        const doSort = sortBy === index;
+        const dir = doSort ? sortDir : null;
+        const onSortChange = (event) => this.props.onSortChange(column, index, event);
 
-            return (
-                <Cell {...props} className={headerClasses}>{column.title}</Cell>
-            );
-        };
+        const headerClasses = getHeaderClassName(column);
+        const sortDirClasses = getHeaderSortClassName(dir);
+
+        return props => (
+            <Cell {...props} className={headerClasses} onClick={onSortChange}>
+                {column.title}<span className={sortDirClasses} />
+            </Cell>
+        );
     }
 
     getCellRenderer(column) {
