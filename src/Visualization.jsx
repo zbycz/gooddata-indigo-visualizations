@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import includes from 'lodash/includes';
-
+import invariant from 'invariant';
 import {
     transformConfigToLine
 } from './chartConfigCreators';
@@ -23,7 +23,6 @@ import './styles/chart.scss';
 
 import LineFamilyChart from './LineFamilyChart';
 import Table from './Table';
-import DataTooLarge from './DataTooLarge';
 
 function isLineFamily(visType) {
     return includes(['column', 'line', 'bar'], visType);
@@ -38,14 +37,22 @@ export function renderTable(props) {
 
 export default class extends Component {
     static propTypes = {
-        config: PropTypes.object.isRequired,
+        config: PropTypes.shape({
+            buckets: PropTypes.object.isRequired,
+            type: PropTypes.string.isRequired
+        }).isRequired,
+        limits: PropTypes.shape({
+            series: PropTypes.number,
+            categories: PropTypes.number
+        }),
         data: PropTypes.shape({
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
 
         lineFamilyChartRenderer: PropTypes.func.isRequired,
-        tableRenderer: PropTypes.func.isRequired
+        tableRenderer: PropTypes.func.isRequired,
+        onDataTooLarge: PropTypes.func
     };
 
     static defaultProps = {
@@ -53,15 +60,38 @@ export default class extends Component {
         tableRenderer: renderTable
     };
 
+    componentWillMount() {
+        this.createChartOptions(this.props);
+    }
+
+    componentWillUpdate(nextProps) {
+        this.createChartOptions(nextProps);
+    }
+
+    createChartOptions(props) {
+        const { config, data, onDataTooLarge, limits } = props;
+        const lineConfig = transformConfigToLine(config);
+        this.chartOptions = getLineFamilyChartOptions(lineConfig, data);
+        this.chartOptions.data = getLineFamilyChartData(lineConfig, data);
+
+        if (!isDataOfReasonableSize(this.chartOptions.data, limits)) {
+            if (!onDataTooLarge) {
+                invariant(onDataTooLarge, 'Visualization\'s onDataTooLarge callback is missing.');
+            }
+
+            onDataTooLarge();
+            this.setState({ dataTooLarge: true });
+        } else {
+            this.setState({ dataTooLarge: false });
+        }
+    }
+
     renderLineFamily() {
-        let { config, data } = this.props;
+        const config = this.props.config;
+        const chartOptions = this.chartOptions;
 
-        let lineConfig = transformConfigToLine(config);
-        let chartOptions = getLineFamilyChartOptions(lineConfig, data);
-        chartOptions.data = getLineFamilyChartData(lineConfig, data);
-
-        if (!isDataOfReasonableSize(chartOptions.data)) {
-            return <DataTooLarge />;
+        if (this.state.dataTooLarge) {
+            return null;
         }
 
         let visType = config.type,

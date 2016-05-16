@@ -1,5 +1,5 @@
 import merge from 'lodash/merge';
-
+import get from 'lodash/get';
 import {
     DEFAULT_SERIES_LIMIT,
     DEFAULT_CATEGORIES_LIMIT,
@@ -39,9 +39,12 @@ export function getBarChartConfiguration(chartOptions) {
     );
 }
 
-export function isDataOfReasonableSize(chartData) {
-    return chartData.series.length <= DEFAULT_SERIES_LIMIT &&
-        chartData.categories.length <= DEFAULT_CATEGORIES_LIMIT;
+export function isDataOfReasonableSize(chartData, limits) {
+    const seriesLimit = get(limits, 'series', DEFAULT_SERIES_LIMIT);
+    const categoriesLimit = get(limits, 'categories', DEFAULT_CATEGORIES_LIMIT);
+
+    return chartData.series.length <= seriesLimit &&
+        chartData.categories.length <= categoriesLimit;
 }
 
 // Setting legend:
