@@ -15,7 +15,7 @@ module.exports = function(config) {
     config.set({
 
         // frameworks to use
-        frameworks: ['mocha', 'expect'],
+        frameworks: ['mocha', 'sinon-expect'],
 
         // list of files / patterns to load in the browser
         files: [
@@ -104,6 +104,7 @@ module.exports = function(config) {
             require('karma-mocha-reporter'),
             require('karma-junit-reporter'),
             require('karma-coverage'),
+            require('karma-sinon-expect'),
             require('karma-chrome-launcher'),
             require('karma-sourcemap-loader')
         ]
