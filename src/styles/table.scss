@@ -78,26 +78,47 @@
         box-shadow: none;
         white-space: nowrap;
 
-        a {
-            display: flex;
-            white-space: nowrap;
-
+        .gd-table-header-ordering {
             color: $gd-color-state-blank;
-            text-decoration: none;
             cursor: pointer;
 
             &:hover {
                 color: $gd-color-highlight;
             }
 
-            span {
-                flex: 0 0 auto;
+            .public_fixedDataTableCell_cellContent {
+                display: flex;
+            }
 
-                &:first-child {
-                    flex: 0 1 auto;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+            .gd-table-arrow-up,
+            .gd-table-arrow-down {
+                display: inline-block;
+                margin-left: 4px;
+
+                flex: 0 0 auto;
+                &:before {
+                    content: "\e60d";
+                    display: inherit;
+                    position: relative;
+                    top: 1px;
+
+                    font-family: Indigo;
+                    font-size: 10px;
+
+                    vertical-align: bottom;
                 }
+            }
+
+            .gd-table-arrow-up:before {
+                top: -2px;
+                transform: rotate(180deg);
+            }
+
+            .gd-table-header-title {
+                flex: 0 1 auto;
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -121,46 +142,14 @@
     }
 
     .fixedDataTableCellLayout_alignRight {
-        a span:first-child {
-            flex: 1 1 auto;
+        .gd-table-header-ordering {
+            .gd-table-header-title {
+                flex: 1 1 auto;
+            }
         }
     }
 }
 
 .gd-cell-ordered {
     font-weight: bold;
-}
-
-.gd-table-header-ordering {
-    span {
-        display: none;
-        cursor: pointer;
-
-        &:first-child {
-            display: inline-block;
-        }
-    }
-
-    .gd-table-arrow-up,
-    .gd-table-arrow-down {
-        display: inline-block;
-        margin-left: 4px;
-
-        &:before {
-            content: "\e60d";
-            display: inherit;
-            position: relative;
-            top: 1px;
-
-            font-family: Indigo;
-            font-size: 10px;
-
-            vertical-align: bottom;
-        }
-    }
-
-    .gd-table-arrow-up:before {
-        top: -2px;
-        transform: rotate(180deg);
-    }
 }

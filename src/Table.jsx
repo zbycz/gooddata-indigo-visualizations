@@ -91,7 +91,8 @@ export class TableVisualization extends Component {
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                {column.title}<span className={sortDirClasses} />
+                <span className="gd-table-header-title">{column.title}</span>
+                <span className={sortDirClasses} />
             </Cell>
         );
     }

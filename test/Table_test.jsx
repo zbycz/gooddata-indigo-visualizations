@@ -3,9 +3,10 @@ import { Table } from 'fixed-data-table';
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 
-let {
+const {
     renderIntoDocument,
-    findRenderedComponentWithType
+    findRenderedComponentWithType,
+    findRenderedDOMComponentWithClass
 } = ReactTestUtils;
 
 const FIXTURE = {
@@ -87,9 +88,11 @@ describe('Table', () => {
         });
 
         it('should render title into header', () => {
-            let columns = table.props.children;
-            let header = columns[0].props.header({ columnKey: 0 });
-            expect(header.props.children[0]).to.be('Name');
+            const columns = table.props.children;
+            const headerElement = columns[0].props.header({ columnKey: 0 });
+            const header = renderIntoDocument(headerElement);
+            const title = findRenderedDOMComponentWithClass(header, 'gd-table-header-title');
+            expect(title.textContent).to.be('Name');
         });
     });
 
