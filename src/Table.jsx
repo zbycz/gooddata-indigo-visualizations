@@ -34,12 +34,10 @@ function getHeaderSortClassName(sortDir) {
     });
 }
 
-function getCellClassName(row, column) {
-    return `s-cell-${row}-${column}`;
-}
-
-function getCellClassNames(column, rowKey, cellKey) {
-    return getCellClassName(rowKey, cellKey);
+function getCellClassNames(rowIndex, columnKey, isSorted) {
+    return classNames({
+        'gd-cell-ordered': isSorted
+    }, `s-cell-${rowIndex}-${columnKey}`);
 }
 
 export class TableVisualization extends Component {
@@ -98,12 +96,14 @@ export class TableVisualization extends Component {
         );
     }
 
-    getCellRenderer(column) {
+    getCellRenderer(column, index) {
+        const { sortBy } = this.props;
+        const isSorted = sortBy === index;
         return props => {
             let { rowIndex, columnKey } = props;
 
             let content = this.props.rows[rowIndex][columnKey];
-            let classes = getCellClassNames(column, rowIndex, columnKey);
+            let classes = getCellClassNames(rowIndex, columnKey, isSorted);
 
             let { style, label } = this.getStyledLabel(column, content);
 
@@ -140,7 +140,7 @@ export class TableVisualization extends Component {
                     align={align}
                     columnKey={index}
                     header={this.getHeaderRenderer(column, index)}
-                    cell={this.getCellRenderer(column)}
+                    cell={this.getCellRenderer(column, index)}
                     allowCellsRecycling
                 />
             );
