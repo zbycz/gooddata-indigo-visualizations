@@ -59,17 +59,40 @@ export class TableVisualization extends Component {
         onSortChange: noop
     };
 
+    constructor() {
+        super();
+        this.state = { hintSortBy: null };
+    }
+
+    getNextSortDir(column, currentSortDir) {
+        if (!currentSortDir) {
+            return column.type === 'metric' ? SORT_DIR_DESC : SORT_DIR_ASC;
+        }
+        return currentSortDir === SORT_DIR_ASC ? SORT_DIR_DESC : SORT_DIR_ASC;
+    }
+
     getHeaderRenderer(column, index) {
         const { sortBy, sortDir } = this.props;
-        const doSort = sortBy === index;
-        const dir = doSort ? sortDir : null;
-        const onSortChange = (event) => this.props.onSortChange(column, index, event);
+        const { hintSortBy } = this.state;
+
+        const dir = (sortBy === index ? sortDir : null);
+        const nextDir = this.getNextSortDir(column, dir);
 
         const headerClasses = getHeaderClassName(column);
-        const sortDirClasses = getHeaderSortClassName(dir);
+        const sortDirClasses = getHeaderSortClassName(hintSortBy === index ? nextDir : dir);
+
+        const onClick = () => this.props.onSortChange(column, index, nextDir);
+        const onMouseEnter = () => this.setState({ hintSortBy: index });
+        const onMouseLeave = () => this.setState({ hintSortBy: null });
 
         return props => (
-            <Cell {...props} className={headerClasses} onClick={onSortChange}>
+            <Cell
+                {...props}
+                className={headerClasses}
+                onClick={onClick}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+            >
                 {column.title}<span className={sortDirClasses} />
             </Cell>
         );
