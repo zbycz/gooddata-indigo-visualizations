@@ -15,8 +15,13 @@ g.highcharts-tooltip {
 // without this, the max-width settings for .value and .title
 // are ineffective
 .highcharts-tooltip {
-    width: 100%;
+    display: flex;
     z-index: 3005;
+
+    span {
+        position: relative !important; // Override HighCharts inline styles
+        flex: 0 0 auto;
+    }
 }
 
 /**
