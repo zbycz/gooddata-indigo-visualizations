@@ -113,7 +113,7 @@ function _labelFormatter(value, format) {
     }
 
     var stripped = stripColors(format || '');
-    return String(numberFormat(value, stripped));
+    return escapeAngleBrackets(String(numberFormat(value, stripped)));
 }
 
 function labelFormatter() {

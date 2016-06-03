@@ -10,7 +10,7 @@ export const barChart2Series = {
         id: 'aaYh6Voua2yj',
         uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
         title: 'aaa <b># of Open Opps.',
-        format: '#,##0'
+        format: '<button>#,##0.00</button>'
     }, {
         type: 'metric',
         id: 'afdV48ABh8CN',
