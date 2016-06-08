@@ -1,6 +1,6 @@
 {
   "name": "gdc-indigo-visualizations",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": "true",
   "description": "Indigo Visualizations library",
   "main": "example/index.jsx",
