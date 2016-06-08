@@ -243,7 +243,7 @@ export function getColorPalette(data, palette) {
 
     filter(data.headers, header => header.type === 'metric')
         .forEach((metric, idx) => {
-            if (metric.id && metric.id.match(/\.generated\.pop\./)) {
+            if (metric.id && metric.id.match(/\.generated\.(filtered_)?pop\./)) {
                 const color = _getLighterColor(newPalette[idx % newPalette.length], 0.6);
                 newPalette.splice(idx, 0, color);
             }
