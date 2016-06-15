@@ -17,7 +17,7 @@ export function transformConfigToLine(config) {
             x: category ? category.category.displayForm : '',
             y: '/metricValues',
             color: '/metricGroup',
-            stacking: false,
+            stacking: null,
             // TODO: do the following only matter for data
             where: {},
             orderBy: []
@@ -30,7 +30,7 @@ export function transformConfigToLine(config) {
         x: category ? category.category.displayForm : '',
         y: '/metricValues',
         color: stack.category.displayForm,
-        stacking: config.type !== 'line',
+        stacking: config.type !== 'line' ? 'normal' : null,
         // TODO: do the following only matter for data
         where: {},
         orderBy: []

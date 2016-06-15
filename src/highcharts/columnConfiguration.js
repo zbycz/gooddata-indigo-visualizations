@@ -18,6 +18,11 @@ const COLUMN_TEMPLATE = {
                 }
             }
         }
+    },
+    yAxis: {
+        stackLabels: {
+            enabled: true
+        }
     }
 };
 
