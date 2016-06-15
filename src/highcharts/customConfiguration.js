@@ -183,7 +183,6 @@ function getStackingConfiguration(chartOptions) {
         },
         yAxis: {
             stackLabels: {
-                enabled: true,
                 formatter: stackLabelFormatter
             }
         }

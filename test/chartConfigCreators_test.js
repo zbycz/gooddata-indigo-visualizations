@@ -33,7 +33,7 @@ describe('chartConfigCreators', () => {
                 x: '',
                 y: '/metricValues',
                 color: '/gdc/md/project/obj/2',
-                stacking: true,
+                stacking: 'normal',
                 where: {},
                 orderBy: []
             });
@@ -51,7 +51,7 @@ describe('chartConfigCreators', () => {
                 x: '/gdc/md/project/obj/2',
                 y: '/metricValues',
                 color: '/metricGroup',
-                stacking: false,
+                stacking: null,
                 where: {},
                 orderBy: []
             });
