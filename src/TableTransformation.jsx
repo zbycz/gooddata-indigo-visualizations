@@ -23,11 +23,18 @@ export default class TableTransformation extends Component {
     render() {
         const { data: { headers, rawData }, config } = this.props;
         const { sortBy, sortDir } = getSortInfo(config);
-        return this.props.tableRenderer({
+
+        const tableConfig = {
             rows: rawData,
             headers,
             sortBy,
             sortDir
-        });
+        };
+
+        if (this.props.height) {
+            tableConfig.containerHeight = this.props.height;
+        }
+
+        return this.props.tableRenderer(tableConfig);
     }
 }

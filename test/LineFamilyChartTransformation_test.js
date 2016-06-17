@@ -26,6 +26,14 @@ describe('LineFamilyChartTransformation', () => {
         expect(lineFamilyChartRenderer).to.be.calledOnce();
     });
 
+    it('should pass height in hcOptions if is set in props', () => {
+        const lineFamilyChartRenderer = sinon.stub().returns(<div />);
+        renderIntoDocument(createComponent({ lineFamilyChartRenderer, height: 255 }));
+
+        expect(lineFamilyChartRenderer).to.be.calledOnce();
+        expect(lineFamilyChartRenderer.getCall(0).args[0].hcOptions.chart.height).to.equal(255);
+    });
+
     describe('onDataTooLarge', () => {
         function renderToNode(node, props = {}) {
             return ReactDOM.render(createComponent(props), node);

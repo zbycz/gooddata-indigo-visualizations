@@ -43,7 +43,8 @@ function getCellClassNames(rowIndex, columnKey, isSorted) {
 export class TableVisualization extends Component {
     static propTypes = {
         containerWidth: PropTypes.number.isRequired,
-        containerHeight: PropTypes.number.isRequired,
+        containerHeight: PropTypes.number,
+        containerMaxHeight: PropTypes.number,
         rows: PropTypes.array.isRequired,
         headers: PropTypes.array.isRequired,
         sortDir: PropTypes.string,
@@ -149,8 +150,10 @@ export class TableVisualization extends Component {
     }
 
     render() {
-        let { headers, containerWidth, containerHeight } = this.props;
+        let { headers, containerWidth, containerHeight, containerMaxHeight } = this.props;
         let columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
+
+        const height = !!containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
 
         return (
             <div className="indigo-table-component">
@@ -160,7 +163,8 @@ export class TableVisualization extends Component {
                         rowHeight={DEFAULT_ROW_HEIGHT}
                         rowsCount={this.props.rows.length}
                         width={containerWidth || DEFAULT_WIDTH}
-                        height={containerHeight || DEFAULT_HEIGHT}
+                        maxHeight={containerMaxHeight}
+                        height={height}
                     >
                         {this.renderColumns(columnWidth)}
                     </Table>

@@ -24,4 +24,11 @@ describe('TableTransformation', () => {
         renderIntoDocument(createComponent({ tableRenderer }));
         expect(tableRenderer).to.be.calledOnce();
     });
+
+    it('should pass containerHeight if height is set in props', () => {
+        const tableRenderer = sinon.stub().returns(<div />);
+        renderIntoDocument(createComponent({ tableRenderer, height: 255 }));
+        expect(tableRenderer).to.be.calledOnce();
+        expect(tableRenderer.getCall(0).args[0].containerHeight).to.equal(255);
+    });
 });
