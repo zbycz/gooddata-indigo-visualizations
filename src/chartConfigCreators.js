@@ -11,29 +11,26 @@ export function transformConfigToLine(config) {
         category = getItem(['attribute', 'view', 'trend']),
         stack = getItem(['stack', 'segment']);
 
+    const commonConfig = {
+        type: config.type,
+        x: category ? category.category.displayForm : '',
+        y: '/metricValues',
+        zoomable: !!config.zoomable,
+        where: {},
+        orderBy: []
+    };
+
     if (!stack) {
         return {
-            type: config.type,
-            x: category ? category.category.displayForm : '',
-            y: '/metricValues',
+            ...commonConfig,
             color: '/metricGroup',
-            stacking: null,
-            // TODO: do the following only matter for data
-            where: {},
-            orderBy: []
-            // TODO: where to take colorPalette from?
+            stacking: null
         };
     }
 
     return {
-        type: config.type,
-        x: category ? category.category.displayForm : '',
-        y: '/metricValues',
+        ...commonConfig,
         color: stack.category.displayForm,
-        stacking: config.type !== 'line' ? 'normal' : null,
-        // TODO: do the following only matter for data
-        where: {},
-        orderBy: []
-        // TODO: where to take colorPalette from?
+        stacking: config.type !== 'line' ? 'normal' : null
     };
 }

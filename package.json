@@ -78,6 +78,6 @@
     "react": "0.14.6",
     "react-dimensions": "1.0.2",
     "react-dom": "0.14.6",
-    "react-highcharts": "6.0.0"
+    "react-highcharts": "v8.3.3"
   }
 }
