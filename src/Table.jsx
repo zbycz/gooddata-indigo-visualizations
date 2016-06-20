@@ -80,7 +80,7 @@ export class TableVisualization extends Component {
         const headerClasses = getHeaderClassName(column);
         const sortDirClasses = getHeaderSortClassName(hintSortBy === index ? nextDir : dir);
 
-        const onClick = () => this.props.onSortChange(column, index, nextDir);
+        const onClick = e => this.props.onSortChange(column, index, nextDir, e);
         const onMouseEnter = () => this.setState({ hintSortBy: index });
         const onMouseLeave = () => this.setState({ hintSortBy: null });
 
