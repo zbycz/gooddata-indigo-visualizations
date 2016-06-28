@@ -237,6 +237,14 @@ function getLegendConfiguration(chartOptions) {
     };
 }
 
+function getZoomableConfiguration(chartOptions) {
+    return chartOptions.zoomable ? {
+        chart: {
+            zoomType: 'x'
+        }
+    } : {};
+}
+
 export function getCustomizedConfiguration(chartOptions) {
     const configurators = [
         getTitleConfiguration,
@@ -245,7 +253,8 @@ export function getCustomizedConfiguration(chartOptions) {
         getLabelsConfiguration,
         getDataConfiguration,
         getLegendConfiguration,
-        getTooltipConfiguration
+        getTooltipConfiguration,
+        getZoomableConfiguration
     ];
 
     const commonData = configurators.reduce((config, configurator) => {

@@ -91,6 +91,10 @@ export default class LineFamilyChartTransformation extends Component {
             hcOptions = getLineChartConfiguration(chartOptions);
         }
 
+        if (this.props.height) {
+            hcOptions.chart.height = this.props.height;
+        }
+
         if (!type) {
             invariant(`Unknown visualization type: ${type}`);
         }

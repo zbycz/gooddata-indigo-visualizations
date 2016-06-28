@@ -4,7 +4,7 @@ $font-stack-roman: "Avenir", "Helvetica Neue", Arial, sans-serif;
 // to allow tooltip overlap chart container area
 .highcharts-container {
     overflow: visible !important;
-    z-index: 3000 !important;
+    z-index: auto !important;
 }
 
 // hide default highcharts svg tooltip when using html-based one

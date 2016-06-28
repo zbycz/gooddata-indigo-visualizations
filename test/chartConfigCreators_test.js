@@ -34,6 +34,7 @@ describe('chartConfigCreators', () => {
                 y: '/metricValues',
                 color: '/gdc/md/project/obj/2',
                 stacking: 'normal',
+                zoomable: false,
                 where: {},
                 orderBy: []
             });
@@ -52,9 +53,20 @@ describe('chartConfigCreators', () => {
                 y: '/metricValues',
                 color: '/metricGroup',
                 stacking: null,
+                zoomable: false,
                 where: {},
                 orderBy: []
             });
+        });
+
+        it('passes zoomable to the config', () => {
+            const configWithZoomable = {
+                ...config,
+                zoomable: true
+            };
+
+            const lineConfig = transformConfigToLine(configWithZoomable);
+            expect(lineConfig.zoomable).to.be(true);
         });
     });
 });

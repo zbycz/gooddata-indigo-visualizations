@@ -8,6 +8,8 @@ import LineFamilyChartTransformation from './LineFamilyChartTransformation';
 import TableTransformation from './TableTransformation';
 import * as VisualizationTypes from './VisualizationTypes';
 
+import { isEqual, isFunction, omitBy } from 'lodash';
+
 function isLineFamily(visType) {
     return includes([
         VisualizationTypes.COLUMN_CHART,
@@ -20,8 +22,13 @@ export default class Visualization extends Component {
     static propTypes = {
         config: PropTypes.shape({
             type: PropTypes.string.isRequired
-        }).isRequired
+        }).isRequired,
+        height: PropTypes.number
     };
+
+    shouldComponentUpdate(nextProps) {
+        return !isEqual(omitBy(this.props, isFunction), omitBy(nextProps, isFunction));
+    }
 
     render() {
         const visType = this.props.config.type;
