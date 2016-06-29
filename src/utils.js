@@ -1,5 +1,5 @@
 import { string } from 'js-utils';
-import { isArray, findIndex } from 'lodash';
+import { findIndex, isArray, isObject } from 'lodash';
 
 const simplifyText = string.simplifyText;
 
@@ -16,17 +16,19 @@ function findFirstSort(items, typeName) {
 
     const item = array[index];
 
-    if (item.showPoP) { ++index; }
+    if (isObject(item.sort)) { // measure only
+        if (item.showPoP && !item.sort.sortByPoP) {
+            index++;
+        }
+    } else if (item.showPoP) {
+        // TODO: backward compatibility, remove if branch after CL-9654 will be released
+        index++;
+    }
 
     return { index, item };
 }
 
-function buildSortInfo(index, direction) {
-    return {
-        sortBy: index,
-        sortDir: direction
-    };
-}
+const buildSortInfo = (sortBy, sortDir) => ({ sortBy, sortDir });
 
 export function getSortInfo(config) {
     if (!config) { return {}; }
@@ -42,7 +44,8 @@ export function getSortInfo(config) {
         const categoriesCount = isArray(buckets.categories) && buckets.categories.length;
         const index = sort.index + categoriesCount;
 
-        return buildSortInfo(index, sort.item.sort);
+        // TODO: backward compatibility, remove "sort.item.sort" after CL-9654 will be released
+        return buildSortInfo(index, sort.item.sort.direction || sort.item.sort);
     }
 
     return {};
