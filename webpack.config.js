@@ -5,21 +5,23 @@ var webpack = require('webpack');
 module.exports = function getWebpackConfig() {
     return {
         entry: {
-            example: ['./example/index']
+            example: ['highcharts', './example/index']
         },
 
         output: {},
 
         module: {
-            // noParse: [
-            //     'react-infinite-list'
-            // ],
-            //
+
             loaders: [
                 {
                     test: /\.jsx?$/,
                     loader: 'babel?' + JSON.stringify({ presets: ['es2015', 'react', 'stage-0'] }),
-                    include: /src\/|test\/|example\//
+                    include: [
+                        path.resolve(__dirname, 'src'),
+                        path.resolve(__dirname, 'example'),
+                        path.resolve(__dirname, 'test'),
+                        path.resolve(__dirname, 'node_modules/js-utils')
+                    ]
                 },
 
                 {

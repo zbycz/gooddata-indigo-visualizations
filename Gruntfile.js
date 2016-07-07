@@ -1,5 +1,5 @@
 // Copyright (C) 2007-2016, GoodData(R) Corporation. All rights reserved.
-var webpackDistConfig = require('./webpack.dist.config.js');
+var webpackWebConfig = require('./webpack.web.config.js');
 var webpackDevConfig = require('./webpack.dev.config.js');
 var webpackTestConfig = require('./webpack.test.config.js');
 
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
         },
 
         clean: {
-            dist: './dist'
+            web: './web'
         },
 
         karma: {
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
             all: {
                 src: [
                     '**/*.{js,jsx}',
-                    '!dist/**/*',
+                    '!web/**/*',
                     '!node_modules/**/*',
                     '!ci/**/*'
                 ]
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
 
         webpack: {
             options: grunt.config.get('webpackOptions'),
-            dist: webpackDistConfig
+            web: webpackWebConfig()
         },
 
         server: {
@@ -133,13 +133,14 @@ module.exports = function(grunt) {
         grizzly.start();
     });
 
-    grunt.registerTask('default', ['dist']);
+    grunt.registerTask('default', ['dev']);
 
     grunt.registerTask('validate', ['eslint']);
 
-    grunt.registerTask('dist', [
-        'clean:dist',
-        'webpack:dist'
+    // builds app with examples
+    grunt.registerTask('web', [
+        'clean:web',
+        'webpack:web'
     ]);
 
     grunt.registerTask('dev', [
