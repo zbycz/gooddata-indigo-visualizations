@@ -1,15 +1,14 @@
 import React from 'react';
+import Codemirror from 'react-codemirror';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/mode/javascript/javascript';
+
+const cmOptions = {
+    lineNumbers: true
+};
 
 export default function SourceListing(props) {
-    let style = {
-        width: 1024,
-        maxHeight: 300,
-        overflow: 'scroll',
-        backgroundColor: '#f7f7f7',
-        border: '1px solid #d8d8d8'
-    };
-
     return (
-        <pre style={style}>{props.children}</pre>
+        <Codemirror value={props.children} options={cmOptions} />
     );
 }

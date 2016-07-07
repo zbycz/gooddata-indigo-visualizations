@@ -1,0 +1,22 @@
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 2em;
+    font-family: sans-serif;
+}
+
+.ReactCodeMirror {
+    border: 1px solid #ccc;
+    width: 98%;
+}
+
+.flex-row {
+    display: flex;
+}
+
+.flex-half {
+    flex: 1;
+}

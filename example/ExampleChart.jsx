@@ -13,15 +13,21 @@ export default function ExampleChart(ComposedVisualization) {
                     <ComposedVisualization {...props} />
                 </DefaultSizeVisualization>
 
-                <h3>Chart Options</h3>
-                <SourceListing>
-                    {JSON.stringify(props.chartOptions, null, 2)}
-                </SourceListing>
+                <div className="flex-row">
+                    <div className="flex-half">
+                        <h3>Chart Options</h3>
+                        <SourceListing>
+                            {JSON.stringify(props.chartOptions, null, 2)}
+                        </SourceListing>
+                    </div>
 
-                <h3>Highcharts Options</h3>
-                <SourceListing>
-                    {JSON.stringify(props.hcOptions, null, 2)}
-                </SourceListing>
+                    <div className="flex-half">
+                        <h3>Highcharts Options</h3>
+                        <SourceListing>
+                            {JSON.stringify(props.hcOptions, null, 2)}
+                        </SourceListing>
+                    </div>
+                </div>
             </div>
         );
     };

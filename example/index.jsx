@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './example';
+
 import ExampleVisualization from './ExampleVisualization';
 import * as TestConfig from './test_config';
 import * as TestData from './test_data';

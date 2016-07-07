@@ -62,7 +62,7 @@ module.exports = function getWebpackConfig() {
 
         resolve: {
             // Allow to omit extensions when requiring these files
-            extensions: ['', '.js', '.jsx', '.styl', '.scss'],
+            extensions: ['', '.js', '.jsx', '.scss'],
             modulesDirectories: [
                 'node_modules'
             ],
