@@ -4,8 +4,10 @@ var webpack = require('webpack');
 var getWebpackConfig = require('./webpack.config.js');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const webpackConfig = getWebpackConfig();
+
 module.exports = function createDevConfig(config) {
-    var devConfig = _.assign(getWebpackConfig(), {
+    var devConfig = _.assign(webpackConfig, {
         devtool: 'cheap-inline-source-map',
 
         output: {
@@ -42,7 +44,7 @@ module.exports = function createDevConfig(config) {
         }),
         new webpack.NoErrorsPlugin(),
         new HtmlWebpackPlugin({
-            title: 'Vis Example',
+            copyright: webpackConfig.copyright,
             template: 'index.webpack.html'
         })
     );
