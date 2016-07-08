@@ -8,13 +8,12 @@ var getWebpackConfig = require('./webpack.config.js');
 const pkg = require('./package.json');
 const execSync = require('child_process').execSync;
 
-const year = new Date().getFullYear();
+const webpackConfig = getWebpackConfig();
 const date = new Date().toString();
-const copyright = `Copyright (C) 2007-${year}, GoodData(R) Corporation. All rights reserved.`;
 const lastCommitSHA = execSync('git log -1 --format="%h"', { encoding: 'utf8' }).replace('\n', '');
 const license = `/*!
  * ${pkg.name} - v${pkg.version}
- * ${copyright}
+ * ${webpackConfig.copyright}
  * Latest git commit: ${lastCommitSHA}
  * ${date}
  */\n`;
@@ -36,7 +35,7 @@ var uglifyOptions = {
 
 module.exports = function createWebConfig() {
     const OUTPUT_DIR = path.join(__dirname, '/web/');
-    var distWebConfig = _.assign(getWebpackConfig(), {
+    var distWebConfig = _.assign(webpackConfig, {
         output: {
             path: OUTPUT_DIR,
             filename: '[name].[hash].js'
@@ -62,8 +61,8 @@ module.exports = function createWebConfig() {
             }
         }),
         new HtmlWebpackPlugin({
-            copyright,
-            template: 'tools/index.web.html'
+            copyright: webpackConfig.copyright,
+            template: 'index.webpack.html'
         }),
 
         new webpack.BannerPlugin(license, { raw: true }),

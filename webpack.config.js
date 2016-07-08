@@ -3,12 +3,15 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = function getWebpackConfig() {
+    const year = new Date().getFullYear();
     return {
         entry: {
             example: ['highcharts', './example/index']
         },
 
         output: {},
+
+        copyright: `Copyright (C) 2007-${year}, GoodData(R) Corporation. All rights reserved.`,
 
         module: {
 
