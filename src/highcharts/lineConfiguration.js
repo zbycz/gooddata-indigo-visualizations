@@ -2,10 +2,6 @@ import cloneDeep from 'lodash/cloneDeep';
 
 const LINE_WIDTH = 3;
 
-const cancelLegendItemClick = {
-    legendItemClick: () => false
-};
-
 const LINE_TEMPLATE = {
     plotOptions: {
         series: {
@@ -27,14 +23,7 @@ const LINE_TEMPLATE = {
             }
         },
         column: {
-            events: cancelLegendItemClick,
             dataLabels: {}
-        },
-        bar: {
-            events: cancelLegendItemClick
-        },
-        line: {
-            events: cancelLegendItemClick
         }
     },
     xAxis: {
