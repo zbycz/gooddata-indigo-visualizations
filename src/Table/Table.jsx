@@ -2,10 +2,11 @@ import 'fixed-data-table/dist/fixed-data-table.css';
 import '../styles/table.scss';
 
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import Dimensions from 'react-dimensions';
 import classNames from 'classnames';
-import { noop, partial, uniqueId } from 'lodash';
+import { noop, partial, uniqueId, debounce } from 'lodash';
 
 import Bubble from 'goodstrap/packages/Bubble/ReactBubble';
 import TableSortBubbleContent from './TableSortBubbleContent';
@@ -27,6 +28,8 @@ const DEFAULT_HEIGHT = 480;
 export const DEFAULT_ROW_HEIGHT = 30;
 export const DEFAULT_HEADER_HEIGHT = 26;
 
+const DEBOUNCE_SCROLL_STOP = 500;
+
 export class TableVisualization extends Component {
     static propTypes = {
         containerWidth: PropTypes.number.isRequired,
@@ -38,14 +41,16 @@ export class TableVisualization extends Component {
         sortInTooltip: PropTypes.bool,
         sortDir: PropTypes.string,
         sortBy: PropTypes.number,
-        onSortChange: PropTypes.func
+        onSortChange: PropTypes.func,
+        stickyHeader: PropTypes.number
     };
 
     static defaultProps = {
         rows: [],
         headers: [],
         onSortChange: noop,
-        sortInTooltip: false
+        sortInTooltip: false,
+        stickyHeader: -1
     };
 
     constructor() {
@@ -62,6 +67,44 @@ export class TableVisualization extends Component {
         this.setTableRef = this.setTableRef.bind(this);
         this.setTableWrapRef = this.setTableWrapRef.bind(this);
         this.closeBubble = this.closeBubble.bind(this);
+        this.scrolled = this.scrolled.bind(this);
+
+        this.stopped = debounce(() => this.scrollHeader(true), DEBOUNCE_SCROLL_STOP);
+    }
+
+    componentDidMount() {
+        this.table = ReactDOM.findDOMNode(this.tableRef);
+        this.header = this.table.querySelector('.fixedDataTableRowLayout_rowWrapper');
+
+        if (this.isSticky(this.props.stickyHeader)) {
+            this.setListeners('add');
+            this.scrolled();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const current = this.props;
+        const currentIsSticky = this.isSticky(current.stickyHeader);
+        const nextIsSticky = this.isSticky(nextProps.stickyHeader);
+
+        if (currentIsSticky !== nextIsSticky) {
+            if (currentIsSticky) {
+                this.setListeners('remove');
+            }
+            if (nextIsSticky) {
+                this.setListeners('add');
+            }
+        }
+
+        if (nextIsSticky && current.stickyHeader !== nextProps.stickyHeader) {
+            this.scrolled();
+        }
+    }
+
+    componentWillUnmount() {
+        if (this.isSticky(this.props.stickyHeader)) {
+            this.setListeners('remove');
+        }
     }
 
     setTableRef(ref) {
@@ -70,6 +113,21 @@ export class TableVisualization extends Component {
 
     setTableWrapRef(ref) {
         this.tableWrapRef = ref;
+    }
+
+    setListeners(action) {
+        const method = `${action}EventListener`;
+        window[method]('scroll', this.scrolled);
+    }
+
+    setHeader(position = '', x = 0, y = 0) {
+        const { style, classList } = this.header;
+
+        classList[position ? 'add' : 'remove']('sticking');
+        style.position = position;
+        style.left = `${Math.round(x)}px`;
+        style.top = `${Math.round(y)}px`;
+        style.zIndex = position ? 1000 : 1;
     }
 
     getSortFunc(column, index) {
@@ -89,6 +147,64 @@ export class TableVisualization extends Component {
             nextDir,
             sortDirClass: getHeaderSortClassName(hintSortBy === index ? nextDir : dir)
         };
+    }
+
+    getMouseOverFunc(index) {
+        return () => {
+            // workaround glitch with fixed-data-table-2,
+            // where header styles are overwritten first time user mouses over it
+            this.scrolled();
+
+            this.setState({ hintSortBy: index });
+        };
+    }
+
+    getTableDimensions() {
+        if (this.table) {
+            const rect = this.table.getBoundingClientRect();
+            return { width: rect.width, height: rect.height };
+        }
+
+        const { containerWidth, containerHeight, containerMaxHeight } = this.props;
+
+        return {
+            width: containerWidth,
+            height: containerMaxHeight || containerHeight || DEFAULT_HEIGHT
+        };
+    }
+
+    isSticky(stickyHeader) {
+        return stickyHeader >= 0;
+    }
+
+    scrollHeader(stopped = false) {
+        const { stickyHeader, sortInTooltip } = this.props;
+        const boundingRect = this.table.getBoundingClientRect();
+
+        if (!stopped && sortInTooltip && this.state.sortBubble.visible) {
+            this.closeBubble();
+        }
+
+        if (
+            boundingRect.top >= stickyHeader ||
+            boundingRect.top < stickyHeader - boundingRect.height
+        ) {
+            this.setHeader();
+            return;
+        }
+
+        if (stopped) {
+            this.setHeader('absolute', 0, stickyHeader - boundingRect.top);
+        } else {
+            this.setHeader('fixed', boundingRect.left, stickyHeader);
+        }
+    }
+
+    scrolled() {
+        this.scrollHeader();
+
+        // required for Edge/IE to make sticky header clickable
+        this.stopped();
     }
 
     closeBubble() {
@@ -123,6 +239,10 @@ export class TableVisualization extends Component {
         };
 
         const showSortBubble = () => {
+            // workaround glitch with fixed-data-table-2
+            // where header styles are overwritten first time user clicks on it
+            this.scrolled();
+
             this.setState({
                 sortBubble: {
                     visible: true,
@@ -170,8 +290,8 @@ export class TableVisualization extends Component {
         const sortFunc = this.getSortFunc(column, index);
 
         const onClick = e => sortFunc(sort.nextDir, e);
-        const onMouseEnter = () => this.setState({ hintSortBy: index });
-        const onMouseLeave = () => this.setState({ hintSortBy: null });
+        const onMouseEnter = this.getMouseOverFunc(index);
+        const onMouseLeave = this.getMouseOverFunc(null);
 
         return props => (
             <Cell
@@ -226,20 +346,26 @@ export class TableVisualization extends Component {
     }
 
     render() {
-        let { headers, containerWidth, containerHeight, containerMaxHeight } = this.props;
-        let columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
+        const {
+            headers,
+            containerWidth,
+            containerHeight,
+            containerMaxHeight,
+            stickyHeader,
+            hasHiddenRows
+        } = this.props;
+        const columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
+        const isSticky = this.isSticky(stickyHeader);
 
         const height = !!containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
-        const tableComponentClasses = classNames(
-            'indigo-table-component',
-            {
-                'has-hidden-rows': this.props.hasHiddenRows
-            }
-        );
+        const componentClasses =
+            classNames('indigo-table-component', { 'has-hidden-rows': hasHiddenRows });
+        const componentContentClasses =
+            classNames('indigo-table-component-content', { 'has-sticky-header': isSticky });
 
         return (
-            <div className={tableComponentClasses}>
-                <div className="indigo-table-component-content" ref={this.setTableWrapRef}>
+            <div className={componentClasses}>
+                <div className={componentContentClasses} ref={this.setTableWrapRef}>
                     <Table
                         ref={this.setTableRef}
                         touchScrollEnabled
@@ -254,6 +380,7 @@ export class TableVisualization extends Component {
                         {this.renderColumns(columnWidth)}
                     </Table>
                 </div>
+                {isSticky ? <div style={this.getTableDimensions()} /> : false}
             </div>
         );
     }
