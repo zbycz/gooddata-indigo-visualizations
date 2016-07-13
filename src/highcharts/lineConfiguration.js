@@ -27,10 +27,7 @@ const LINE_TEMPLATE = {
         }
     },
     xAxis: {
-        categories: [],
-        labels: {
-            autoRotation: [-90]
-        }
+        categories: []
     },
     yAxis: {
         stackLabels: {

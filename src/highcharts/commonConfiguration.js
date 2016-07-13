@@ -68,7 +68,8 @@ const BASE_TEMPLATE = {
             style: {
                 color: '#94a1ad',
                 font: '12px Avenir, "Helvetica Neue", Arial, sans-serif'
-            }
+            },
+            autoRotation: [-90]
         },
         title: {
             margin: 20,
