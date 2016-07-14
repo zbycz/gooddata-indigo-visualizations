@@ -41,6 +41,7 @@ g.highcharts-tooltip {
     background-color: transparentize(#fff, .05);
 
     .content {
+        min-width: 220px;
         padding: 13px 13px 9px 13px;
         border: 1px solid transparentize(#C9D5E0, .3);
         border-radius: 3px;
