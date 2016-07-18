@@ -72,38 +72,74 @@ function getShowInPercentConfiguration(chartOptions) {
     } : {};
 }
 
-function positionTooltip(chartType, boxWidth, boxHeight, _point) {
-    // point.source requires patched highcharts
-    // used to correctly position tooltip above bars in bar chart
-    //
-    // const originalPoint = _point.source;
-    const point = cloneDeep(_point);
+const TOOLTIP_MAX_WIDTH = 366;
+const TOOLTIP_OFFSET = 23;
 
-    // if (originalPoint && originalPoint.shapeType === 'rect') {
-    //     if (chartType === 'bar') {
-    //         point.plotY = this.chart.plotHeight -
-    //         (originalPoint.shapeArgs.x + originalPoint.shapeArgs.width / 2);
-    //     } else {
-    //         point.plotX = originalPoint.shapeArgs.x + originalPoint.shapeArgs.width / 2;
-    //     }
-    // }
+const alignTooltip = ({ pointX, boxWidth = 0, chartWidth }) => {
+    const minX = -TOOLTIP_OFFSET;
+    const maxX = chartWidth + TOOLTIP_OFFSET;
+
+    if (pointX + TOOLTIP_MAX_WIDTH / 2 > maxX && pointX - TOOLTIP_MAX_WIDTH > minX) {
+        return {
+            align: 'right',
+            x: pointX - boxWidth + TOOLTIP_OFFSET
+        };
+    }
+
+    if (pointX - TOOLTIP_MAX_WIDTH / 2 < minX && pointX + TOOLTIP_MAX_WIDTH < maxX) {
+        return {
+            align: 'left',
+            x: pointX - TOOLTIP_OFFSET
+        };
+    }
 
     return {
-        x: this.chart.plotLeft + point.plotX - boxWidth / 2,
+        align: 'center',
+        x: pointX - boxWidth / 2
+    };
+};
+
+function positionTooltip(chartType, boxWidth, boxHeight, _point) {
+    const { x } = alignTooltip(
+        {
+            pointX: _point.plotX,
+            boxWidth,
+            chartWidth: this.chart.plotWidth
+        }
+    );
+
+    return {
+        x: this.chart.plotLeft + x,
         // point size + tooltip arrow
-        y: this.chart.plotTop + point.plotY - boxHeight - 14
+        y: this.chart.plotTop + _point.plotY - boxHeight - 14
     };
 }
 
-function formatTooltip(tooltipCallback) {
+function formatTooltip(chartType, tooltipCallback) {
+    const { chart } = this.series;
+
     // when brushing, do not show tooltip
-    if (this.series.chart.mouseIsDown) {
+    if (chart.mouseIsDown) {
         return false;
     }
 
-    return '<div class="hc-tooltip"><div class="content">' +
-        tooltipCallback(this.point) +
-        '</div><div class="tail1"></div><div class="tail2"></div>';
+    const { align } = alignTooltip(
+        {
+            // with bar charts, the plotX property doesn't seem to give us the right value
+            pointX: chartType !== 'bar' ? this.point.plotX : this.point.tooltipPos[0],
+            chartWidth: chart.plotWidth
+        }
+    );
+
+    return (
+        `<div class="hc-tooltip">
+            <div class="content">
+                ${tooltipCallback(this.point)}
+            </div>
+            <div class="tail1 ${align}"></div>
+            <div class="tail2 ${align}"></div>
+        </div>`
+    );
 }
 
 function _labelFormatter(value, format) {
@@ -147,7 +183,7 @@ function getTooltipConfiguration(chartOptions) {
             shadow: false,
             useHTML: true,
             positioner: partial(positionTooltip, chartType),
-            formatter: partial(formatTooltip, tooltipAction)
+            formatter: partial(formatTooltip, chartType, tooltipAction)
         }
     } : {};
 }

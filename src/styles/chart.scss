@@ -41,7 +41,7 @@ g.highcharts-tooltip {
     background-color: transparentize(#fff, .05);
 
     .content {
-        min-width: 220px;
+        max-width: 320px;
         padding: 13px 13px 9px 13px;
         border: 1px solid transparentize(#C9D5E0, .3);
         border-radius: 3px;
@@ -67,7 +67,7 @@ g.highcharts-tooltip {
         }
 
         .tt-values {
-            table-layout: fixed;
+            max-width: 320px;
 
             tr {
                 td {
@@ -84,19 +84,26 @@ g.highcharts-tooltip {
             }
 
             .title {
-                max-width: 170px;
+                max-width: 140px;
                 color: #6D7680;
                 text-align: right;
                 font-size: 12px;
                 font-weight: normal;
                 line-height: 14px;
                 vertical-align: middle;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
 
             .value {
-                padding: 0 0 0 10px;
+                max-width: 165px;
+                padding: 0 0 0 5px;
                 vertical-align: top;
                 font-size: 14px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
             }
         }
     }
@@ -113,6 +120,14 @@ g.highcharts-tooltip {
         border-color:transparentize(#C9D5E0, .5) transparent transparent transparent;
         border-width:10px;
         border-style:solid;
+
+        &.right {
+            left: calc(100% - 14px);
+        }
+
+        &.left {
+            left: 14px;
+        }
     }
 
     .tail2 {
@@ -127,6 +142,14 @@ g.highcharts-tooltip {
         border-color:#fff transparent transparent transparent;
         border-width:10px;
         border-style:solid;
+
+        &.right {
+            left: calc(100% - 14px);
+        }
+
+        &.left {
+            left: 14px;
+        }
     }
 
 }
