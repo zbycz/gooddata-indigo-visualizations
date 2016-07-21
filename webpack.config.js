@@ -23,7 +23,8 @@ module.exports = function getWebpackConfig() {
                         path.resolve(__dirname, 'src'),
                         path.resolve(__dirname, 'example'),
                         path.resolve(__dirname, 'test'),
-                        path.resolve(__dirname, 'node_modules/js-utils')
+                        path.resolve(__dirname, 'node_modules/js-utils'),
+                        path.resolve(__dirname, 'node_modules/goodstrap')
                     ]
                 },
 
@@ -54,6 +55,11 @@ module.exports = function getWebpackConfig() {
                 },
 
                 {
+                    test: /\.json$/,
+                    loader: 'json-loader'
+                },
+
+                {
                     test: /\.(eot|woff|ttf|svg)/,
                     loader: 'file-loader'
                 },
@@ -69,7 +75,8 @@ module.exports = function getWebpackConfig() {
             // Allow to omit extensions when requiring these files
             extensions: ['', '.js', '.jsx', '.scss'],
             modulesDirectories: [
-                'node_modules'
+                'node_modules',
+                path.join('node_modules/goodstrap/packages')
             ],
             alias: {
                 react: path.join(__dirname, 'node_modules/react/')

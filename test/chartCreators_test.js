@@ -76,44 +76,44 @@ describe('chartCreators', () => {
 
     describe('isMetricNamesInSeries', () => {
         it('works', () => {
-            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(true);
+            expect(isMetricNamesInSeries(config, mockHeaders)).to.equal(true);
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(isMetricNamesInSeries(config, mockHeaders)).to.be(false);
+            expect(isMetricNamesInSeries(config, mockHeaders)).to.equal(false);
         });
     });
 
     describe('getLegendLayout', () => {
         it('works', () => {
-            expect(getLegendLayout(config, mockHeaders)).to.be('horizontal');
+            expect(getLegendLayout(config, mockHeaders)).to.equal('horizontal');
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(getLegendLayout(config, mockHeaders)).to.be('vertical');
+            expect(getLegendLayout(config, mockHeaders)).to.equal('vertical');
         });
     });
 
     describe('getCategoryAxisLabel', () => {
         it('works', () => {
             expect(getCategoryAxisLabel(config, mockHeaders))
-                .to.be('Quarter/Year (Health Data_finish)');
+                .to.equal('Quarter/Year (Health Data_finish)');
             mockHeaders[0].title = undefined;
-            expect(getCategoryAxisLabel(config, mockHeaders)).to.be('');
+            expect(getCategoryAxisLabel(config, mockHeaders)).to.equal('');
         });
     });
 
     describe('getMetricAxisLabel', () => {
         it('works', () => {
-            expect(getMetricAxisLabel(config, mockHeaders)).to.be('Average kilometers');
+            expect(getMetricAxisLabel(config, mockHeaders)).to.equal('Average kilometers');
             mockHeaders[1].metrics = [];
-            expect(getMetricAxisLabel(config, mockHeaders)).to.be('Average kilometers');
+            expect(getMetricAxisLabel(config, mockHeaders)).to.equal('Average kilometers');
         });
     });
 
     describe('showInPercent', () => {
         it('works', () => {
-            expect(showInPercent(config, mockHeaders)).to.be(false);
+            expect(showInPercent(config, mockHeaders)).to.equal(false);
             mockHeaders[2].format = '#,##0.00 %';
-            expect(showInPercent(config, mockHeaders)).to.be(true);
+            expect(showInPercent(config, mockHeaders)).to.equal(true);
         });
     });
 
@@ -131,7 +131,7 @@ describe('chartCreators', () => {
                     }
                 });
 
-                expect(tooltip.includes('&lt;series&gt;')).to.be(true);
+                expect(tooltip.includes('&lt;series&gt;')).to.equal(true);
             });
 
             it('should escape other html chars and have output properly escaped', () => {
@@ -142,7 +142,7 @@ describe('chartCreators', () => {
                     }
                 });
 
-                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).to.be(true);
+                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).to.equal(true);
             });
 
             it('should unescape brackets and htmlescape category', () => {
@@ -154,7 +154,7 @@ describe('chartCreators', () => {
                     }
                 });
 
-                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.be(true);
+                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.equal(true);
             });
         });
     });

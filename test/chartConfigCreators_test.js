@@ -66,7 +66,7 @@ describe('chartConfigCreators', () => {
             };
 
             const lineConfig = transformConfigToLine(configWithZoomable);
-            expect(lineConfig.zoomable).to.be(true);
+            expect(lineConfig.zoomable).to.equal(true);
         });
     });
 });

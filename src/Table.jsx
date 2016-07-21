@@ -17,8 +17,8 @@ import { getCssClass } from './utils';
 const MIN_COLUMN_WIDTH = 100;
 const DEFAULT_WIDTH = 640;
 const DEFAULT_HEIGHT = 480;
-const DEFAULT_ROW_HEIGHT = 30;
-const DEFAULT_HEADER_HEIGHT = 26;
+export const DEFAULT_ROW_HEIGHT = 30;
+export const DEFAULT_HEADER_HEIGHT = 26;
 
 const SORT_DIR_ASC = 'asc';
 const SORT_DIR_DESC = 'desc';
@@ -45,6 +45,7 @@ export class TableVisualization extends Component {
         containerWidth: PropTypes.number.isRequired,
         containerHeight: PropTypes.number,
         containerMaxHeight: PropTypes.number,
+        hasHiddenRows: PropTypes.bool,
         rows: PropTypes.array.isRequired,
         headers: PropTypes.array.isRequired,
         sortDir: PropTypes.string,
@@ -152,12 +153,25 @@ export class TableVisualization extends Component {
     render() {
         let { headers, containerWidth, containerHeight, containerMaxHeight } = this.props;
         let columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
+        let hasScrollbar = headers.length * MIN_COLUMN_WIDTH > containerWidth;
 
         const height = !!containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
+        const tableComponentClasses = classNames(
+            'indigo-table-component',
+            {
+                'has-hidden-rows': this.props.hasHiddenRows
+            }
+        );
+        const tableComponentContentClasses = classNames(
+            'indigo-table-component-content',
+            {
+                'has-scrollbar': hasScrollbar
+            }
+        );
 
         return (
-            <div className="indigo-table-component">
-                <div className="indigo-table-component-content">
+            <div className={tableComponentClasses}>
+                <div className={tableComponentContentClasses}>
                     <Table
                         headerHeight={DEFAULT_HEADER_HEIGHT}
                         rowHeight={DEFAULT_ROW_HEIGHT}

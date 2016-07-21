@@ -18,7 +18,7 @@ describe('chartCreators', () => {
                 };
 
                 const configuration = getLineChartConfiguration(chartOptions);
-                expect(configuration.chart.zoomType).to.be('x');
+                expect(configuration.chart.zoomType).to.equal('x');
             });
         });
     });

@@ -138,10 +138,10 @@ describe('Transformation', function() {
         });
 
         it('should not act on currently loading data', function() {
-            expect(Transformation.transformData()).to.be(undefined);
+            expect(Transformation.transformData()).to.equal(undefined);
 
             var data = { isLoading: true };
-            expect(Transformation.transformData(data)).to.be(data);
+            expect(Transformation.transformData(data)).to.equal(data);
         });
 
         it('should not do transformation if there are no metrics', function() {
