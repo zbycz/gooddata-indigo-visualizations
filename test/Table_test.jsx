@@ -1,5 +1,5 @@
 import { TableVisualization } from '../src/Table';
-import { Table } from 'fixed-data-table';
+import { Table } from 'fixed-data-table-2';
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 

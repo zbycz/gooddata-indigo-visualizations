@@ -2,7 +2,7 @@ import 'fixed-data-table/dist/fixed-data-table.css';
 import './styles/table.scss';
 
 import React, { Component, PropTypes } from 'react';
-import { Table, Column, Cell } from 'fixed-data-table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 import Dimensions from 'react-dimensions';
 import classNames from 'classnames';
 import { noop } from 'lodash';
@@ -173,6 +173,7 @@ export class TableVisualization extends Component {
             <div className={tableComponentClasses}>
                 <div className={tableComponentContentClasses}>
                     <Table
+                        touchScrollEnabled
                         headerHeight={DEFAULT_HEADER_HEIGHT}
                         rowHeight={DEFAULT_ROW_HEIGHT}
                         rowsCount={this.props.rows.length}

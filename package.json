@@ -80,7 +80,7 @@
   },
   "dependencies": {
     "classnames": "2.2.3",
-    "fixed-data-table": "0.6.0",
+    "fixed-data-table-2": "0.7.1",
     "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.3.0",
     "invariant": "2.2.1",
     "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils#v0.2.1",
