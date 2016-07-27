@@ -3,7 +3,6 @@ import get from 'lodash/get';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import compact from 'lodash/compact';
-import findIndex from 'lodash/findIndex';
 import uniqBy from 'lodash/uniqBy';
 import times from 'lodash/times';
 import constant from 'lodash/constant';
@@ -188,17 +187,25 @@ export function _getSeries(data, seriesNames, categories, indices) {
     }, {});
 
     // prepare data points
-    data.rawData.forEach(function(dataRow) {
-        var categoryItemIndex = 0;
+    if (indices.series !== -1) {
         if (indices.category !== -1) {
-            var categoryItemId = dataRow[indices.category].id;
-            categoryItemIndex = findIndex(categories, ['id', categoryItemId]);
-        }
+            var categoriesIndex = categories.reduce((acc, category, idx) => {
+                if (category) {
+                    acc[category.id] = idx; // eslint-disable-line no-param-reassign
+                }
+                return acc;
+            }, {});
 
-        if (indices.series !== -1) {
-            seriesData[dataRow[indices.series].id][categoryItemIndex] = dataRow[indices.metric];
+            data.rawData.forEach(function(dataRow) {
+                const categoryItemIndex = categoriesIndex[dataRow[indices.category].id];
+                seriesData[dataRow[indices.series].id][categoryItemIndex] = dataRow[indices.metric];
+            });
+        } else {
+            data.rawData.forEach(function(dataRow) {
+                seriesData[dataRow[indices.series].id][0] = dataRow[indices.metric];
+            });
         }
-    });
+    }
 
     // return series in the same order as requested in seriesNames
     return seriesNames.map(function(name, index) {
