@@ -76,6 +76,8 @@
     }
 
     .public_fixedDataTableCell_cellContent {
+        padding: 0 8px;
+        margin: 8px 0;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -107,6 +109,10 @@
 
             &:hover {
                 color: $gd-color-highlight;
+
+                .public_fixedDataTableCell_cellContent {
+                    background-color: $gd-color-highlight-dimmed;
+                }
             }
 
             .public_fixedDataTableCell_cellContent {
@@ -119,6 +125,7 @@
                 margin-left: 4px;
 
                 flex: 0 0 auto;
+
                 &:before {
                     content: "\e60d";
                     display: inherit;
