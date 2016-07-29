@@ -153,7 +153,6 @@ export class TableVisualization extends Component {
     render() {
         let { headers, containerWidth, containerHeight, containerMaxHeight } = this.props;
         let columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
-        let hasScrollbar = headers.length * MIN_COLUMN_WIDTH > containerWidth;
 
         const height = !!containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
         const tableComponentClasses = classNames(
@@ -162,16 +161,10 @@ export class TableVisualization extends Component {
                 'has-hidden-rows': this.props.hasHiddenRows
             }
         );
-        const tableComponentContentClasses = classNames(
-            'indigo-table-component-content',
-            {
-                'has-scrollbar': hasScrollbar
-            }
-        );
 
         return (
             <div className={tableComponentClasses}>
-                <div className={tableComponentContentClasses}>
+                <div className="indigo-table-component-content">
                     <Table
                         touchScrollEnabled
                         headerHeight={DEFAULT_HEADER_HEIGHT}

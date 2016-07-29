@@ -9,23 +9,25 @@
     overflow: hidden;
 
     &.has-hidden-rows {
-        &:after {
-            content: "";
-            display: block;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.03);
+        .indigo-table-component-content {
+            margin-bottom: -15px;
         }
 
-        .indigo-table-component-content {
-            margin-bottom: -17px;
-
-            &.has-scrollbar {
-                margin-bottom: -32px;
+        .fixedDataTableLayout_rowsContainer {
+            &:after {
+                content: "";
+                display: block;
+                position: absolute;
+                bottom: 13px;
+                left: 0;
+                right: 0;
+                border-top: 1px solid rgba(0, 0, 0, 0.08);
+                box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.03);
             }
+        }
+
+        .public_fixedDataTable_horizontalScrollbar {
+            transform: translateY(-15px); // Can't use margin because the component cancels the shift by updating position
         }
     }
 
