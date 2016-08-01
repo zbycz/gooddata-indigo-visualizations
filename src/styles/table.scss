@@ -78,8 +78,6 @@
     }
 
     .public_fixedDataTableCell_cellContent {
-        padding: 0 8px;
-        margin: 8px 0;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -164,6 +162,8 @@
         }
 
         .public_fixedDataTableCell_cellContent {
+            padding: 0 8px;
+            margin: 8px 0;
             line-height: 16px;
         }
     }
