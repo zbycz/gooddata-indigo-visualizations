@@ -97,11 +97,13 @@ export function _transposeData(headers, metrics, rawData) {
             });
 
             var metricValue = rawData[ri][metric.index],
-                parsedValue = parseFloat(metricValue);
+                parsedValue = parseFloat(metricValue),
+                y = isNaN(parsedValue) ? null : parsedValue;
 
             row.push({
                 format: metric.header.format || DEFAULT_FORMAT,
-                y: isNaN(parsedValue) ? null : parsedValue
+                y,
+                marker: { enabled: y !== null }
             });
 
             data.push(row);
