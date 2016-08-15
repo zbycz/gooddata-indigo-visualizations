@@ -1,4 +1,4 @@
-import { getSortInfo } from '../src/utils';
+import { getSortInfo } from '../utils';
 
 describe('Utils', function() {
     describe('getSortInfo', function() {

@@ -1,6 +1,6 @@
 import {
     getLineChartConfiguration
-} from '../src/highChartsCreators';
+} from '../highChartsCreators';
 
 describe('chartCreators', () => {
     describe('Line chart configuration', () => {

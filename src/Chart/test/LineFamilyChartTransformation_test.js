@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';
-import LineFamilyChartTransformation from '../src/LineFamilyChartTransformation';
-import { data, config } from './fixtures';
+import LineFamilyChartTransformation from '../LineFamilyChartTransformation';
+import { data, config } from '../../test/fixtures';
 
 const {
     renderIntoDocument

@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import includes from 'lodash/includes';
 import invariant from 'invariant';
 
 import './styles/chart.scss';
 
-import LineFamilyChartTransformation from './LineFamilyChartTransformation';
-import TableTransformation from './TableTransformation';
+import LineFamilyChartTransformation from './Chart/LineFamilyChartTransformation';
+import TableTransformation from './Table/TableTransformation';
 import * as VisualizationTypes from './VisualizationTypes';
 
-import { isEqual, isFunction, omitBy } from 'lodash';
+import { isEqual, isFunction, omitBy, includes } from 'lodash';
 
 function isLineFamily(visType) {
     return includes([

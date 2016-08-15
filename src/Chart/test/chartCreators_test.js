@@ -8,11 +8,11 @@ import {
     showInPercent,
     generateTooltipFn,
     getLineFamilyChartData
-} from '../src/chartCreators';
+} from '../chartCreators';
 
 import {
     _transformMetrics
-} from '../src/transformation';
+} from '../transformation';
 
 describe('chartCreators', () => {
     let config, mockData, mockHeaders;

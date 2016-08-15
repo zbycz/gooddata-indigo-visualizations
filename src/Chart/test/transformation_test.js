@@ -2,7 +2,7 @@
 import find from 'lodash/find';
 import map from 'lodash/map';
 
-import * as Transformation from '../src/transformation';
+import * as Transformation from '../transformation';
 
 describe('Transformation', function() {
     describe('splitting headers', function() {

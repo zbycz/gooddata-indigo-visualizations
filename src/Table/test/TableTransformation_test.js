@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
-import TableTransformation from '../src/TableTransformation';
-import { data, config } from './fixtures';
+import TableTransformation from '../TableTransformation';
+import { data, config } from '../../test/fixtures';
 
 const {
     renderIntoDocument

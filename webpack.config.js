@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const fs = require('fs');
 
 module.exports = function getWebpackConfig() {
     const year = new Date().getFullYear();
@@ -20,11 +20,12 @@ module.exports = function getWebpackConfig() {
                     test: /\.jsx?$/,
                     loader: 'babel?' + JSON.stringify({ presets: ['es2015', 'react', 'stage-0'] }),
                     include: [
-                        path.resolve(__dirname, 'src'),
-                        path.resolve(__dirname, 'example'),
-                        path.resolve(__dirname, 'test'),
-                        path.resolve(__dirname, 'node_modules/js-utils'),
-                        path.resolve(__dirname, 'node_modules/goodstrap')
+                        path.join(__dirname, 'src'),
+                        path.join(__dirname, 'example'),
+                        path.join(__dirname, 'test'),
+                        path.join(__dirname, 'node_modules/js-utils'),
+                        fs.realpathSync(__dirname + '/node_modules/goodstrap/packages'),
+                        fs.realpathSync(__dirname + '/node_modules/goodstrap/node_modules/js-utils')
                     ]
                 },
 
@@ -75,26 +76,13 @@ module.exports = function getWebpackConfig() {
             // Allow to omit extensions when requiring these files
             extensions: ['', '.js', '.jsx', '.scss'],
             modulesDirectories: [
-                'node_modules',
-                path.join('node_modules/goodstrap/packages')
+                'node_modules'
             ],
             alias: {
                 react: path.join(__dirname, 'node_modules/react/')
             }
         },
 
-        plugins: [
-            new webpack.NormalModuleReplacementPlugin(/core\/styles\/themes\//, function(requestObject) {
-                /* eslint-disable no-param-reassign */
-                requestObject.request = requestObject.request.replace(
-                    './core/styles/themes/',
-                    '../../node_modules/goodstrap/packages/core/styles/themes/'
-                );
-                /* eslint-enable no-param-reassign */
-            }),
-            new webpack.ProvidePlugin({
-                React: 'react'
-            })
-        ]
+        plugins: []
     };
 };

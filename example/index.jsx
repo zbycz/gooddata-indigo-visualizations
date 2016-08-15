@@ -6,6 +6,7 @@ import { partial, assign } from 'lodash';
 import translations from '../src/translations/en';
 import { translation } from 'js-utils';
 
+import 'goodstrap/packages/theme-indigo.scss';
 import './example';
 
 import ExampleVisualization from './ExampleVisualization';
@@ -34,7 +35,7 @@ ReactDOM.render(
             <ExampleVisualization config={TestConfig.bar} data={TestData.barChart2Series} />
             <ExampleVisualization
                 isResponsive
-                config={assign({}, TestConfig.table, { onMore, onLess })}
+                config={assign({}, TestConfig.table, { onMore, onLess, sortInTooltip: true })}
                 data={TestData.stackedBar}
             />
             <ExampleVisualization config={TestConfig.table} data={TestData.stackedBar} />

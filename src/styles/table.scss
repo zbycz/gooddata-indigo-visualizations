@@ -1,5 +1,7 @@
 @import "~goodstrap/packages/core/styles/themes/indigo/colors";
 
+$table-small-only: "only screen and (max-width: 480px)";
+
 .indigo-table-component {
     position: relative;
     color: #333333;
@@ -196,4 +198,84 @@
 
 .gd-cell-ordered {
     font-weight: bold;
+}
+
+.gd-table-header-bubble-overlay {
+    @media #{$table-small-only} {
+        left: 20px !important;
+        right: 20px !important;
+    }
+}
+
+.gd-table-header-bubble {
+    max-width: 300px;
+
+    @media #{$table-small-only} {
+        max-width: none;
+
+        &.bubble.arrow-top-direction {
+            .arrow-position {
+                margin: 0;
+            }
+         }
+     }
+
+    .bubble-content {
+        padding: 14px 20px;
+
+        .content {
+            overflow: visible;
+            color: $gd-color-label;
+        }
+    }
+
+    .content {
+        .close-button {
+            position: absolute;
+            top: 7px;
+            right: 20px;
+        }
+
+        .gd-dialog-header {
+            margin-bottom: 10px;
+            white-space: normal;
+        }
+
+        .gd-heading-2 {
+            line-height: 24px;
+        }
+    }
+
+    .buttons {
+        margin: 10px -20px 0;
+        padding: 20px 20px 6px;
+        border-top: 1px solid $border-color;
+
+        .button-sort-asc,
+        .button-sort-desc {
+            padding-right: 25px;
+
+            &:after {
+                right: 10px;
+                font-size: 10px;
+            }
+        }
+
+        .button-sort-asc {
+            &:after {
+                top: -2px;
+                transform: rotate(180deg);
+            }
+        }
+
+        .button-sort-desc {
+            &:after {
+                top: 3px;
+            }
+        }
+    }
+
+    .button + .button {
+        margin-left: 20px;
+    }
 }

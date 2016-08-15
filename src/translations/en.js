@@ -2,5 +2,8 @@
 
 export default {
     more: 'Show More',
-    less: 'Show Less'
+    less: 'Show Less',
+    sorting: 'Column sorting',
+    asc: 'Ascending',
+    desc: 'Descending'
 };

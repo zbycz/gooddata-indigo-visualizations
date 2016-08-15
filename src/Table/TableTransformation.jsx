@@ -34,7 +34,7 @@ export default class TableTransformation extends Component {
             headers,
             sortBy,
             sortDir,
-            ...pick(config, ['rowsPerPage', 'onMore', 'onLess'])
+            ...pick(config, ['rowsPerPage', 'onMore', 'onLess', 'sortInTooltip'])
         };
 
         if (this.props.height) {

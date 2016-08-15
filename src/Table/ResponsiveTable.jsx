@@ -5,6 +5,8 @@ import { bindAll, noop } from 'lodash';
 
 export const HEIGHT_PADDING = 20;
 
+const isTouchDevice = 'ontouchstart' in document.documentElement;
+
 export default class ResponsiveTable extends Component {
     static propTypes = {
         rowsPerPage: PropTypes.number.isRequired,
@@ -78,7 +80,8 @@ export default class ResponsiveTable extends Component {
             rows: props.rows.slice(0, this.getRowCount(this.state.page)),
             containerHeight: 0,
             containerMaxHeight: this.getContainerMaxHeight(),
-            hasHiddenRows: !this.isMoreButtonDisabled()
+            hasHiddenRows: !this.isMoreButtonDisabled(),
+            sortInTooltip: isTouchDevice
         };
 
         return (

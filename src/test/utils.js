@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
 
-import translations from '../src/translations/en';
+import translations from '../translations/en';
 import { translation } from 'js-utils';
 
 const defaultIntlOptions = {

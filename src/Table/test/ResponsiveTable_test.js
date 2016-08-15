@@ -2,11 +2,11 @@ import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import { range } from 'lodash';
 
-import { withIntl } from './utils.js';
+import { withIntl } from '../../test/utils';
 
-import ResponsiveTable from '../src/ResponsiveTable';
-import TableVisualization from '../src/Table';
-import { TableControls } from '../src/TableControls';
+import ResponsiveTable from '../ResponsiveTable';
+import TableVisualization from '../Table';
+import { TableControls } from '../TableControls';
 
 const {
     renderIntoDocument,

@@ -16,7 +16,7 @@ import {
     isDataOfReasonableSize
 } from './highChartsCreators';
 
-import { LINE_CHART, BAR_CHART, COLUMN_CHART } from './VisualizationTypes';
+import { LINE_CHART, BAR_CHART, COLUMN_CHART } from '../VisualizationTypes';
 import LineFamilyChart from './LineFamilyChart';
 
 export function renderLineFamilyChart(props) {

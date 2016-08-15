@@ -1,4 +1,4 @@
-import { transformConfigToLine } from '../src/chartConfigCreators';
+import { transformConfigToLine } from '../chartConfigCreators';
 
 describe('chartConfigCreators', () => {
     describe('transformConfigToLine', () => {
