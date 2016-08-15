@@ -15,7 +15,7 @@ const MOBILE_SORT_TOOLTIP_OFFSET = 20;
 const ALIGN_LEFT = 'left';
 const ALIGN_RIGHT = 'right';
 
-const FULLSCREEN_TOOLTIP_VIEPORT_THRESHOLD = 480;
+const FULLSCREEN_TOOLTIP_VIEWPORT_THRESHOLD = 480;
 
 const simplifyText = string.simplifyText;
 
@@ -72,7 +72,7 @@ export function getColumnAlign(column) {
 }
 
 function fullscreenTooltipEnabled() {
-    return window.innerWidth <= FULLSCREEN_TOOLTIP_VIEPORT_THRESHOLD;
+    return window.innerWidth <= FULLSCREEN_TOOLTIP_VIEWPORT_THRESHOLD;
 }
 
 export function calculateArrowPositions(column, tableScrollX, tableWrapRef) {
