@@ -256,21 +256,16 @@ $table-small-only: "only screen and (max-width: 480px)";
             padding-right: 25px;
 
             &:after {
-                right: 10px;
                 font-size: 10px;
+                line-height: 23px;
             }
         }
 
-        .button-sort-asc {
-            &:after {
-                top: -2px;
-                transform: rotate(180deg);
-            }
-        }
-
-        .button-sort-desc {
-            &:after {
-                top: 3px;
+        .button.button-primary {
+            &.button-sort-asc {
+                &:after {
+                    transform: rotate(180deg) translateY(50%);
+                }
             }
         }
     }
