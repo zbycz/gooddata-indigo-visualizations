@@ -11,8 +11,9 @@ $table-small-only: "only screen and (max-width: 480px)";
     overflow: hidden;
 
     &.has-hidden-rows {
-        .indigo-table-component-content {
-            margin-bottom: -17px;
+        .indigo-table-component-content,
+        .indigo-table-background-filler {
+            margin-bottom: -15px;
         }
 
         .fixedDataTableLayout_rowsContainer {

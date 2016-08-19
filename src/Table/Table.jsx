@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import Dimensions from 'react-dimensions';
 import classNames from 'classnames';
-import { noop, partial, uniqueId, debounce } from 'lodash';
+import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
 import Bubble from 'goodstrap/packages/Bubble/ReactBubble';
 import TableSortBubbleContent from './TableSortBubbleContent';
@@ -59,7 +59,9 @@ export class TableVisualization extends Component {
             hintSortBy: null,
             sortBubble: {
                 visible: false
-            }
+            },
+            width: 0,
+            height: 0
         };
 
         this.renderTooltipHeader = this.renderTooltipHeader.bind(this);
@@ -79,6 +81,7 @@ export class TableVisualization extends Component {
         if (this.isSticky(this.props.stickyHeader)) {
             this.setListeners('add');
             this.scrolled();
+            this.checkTableDimensions();
         }
     }
 
@@ -98,6 +101,12 @@ export class TableVisualization extends Component {
 
         if (nextIsSticky && current.stickyHeader !== nextProps.stickyHeader) {
             this.scrolled();
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.isSticky(this.props.stickyHeader)) {
+            this.checkTableDimensions();
         }
     }
 
@@ -159,22 +168,19 @@ export class TableVisualization extends Component {
         };
     }
 
-    getTableDimensions() {
-        if (this.table) {
-            const rect = this.table.getBoundingClientRect();
-            return { width: rect.width, height: rect.height };
-        }
-
-        const { containerWidth, containerHeight, containerMaxHeight } = this.props;
-
-        return {
-            width: containerWidth,
-            height: containerMaxHeight || containerHeight || DEFAULT_HEIGHT
-        };
-    }
-
     isSticky(stickyHeader) {
         return stickyHeader >= 0;
+    }
+
+    checkTableDimensions() {
+        if (this.table) {
+            const { width, height } = this.state;
+            const rect = this.table.getBoundingClientRect();
+
+            if (width !== rect.width || height !== rect.height) {
+                this.setState(pick(rect, 'width', 'height'));
+            }
+        }
     }
 
     scrollHeader(stopped = false) {
@@ -380,7 +386,12 @@ export class TableVisualization extends Component {
                         {this.renderColumns(columnWidth)}
                     </Table>
                 </div>
-                {isSticky ? <div style={this.getTableDimensions()} /> : false}
+                {isSticky ? (
+                    <div
+                        className="indigo-table-background-filler"
+                        style={{ ...pick(this.state, 'width', 'height') }}
+                    />
+                ) : false}
             </div>
         );
     }
