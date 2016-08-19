@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Visualization from '../src/Visualization';
 import DefaultSizeVisualization from './DefaultSizeVisualization';
-import Table from '../src/Table/ResponsiveTable';
+import ResponsiveTable from '../src/Table/ResponsiveTable';
 import ExampleTable from './ExampleTable';
 
 export default class ExampleStickyHeaderTable extends Component {
@@ -11,8 +11,7 @@ export default class ExampleStickyHeaderTable extends Component {
             data: this.props.data,
             config: {
                 ...this.props.config,
-                stickyHeader: 0,
-                sortInTooltip: true
+                stickyHeader: 0
             },
             onSortChange: (...args) => console.log('Table sorted', args) // eslint-disable-line
         };
@@ -24,7 +23,7 @@ export default class ExampleStickyHeaderTable extends Component {
                     <Visualization
                         {...props}
                         rowsPerPage={8}
-                        tableRenderer={ExampleTable(Table)} // eslint-disable-line new-cap
+                        tableRenderer={ExampleTable(ResponsiveTable)} // eslint-disable-line new-cap
                     />
                 </DefaultSizeVisualization>
             </div>

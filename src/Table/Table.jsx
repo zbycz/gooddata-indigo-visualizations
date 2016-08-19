@@ -98,14 +98,11 @@ export class TableVisualization extends Component {
                 this.setListeners('add');
             }
         }
-
-        if (nextIsSticky && current.stickyHeader !== nextProps.stickyHeader) {
-            this.scrolled();
-        }
     }
 
     componentDidUpdate() {
         if (this.isSticky(this.props.stickyHeader)) {
+            this.scrollHeader(true);
             this.checkTableDimensions();
         }
     }
@@ -136,7 +133,6 @@ export class TableVisualization extends Component {
         style.position = position;
         style.left = `${Math.round(x)}px`;
         style.top = `${Math.round(y)}px`;
-        style.zIndex = position ? 1000 : 1;
     }
 
     getSortFunc(column, index) {
@@ -184,7 +180,7 @@ export class TableVisualization extends Component {
     }
 
     scrollHeader(stopped = false) {
-        const { stickyHeader, sortInTooltip } = this.props;
+        const { stickyHeader, sortInTooltip, hasHiddenRows } = this.props;
         const boundingRect = this.table.getBoundingClientRect();
 
         if (!stopped && sortInTooltip && this.state.sortBubble.visible) {
@@ -196,6 +192,15 @@ export class TableVisualization extends Component {
             boundingRect.top < stickyHeader - boundingRect.height
         ) {
             this.setHeader();
+            return;
+        }
+
+        const headerOffset = DEFAULT_HEADER_HEIGHT + (hasHiddenRows ? 2 : 1) * DEFAULT_ROW_HEIGHT;
+
+        if (boundingRect.bottom >= stickyHeader &&
+            boundingRect.bottom < stickyHeader + headerOffset
+        ) {
+            this.setHeader('absolute', 0, boundingRect.height - headerOffset);
             return;
         }
 
