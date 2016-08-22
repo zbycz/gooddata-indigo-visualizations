@@ -26,7 +26,7 @@ export default class TableTransformation extends Component {
     };
 
     render() {
-        const { data: { headers, rawData }, config } = this.props;
+        const { data: { headers, rawData }, config, height, onSortChange } = this.props;
         const { sortBy, sortDir } = getSortInfo(config);
 
         const tableConfig = {
@@ -34,11 +34,12 @@ export default class TableTransformation extends Component {
             headers,
             sortBy,
             sortDir,
-            ...pick(config, ['rowsPerPage', 'onMore', 'onLess', 'sortInTooltip'])
+            ...pick(config, ['rowsPerPage', 'onMore', 'onLess', 'sortInTooltip', 'stickyHeader']),
+            onSortChange
         };
 
-        if (this.props.height) {
-            tableConfig.containerHeight = this.props.height;
+        if (height) {
+            tableConfig.containerHeight = height;
         }
 
         return this.props.tableRenderer(tableConfig);

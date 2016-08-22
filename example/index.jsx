@@ -10,6 +10,8 @@ import 'goodstrap/packages/theme-indigo.scss';
 import './example';
 
 import ExampleVisualization from './ExampleVisualization';
+import ExampleStickyHeaderTable from './ExampleStickyHeaderTable';
+
 import * as TestConfig from './test_config';
 import * as TestData from './test_data';
 
@@ -39,6 +41,8 @@ ReactDOM.render(
                 data={TestData.stackedBar}
             />
             <ExampleVisualization config={TestConfig.table} data={TestData.stackedBar} />
+            <ExampleStickyHeaderTable config={TestConfig.table} data={TestData.stackedBar} />
+            <div style={{ height: 600 }}></div>
         </div>
     </IntlProvider>,
     document.getElementById('viz-example')

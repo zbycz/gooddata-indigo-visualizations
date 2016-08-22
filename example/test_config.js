@@ -109,5 +109,6 @@ export const stackedBar = {
     }
 };
 
+
 export const table = assign({}, stackedBar, { type: 'table', rowsPerPage: 10 });
 export const bar = assign({}, barChart2Series, { type: 'bar' });
