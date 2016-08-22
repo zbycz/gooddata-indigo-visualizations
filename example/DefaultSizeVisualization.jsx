@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
-export default function DefaultSizeVisualization(props) {
+function DefaultSizeVisualization(props) {
     return (
         <div>
             {props.children}
         </div>
     );
 }
+
+DefaultSizeVisualization.propTypes = {
+    children: PropTypes.element.isRequired
+};
+
+export default DefaultSizeVisualization;

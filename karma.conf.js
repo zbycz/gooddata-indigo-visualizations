@@ -1,12 +1,10 @@
-/* eslint object-shorthand: 0 */
+const webpackTestConfig = require('./webpack.test.config');
+const _ = require('lodash');
 
-var webpackTestConfig = require('./webpack.test.config.js');
-var _ = require('lodash');
+module.exports = (config) => {
+    const codeCoverage = _.includes(process.argv, '--ci');
 
-module.exports = function(config) {
-    var codeCoverage = _.includes(process.argv, '--ci');
-
-    var reporters = ['mocha'];
+    const reporters = ['mocha'];
 
     if (codeCoverage) {
         reporters.push('junit', 'coverage');
@@ -28,7 +26,7 @@ module.exports = function(config) {
             'karma.tests.js': ['webpack', 'sourcemap']
         },
 
-        webpack: webpackTestConfig({ codeCoverage: codeCoverage }),
+        webpack: webpackTestConfig({ codeCoverage }),
 
         webpackMiddleware: {
             stats: {
@@ -41,7 +39,7 @@ module.exports = function(config) {
 
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-        reporters: reporters,
+        reporters,
 
         coverageReporter: {
             reporters: [

@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Visualization from '../src/Visualization';
 import DefaultSizeVisualization from './DefaultSizeVisualization';
 import ResponsiveTable from '../src/Table/ResponsiveTable';
 import ExampleTable from './ExampleTable';
 
 export default class ExampleStickyHeaderTable extends Component {
+
+    static propTypes = {
+        config: PropTypes.object.isRequired,
+        data: PropTypes.object.isRequired
+    };
 
     render() {
         const props = {

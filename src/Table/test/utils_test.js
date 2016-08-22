@@ -1,7 +1,7 @@
 import { getSortInfo } from '../utils';
 
-describe('Utils', function() {
-    describe('getSortInfo', function() {
+describe('Utils', () => {
+    describe('getSortInfo', () => {
         let config;
 
         beforeEach(() => {

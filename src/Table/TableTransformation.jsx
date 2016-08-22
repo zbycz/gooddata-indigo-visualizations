@@ -17,7 +17,8 @@ export default class TableTransformation extends Component {
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
         tableRenderer: PropTypes.func.isRequired,
-        height: PropTypes.number
+        height: PropTypes.number,
+        onSortChange: PropTypes.func
     };
 
     static defaultProps = {

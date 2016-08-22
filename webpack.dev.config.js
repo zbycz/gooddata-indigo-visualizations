@@ -1,26 +1,26 @@
-var _ = require('lodash');
-var path = require('path');
-var webpack = require('webpack');
-var getWebpackConfig = require('./webpack.config.js');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const _ = require('lodash');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const getWebpackConfig = require('./webpack.config');
 
 const webpackConfig = getWebpackConfig();
 
 module.exports = function createDevConfig(config) {
-    var devConfig = _.assign(webpackConfig, {
+    const devConfig = _.assign(webpackConfig, {
         devtool: 'cheap-inline-source-map',
 
         output: {
             path: path.join(__dirname, 'dist'),
             // Specify complete path to force
             // chrome/FF load the images
-            publicPath: 'https://localhost:' + config.port + '/',
+            publicPath: `https://localhost:${config.port}/`,
             filename: '[name].js'
         }
     });
 
-    _.keysIn(devConfig.entry).forEach(function(key) {
-        var currentValue = devConfig.entry[key];
+    _.keysIn(devConfig.entry).forEach((key) => {
+        const currentValue = devConfig.entry[key];
 
         devConfig.entry[key] = currentValue.concat(
             'webpack/hot/dev-server',
@@ -28,10 +28,10 @@ module.exports = function createDevConfig(config) {
         );
     });
 
-    devConfig.module.loaders.forEach(function(loaderDef) {
+    devConfig.module.loaders.forEach((loaderDef) => {
         if (loaderDef.test.toString().indexOf('.js') > 0) {
             /* eslint-disable no-param-reassign */
-            loaderDef.loader = 'react-hot!' + loaderDef.loader;
+            loaderDef.loader = `react-hot!${loaderDef.loader}`;
             /* eslint-enable no-param-reassign */
         }
     });

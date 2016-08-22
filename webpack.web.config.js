@@ -1,9 +1,9 @@
-var _ = require('lodash');
-var path = require('path');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var getWebpackConfig = require('./webpack.config.js');
+const _ = require('lodash');
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const getWebpackConfig = require('./webpack.config');
 
 const pkg = require('./package.json');
 const execSync = require('child_process').execSync;
@@ -18,7 +18,7 @@ const license = `/*!
  * ${date}
  */\n`;
 
-var uglifyOptions = {
+const uglifyOptions = {
     mangle: false,
     compress: {
         sequences: true,
@@ -35,17 +35,17 @@ var uglifyOptions = {
 
 module.exports = function createWebConfig() {
     const OUTPUT_DIR = path.join(__dirname, '/web/');
-    var distWebConfig = _.assign(webpackConfig, {
+    const distWebConfig = _.assign(webpackConfig, {
         output: {
             path: OUTPUT_DIR,
             filename: '[name].[hash].js'
         }
     });
 
-    distWebConfig.module.loaders.filter(function(definition) {
+    distWebConfig.module.loaders.filter((definition) => {
         return definition.loader.indexOf('!css') !== -1;
-    }).forEach(function(loaderDefinition) {
-        var loader = loaderDefinition.loader.replace('style!', '');
+    }).forEach((loaderDefinition) => {
+        const loader = loaderDefinition.loader.replace('style!', '');
 
         loaderDefinition.loader = ExtractTextPlugin.extract('style', loader); // eslint-disable-line
     });
@@ -70,9 +70,9 @@ module.exports = function createWebConfig() {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.optimize.DedupePlugin(),
 
-        function() {
-            this.plugin('done', function(stats) {
-                var filename = path.join(OUTPUT_DIR, 'stats.json');
+        function collectStats() {
+            this.plugin('done', (stats) => {
+                const filename = path.join(OUTPUT_DIR, 'stats.json');
                 require('fs').writeFileSync(filename, JSON.stringify(stats.toJson(), null, '\t'));
             });
         }

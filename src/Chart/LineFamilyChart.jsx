@@ -3,7 +3,8 @@ import React, { Component, PropTypes } from 'react';
 
 export default class LineFamilyChart extends Component {
     static propTypes = {
-        hcOptions: PropTypes.object.isRequired
+        hcOptions: PropTypes.object.isRequired,
+        chartOptions: PropTypes.object.isRequired
     };
 
     constructor(props) {
@@ -24,7 +25,6 @@ export default class LineFamilyChart extends Component {
     render() {
         return (
             <ReactHighcharts
-                ref="chart"
                 config={this.props.hcOptions}
                 callback={this.afterRender}
             />

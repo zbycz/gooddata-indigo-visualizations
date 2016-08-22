@@ -4,6 +4,7 @@ const fs = require('fs');
 
 module.exports = function getWebpackConfig() {
     const year = new Date().getFullYear();
+    const babelOptions = JSON.stringify({ presets: ['es2015', 'react', 'stage-0'] });
     return {
         entry: {
             example: ['highcharts', './example/index']
@@ -18,14 +19,14 @@ module.exports = function getWebpackConfig() {
             loaders: [
                 {
                     test: /\.jsx?$/,
-                    loader: 'babel?' + JSON.stringify({ presets: ['es2015', 'react', 'stage-0'] }),
+                    loader: `babel?${babelOptions}`,
                     include: [
                         path.join(__dirname, 'src'),
                         path.join(__dirname, 'example'),
                         path.join(__dirname, 'test'),
                         path.join(__dirname, 'node_modules/js-utils'),
-                        fs.realpathSync(__dirname + '/node_modules/goodstrap/packages'),
-                        fs.realpathSync(__dirname + '/node_modules/goodstrap/node_modules/js-utils')
+                        fs.realpathSync(`${__dirname}/node_modules/goodstrap/packages`),
+                        fs.realpathSync(`${__dirname}/node_modules/goodstrap/node_modules/js-utils`)
                     ]
                 },
 

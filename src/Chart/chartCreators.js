@@ -9,31 +9,32 @@ import isNumber from 'lodash/isNumber';
 import escape from 'lodash/escape';
 
 import {
+    colors2Object,
+    numberFormat
+} from 'gdc-numberjs/lib/number';
+
+import {
     transformData,
     enrichHeaders,
     getChartData,
     getColorPalette
 } from './transformation';
 
-import {
-    colors2Object,
-    numberFormat
-} from 'gdc-numberjs/lib/number';
 
 export function propertiesToHeaders(config, _headers) { // TODO export for test only
-    let { headers } = enrichHeaders(_headers);
-    const res = keys(config).reduce(function(result, field) {
-        var fieldContent = get(config, field);
+    const { headers } = enrichHeaders(_headers);
+    const res = keys(config).reduce((result, field) => {
+        const fieldContent = get(config, field);
         return set(result, field, find(headers, ['uri', fieldContent]));
     }, {});
     return res;
 }
 
 export function getIndices(config, headers) { // TODO export only for test
-    var headerUris = map(headers, 'uri');
-    var metric = indexOf(headerUris, '/metricValues');
-    var category = indexOf(headerUris, config.x);
-    var series = indexOf(headerUris, config.color);
+    const headerUris = map(headers, 'uri');
+    const metric = indexOf(headerUris, '/metricValues');
+    const category = indexOf(headerUris, config.x);
+    const series = indexOf(headerUris, config.color);
 
     return { metric, category, series };
 }
@@ -43,13 +44,13 @@ export function isMetricNamesInSeries(config, headers) { // TODO export only for
 }
 
 export function getLineFamilyChartData(config, rawData) {
-    var data = transformData(rawData);
+    const data = transformData(rawData);
 
     // prepare series, categories and data
-    var indices = getIndices(config, data.headers);
+    const indices = getIndices(config, data.headers);
 
     // configure transformation. Sort data only if metric names not in series.
-    var configuration = {
+    const configuration = {
         indices,
         sortSeries: !isMetricNamesInSeries(config, data.headers)
     };
@@ -66,7 +67,7 @@ export function getCategoryAxisLabel(config, headers) { // TODO export only for 
 }
 
 export function getMetricAxisLabel(config, headers) {
-    var metrics = get(propertiesToHeaders(config, headers), 'color.metrics', []);
+    const metrics = get(propertiesToHeaders(config, headers), 'color.metrics', []);
 
     if (!metrics.length) {
         return get(propertiesToHeaders(config, headers), 'y.title', '');
@@ -89,7 +90,7 @@ export function generateTooltipFn(options) {
         return colors2Object(numberFormat(val, format));
     };
 
-    return function(point) {
+    return (point) => {
         const formattedValue = escape(formatValue(point.y, point.format).label);
         const category = isNumber(point.category) ? '' :
             escape(unEscapeAngleBrackets(point.category));
@@ -105,7 +106,7 @@ export function generateTooltipFn(options) {
     };
 }
 
-export var DEFAULT_COLOR_PALETTE = [
+export const DEFAULT_COLOR_PALETTE = [
     'rgb(20,178,226)',
     'rgb(0,193,141)',
     'rgb(229,77,66)',

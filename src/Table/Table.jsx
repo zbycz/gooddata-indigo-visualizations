@@ -1,6 +1,3 @@
-import 'fixed-data-table/dist/fixed-data-table.css';
-import '../styles/table.scss';
-
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
@@ -8,8 +5,12 @@ import Dimensions from 'react-dimensions';
 import classNames from 'classnames';
 import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
+import 'fixed-data-table/dist/fixed-data-table.css'; // TODO import from fixed-data-table-2
+
 import Bubble from 'goodstrap/packages/Bubble/ReactBubble';
 import TableSortBubbleContent from './TableSortBubbleContent';
+
+import '../styles/table.scss';
 
 import {
     getNextSortDir,
@@ -75,6 +76,7 @@ export class TableVisualization extends Component {
     }
 
     componentDidMount() {
+        // eslint-disable-next-line react/no-find-dom-node
         this.table = ReactDOM.findDOMNode(this.tableRef);
         this.header = this.table.querySelector('.fixedDataTableRowLayout_rowWrapper');
 
@@ -195,7 +197,7 @@ export class TableVisualization extends Component {
             return;
         }
 
-        const headerOffset = DEFAULT_HEADER_HEIGHT + (hasHiddenRows ? 2 : 1) * DEFAULT_ROW_HEIGHT;
+        const headerOffset = DEFAULT_HEADER_HEIGHT + ((hasHiddenRows ? 2 : 1) * DEFAULT_ROW_HEIGHT);
 
         if (boundingRect.bottom >= stickyHeader &&
             boundingRect.bottom < stickyHeader + headerOffset
@@ -321,8 +323,8 @@ export class TableVisualization extends Component {
     renderCell(column, index) {
         const { sortBy } = this.props;
         const isSorted = sortBy === index;
-        return props => {
-            const { rowIndex, columnKey } = props;
+        return cellProps => {
+            const { rowIndex, columnKey } = cellProps;
 
             const content = this.props.rows[rowIndex][columnKey];
             const classes = getCellClassNames(rowIndex, columnKey, isSorted);
@@ -330,7 +332,7 @@ export class TableVisualization extends Component {
             const { style, label } = getStyledLabel(column, content);
 
             return (
-                <Cell {...props}>
+                <Cell {...cellProps}>
                     <span className={classes} style={style}>{label}</span>
                 </Cell>
             );
@@ -341,19 +343,17 @@ export class TableVisualization extends Component {
         const renderHeader =
             this.props.sortInTooltip ? this.renderTooltipHeader : this.renderDefaultHeader;
 
-        return this.props.headers.map((column, index) => {
-            return (
-                <Column
-                    key={`${index}.${column.id}`}
-                    width={columnWidth}
-                    align={getColumnAlign(column)}
-                    columnKey={index}
-                    header={renderHeader(column, index, columnWidth)}
-                    cell={this.renderCell(column, index)}
-                    allowCellsRecycling
-                />
-            );
-        });
+        return this.props.headers.map((column, index) =>
+            <Column
+                key={`${index}.${column.id}`}
+                width={columnWidth}
+                align={getColumnAlign(column)}
+                columnKey={index}
+                header={renderHeader(column, index, columnWidth)}
+                cell={this.renderCell(column, index)}
+                allowCellsRecycling
+            />
+        );
     }
 
     render() {
@@ -368,7 +368,7 @@ export class TableVisualization extends Component {
         const columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
         const isSticky = this.isSticky(stickyHeader);
 
-        const height = !!containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
+        const height = containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
         const componentClasses =
             classNames('indigo-table-component', { 'has-hidden-rows': hasHiddenRows });
         const componentContentClasses =

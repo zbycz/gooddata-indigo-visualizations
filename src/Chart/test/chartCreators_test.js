@@ -15,7 +15,10 @@ import {
 } from '../transformation';
 
 describe('chartCreators', () => {
-    let config, mockData, mockHeaders;
+    let config;
+    let mockData;
+    let mockHeaders;
+
     beforeEach(() => {
         config = {
             type: 'column',
@@ -30,21 +33,24 @@ describe('chartCreators', () => {
             orderBy: [],
             where: {}
         };
-        mockData = _transformMetrics({ headers: [
-            {
-                type: 'attrLabel',
-                id: 'healthdata_finish.aci81lMifn6q',
-                uri: '/gdc/md/zro9kxjp2hejksfug8qemqwx6d92c940/obj/2577',
-                title: 'Quarter/Year (Health Data_finish)'
-            },
-            {
-                type: 'metric',
-                id: 'c54rxxM5coY6',
-                uri: '/gdc/md/zro9kxjp2hejksfug8qemqwx6d92c940/obj/2647',
-                title: 'Average kilometers',
-                format: '#,##0.00'
-            }
-        ], rawData: [] });
+        mockData = _transformMetrics({
+            headers: [
+                {
+                    type: 'attrLabel',
+                    id: 'healthdata_finish.aci81lMifn6q',
+                    uri: '/gdc/md/zro9kxjp2hejksfug8qemqwx6d92c940/obj/2577',
+                    title: 'Quarter/Year (Health Data_finish)'
+                },
+                {
+                    type: 'metric',
+                    id: 'c54rxxM5coY6',
+                    uri: '/gdc/md/zro9kxjp2hejksfug8qemqwx6d92c940/obj/2647',
+                    title: 'Average kilometers',
+                    format: '#,##0.00'
+                }
+            ],
+            rawData: []
+        });
         mockHeaders = mockData.headers;
     });
 
@@ -183,7 +189,8 @@ describe('chartCreators', () => {
                         type: 'metric',
                         id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
                         uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
-                        title: 'Email Click Rate - previous year', format: '#,##0.0%'
+                        title: 'Email Click Rate - previous year',
+                        format: '#,##0.0%'
                     }, {
                         type: 'metric',
                         id: 'bHPCwcn7cGns',

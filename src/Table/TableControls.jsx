@@ -13,15 +13,15 @@ export class TableControls extends Component {
         intl: intlShape
     };
 
-    getMessage(id) {
-        return this.props.intl.formatMessage({ id: `visualizations.${id}` });
-    }
-
     static defaultTypes = {
         isMoreButtonVisible: false,
         isMoreButtonDisabled: false,
         isLessButtonVisible: false
     };
+
+    getMessage(id) {
+        return this.props.intl.formatMessage({ id: `visualizations.${id}` });
+    }
 
     renderMore() {
         if (!this.props.isMoreButtonVisible || this.props.isMoreButtonDisabled) {

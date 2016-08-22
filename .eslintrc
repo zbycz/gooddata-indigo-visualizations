@@ -18,16 +18,17 @@
 
     "rules": {
         "indent": [2, 4, { "SwitchCase": 1 }],
-        "comma-dangle": [2, "never"],
-        "strict": [0],
-        "no-var": [0],
-        "one-var": [0],
-        "prefer-const": [0],
-        "vars-on-top": [0],
-        "func-names": [0],
-        "space-before-function-paren": [2, "never"],
+        "react/jsx-indent": [2, 4],
         "react/jsx-indent-props": [2, 4],
-        "react/prop-types": [0]
+        "space-before-function-paren": [2, "never"],
+
+        "comma-dangle": [2, "never"],
+        "import/no-extraneous-dependencies": [0],
+        "global-require": [0],
+        "import/prefer-default-export": [0],
+        "import/no-named-as-default": [0],
+        "react/prefer-stateless-function": [0],
+        "arrow-body-style": [0]
     },
 
     "globals": {
