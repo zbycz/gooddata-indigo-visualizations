@@ -27,7 +27,7 @@ describe('chartConfigCreators', () => {
         };
 
         it('converts object with stack', () => {
-            let lineConfig = transformConfigToLine(Object.assign({}, config));
+            const lineConfig = transformConfigToLine(Object.assign({}, config));
             expect(lineConfig).to.eql({
                 type: 'column',
                 x: '',
@@ -41,12 +41,12 @@ describe('chartConfigCreators', () => {
         });
 
         it('converts object without stack', () => {
-            let withoutStackConfig = Object.assign({}, config);
+            const withoutStackConfig = Object.assign({}, config);
             withoutStackConfig.buckets.categories[0].category = Object.assign(
                 {}, category, { collection: 'attribute' }
             );
 
-            let lineConfig = transformConfigToLine(withoutStackConfig);
+            const lineConfig = transformConfigToLine(withoutStackConfig);
             expect(lineConfig).to.eql({
                 type: 'column',
                 x: '/gdc/md/project/obj/2',

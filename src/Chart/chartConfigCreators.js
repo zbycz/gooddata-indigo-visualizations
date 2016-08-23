@@ -7,9 +7,9 @@ function getFirstCategoryItem(categories, collections) {
 }
 
 export function transformConfigToLine(config) {
-    let getItem = partial(getFirstCategoryItem, config.buckets.categories),
-        category = getItem(['attribute', 'view', 'trend']),
-        stack = getItem(['stack', 'segment']);
+    const getItem = partial(getFirstCategoryItem, config.buckets.categories);
+    const category = getItem(['attribute', 'view', 'trend']);
+    const stack = getItem(['stack', 'segment']);
 
     const commonConfig = {
         type: config.type,

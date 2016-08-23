@@ -89,8 +89,8 @@ export function calculateArrowPositions(column, tableScrollX, tableWrapRef) {
     const min = offsetLeft + HEADER_PADDING;
     const max = tableWrapRect.right - MOBILE_SORT_TOOLTIP_OFFSET - HEADER_PADDING;
 
-    const left = column.width * column.index - tableScrollX
-        + (isLeftAligned ? HEADER_PADDING : column.width - HEADER_PADDING)
+    const left = ((column.width * column.index) - tableScrollX)
+        + (isLeftAligned ? HEADER_PADDING : (column.width - HEADER_PADDING))
         + offsetLeft;
     return {
         left: `${clamp(left, min, max)}px`

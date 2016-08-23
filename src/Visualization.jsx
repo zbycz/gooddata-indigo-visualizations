@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
+import { isEqual, isFunction, omitBy, includes } from 'lodash';
 
 import './styles/chart.scss';
 
@@ -7,7 +8,6 @@ import LineFamilyChartTransformation from './Chart/LineFamilyChartTransformation
 import TableTransformation from './Table/TableTransformation';
 import * as VisualizationTypes from './VisualizationTypes';
 
-import { isEqual, isFunction, omitBy, includes } from 'lodash';
 
 function isLineFamily(visType) {
     return includes([
@@ -44,6 +44,6 @@ export default class Visualization extends Component {
             );
         }
 
-        invariant(`Unknown visualization type: ${visType}`);
+        return invariant(`Unknown visualization type: ${visType}`);
     }
 }

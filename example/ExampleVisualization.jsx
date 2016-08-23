@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import ExampleChart from './ExampleChart';
 import ExampleTable from './ExampleTable';
@@ -7,7 +7,7 @@ import LineFamilyChart from '../src/Chart/LineFamilyChart';
 import ResponsiveTable from '../src/Table/ResponsiveTable';
 import Table from '../src/Table/Table';
 
-export default function ExampleVisualization(props) {
+function ExampleVisualization(props) {
     const TableRenderer = props.isResponsive ? ResponsiveTable : Table;
 
     return (
@@ -18,3 +18,9 @@ export default function ExampleVisualization(props) {
         />
     );
 }
+
+ExampleVisualization.propTypes = {
+    isResponsive: PropTypes.bool
+};
+
+export default ExampleVisualization;

@@ -1,9 +1,9 @@
 // Copyright (C) 2007-2016, GoodData(R) Corporation. All rights reserved.
-var webpackWebConfig = require('./webpack.web.config.js');
-var webpackDevConfig = require('./webpack.dev.config.js');
-var webpackTestConfig = require('./webpack.test.config.js');
+const webpackWebConfig = require('./webpack.web.config');
+const webpackDevConfig = require('./webpack.dev.config');
+const webpackTestConfig = require('./webpack.test.config');
 
-module.exports = function(grunt) {
+module.exports = (grunt) => {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -82,15 +82,17 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test', ['karma:unit']);
 
-    grunt.registerMultiTask('server', function() {
-        var middlewareFactory = require('./server.js');
-        var done = this.async();
-        var Grizzly = require('grunt-grizzly');
+    grunt.registerMultiTask('server', () => {
+        const middlewareFactory = require('./server');
+        const Grizzly = require('grunt-grizzly');
 
-        var webpackConfig = this.target === 'dev' ? webpackDevConfig : webpackTestConfig;
-        var webpackOptions = grunt.config.get('main.webpackOptions');
+        const currentTask = grunt.task.current;
+        const done = currentTask.async();
 
-        var options = {
+        const webpackConfig = currentTask.target === 'dev' ? webpackDevConfig : webpackTestConfig;
+        const webpackOptions = grunt.config.get('main.webpackOptions');
+
+        const options = {
             stub: middlewareFactory.createMiddleware(webpackConfig({
                 port: grunt.config.get('main.port')
             }), webpackOptions),
@@ -101,17 +103,17 @@ module.exports = function(grunt) {
             port: grunt.config.get('main.port')
         };
 
-        var grizzly = new Grizzly(options);
+        const grizzly = new Grizzly(options);
 
         // Shutdown & notify on error
-        grizzly.on('error', function(error) {
+        grizzly.on('error', (error) => {
             grunt.log.error('Grizzly error: %s', error);
             grunt.log.error('Stopping task grizzly');
 
             throw error;
         });
 
-        grizzly.on('start', function() {
+        grizzly.on('start', () => {
             // Continue to next task if keepAlive is not set
             if (!options.keepAlive) {
                 done();
@@ -122,7 +124,7 @@ module.exports = function(grunt) {
             }
         });
 
-        grizzly.on('close', function() {
+        grizzly.on('close', () => {
             grunt.log.error('Grizzly server closed');
             grunt.log.error('Stopping task grizzly');
 

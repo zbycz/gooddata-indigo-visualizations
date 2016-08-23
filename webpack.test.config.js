@@ -1,8 +1,8 @@
-var _ = require('lodash');
-var getWebpackConfig = require('./webpack.config.js');
+const _ = require('lodash');
+const getWebpackConfig = require('./webpack.config');
 
 module.exports = function createTestConfig(options) {
-    var testConfig = _.assign(getWebpackConfig(), {
+    const testConfig = _.assign(getWebpackConfig(), {
         // cheap-inline-source-map breaks the code coverage
         devtool: options.codeCoverage ? '' : 'cheap-module-eval-source-map'
     });

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { bindAll, noop } from 'lodash';
 import TableVisualization, { DEFAULT_HEADER_HEIGHT, DEFAULT_ROW_HEIGHT } from './Table';
 import TableControls from './TableControls';
-import { bindAll, noop } from 'lodash';
 
 export const HEIGHT_PADDING = 20;
 

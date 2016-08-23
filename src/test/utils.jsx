@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
+import { translation } from 'js-utils';
 
 import translations from '../translations/en';
-import { translation } from 'js-utils';
 
 const defaultIntlOptions = {
     locale: 'en',

@@ -57,11 +57,12 @@ function getTitleConfiguration(chartOptions) {
 }
 
 function formatAsPercent() {
-    return parseFloat((this.value * 100).toPrecision(14)) + '%';
+    const val = parseFloat((this.value * 100).toPrecision(14));
+    return `${val}%`;
 }
 
 function getShowInPercentConfiguration(chartOptions) {
-    var showInPercent = chartOptions.showInPercent;
+    const showInPercent = chartOptions.showInPercent;
 
     return showInPercent ? {
         yAxis: {
@@ -79,14 +80,14 @@ const alignTooltip = ({ pointX, boxWidth = 0, chartWidth }) => {
     const minX = -TOOLTIP_OFFSET;
     const maxX = chartWidth + TOOLTIP_OFFSET;
 
-    if (pointX + TOOLTIP_MAX_WIDTH / 2 > maxX && pointX - TOOLTIP_MAX_WIDTH > minX) {
+    if ((pointX + TOOLTIP_MAX_WIDTH) / 2 > maxX && (pointX - TOOLTIP_MAX_WIDTH) > minX) {
         return {
             align: 'right',
-            x: pointX - boxWidth + TOOLTIP_OFFSET
+            x: (pointX - boxWidth) + TOOLTIP_OFFSET
         };
     }
 
-    if (pointX - TOOLTIP_MAX_WIDTH / 2 < minX && pointX + TOOLTIP_MAX_WIDTH < maxX) {
+    if ((pointX - TOOLTIP_MAX_WIDTH) / 2 < minX && (pointX + TOOLTIP_MAX_WIDTH) < maxX) {
         return {
             align: 'left',
             x: pointX - TOOLTIP_OFFSET
@@ -95,7 +96,7 @@ const alignTooltip = ({ pointX, boxWidth = 0, chartWidth }) => {
 
     return {
         align: 'center',
-        x: pointX - boxWidth / 2
+        x: pointX - (boxWidth / 2)
     };
 };
 
@@ -111,7 +112,7 @@ function positionTooltip(chartType, boxWidth, boxHeight, _point) {
     return {
         x: this.chart.plotLeft + x,
         // point size + tooltip arrow
-        y: this.chart.plotTop + _point.plotY - boxHeight - 14
+        y: (this.chart.plotTop + _point.plotY) - (boxHeight - 14)
     };
 }
 
@@ -142,24 +143,24 @@ function formatTooltip(chartType, tooltipCallback) {
     );
 }
 
-function _labelFormatter(value, format) {
+function formatLabel(value, format) {
     // no labels for missing values
     if (value === null) {
         return null;
     }
 
-    var stripped = stripColors(format || '');
+    const stripped = stripColors(format || '');
     return escapeAngleBrackets(String(numberFormat(value, stripped)));
 }
 
 function labelFormatter() {
-    return _labelFormatter(this.y, get(this, 'point.format'));
+    return formatLabel(this.y, get(this, 'point.format'));
 }
 
 // check whether series contains only positive values, not consider nulls
 function hasOnlyPositiveValues(series, x) {
-    return every(series, function(seriesItem) {
-        var dataPoint = seriesItem.yData[x];
+    return every(series, (seriesItem) => {
+        const dataPoint = seriesItem.yData[x];
         return dataPoint !== null && dataPoint >= 0;
     });
 }
@@ -167,14 +168,14 @@ function hasOnlyPositiveValues(series, x) {
 function stackLabelFormatter() {
     // show labels: always for negative,
     // without negative values or with non-zero total for positive
-    var showStackLabel =
+    const showStackLabel =
         this.isNegative || hasOnlyPositiveValues(this.axis.series, this.x) || this.total !== 0;
     return showStackLabel ?
-        _labelFormatter(this.total, get(this, 'axis.userOptions.defaultFormat')) : null;
+        formatLabel(this.total, get(this, 'axis.userOptions.defaultFormat')) : null;
 }
 function getTooltipConfiguration(chartOptions) {
-    var tooltipAction = get(chartOptions, 'actions.tooltip'),
-        chartType = chartOptions.type;
+    const tooltipAction = get(chartOptions, 'actions.tooltip');
+    const chartType = chartOptions.type;
 
     return tooltipAction ? {
         tooltip: {
@@ -209,7 +210,7 @@ function getLabelsConfiguration(chartOptions) {
 }
 
 function getStackingConfiguration(chartOptions) {
-    var stacking = chartOptions.stacking;
+    const stacking = chartOptions.stacking;
 
     return stacking ? {
         plotOptions: {
@@ -241,9 +242,9 @@ function getSeries(series, colorPalette = []) {
 }
 
 function getDataConfiguration(chartOptions) {
-    var data = chartOptions.data || EMPTY_DATA,
-        series = getSeries(data.series, chartOptions.colorPalette),
-        categories = map(data.categories, escapeAngleBrackets);
+    const data = chartOptions.data || EMPTY_DATA;
+    const series = getSeries(data.series, chartOptions.colorPalette);
+    const categories = map(data.categories, escapeAngleBrackets);
 
     return {
         series,
@@ -257,8 +258,8 @@ function getDataConfiguration(chartOptions) {
 }
 
 function getLegendConfiguration(chartOptions) {
-    var stacking = chartOptions.stacking,
-        seriesLength = get(chartOptions, 'data.series', []).length;
+    const stacking = chartOptions.stacking;
+    const seriesLength = get(chartOptions, 'data.series', []).length;
 
     if (seriesLength <= 1 && !stacking) {
         return {

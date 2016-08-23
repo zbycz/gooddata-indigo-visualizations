@@ -1,3 +1,5 @@
+/* eslint react/no-render-return-value: 0 */
+/* eslint react/no-find-dom-node: 0 */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-addons-test-utils';

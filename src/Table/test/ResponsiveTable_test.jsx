@@ -37,7 +37,7 @@ const DATA_ROW = ['Wile E. Coyote', '30', '1324'];
 const ROWS_PER_PAGE = 10;
 
 describe('Responsive Table', () => {
-    let table, visualization, controls, onMore, onLess;
+    let table, visualization, controls, onMore, onLess; // eslint-disable-line
 
     const renderTable = (data) => {
         const WrappedTable = withIntl(ResponsiveTable);
@@ -56,13 +56,9 @@ describe('Responsive Table', () => {
         controls = findRenderedComponentWithType(table, TableControls);
     };
 
-    const getMore = () => {
-        return findRenderedDOMComponentWithClass(controls, 's-show_more');
-    };
+    const getMore = () => findRenderedDOMComponentWithClass(controls, 's-show_more');
 
-    const getLess = () => {
-        return findRenderedDOMComponentWithClass(controls, 's-show_less');
-    };
+    const getLess = () => findRenderedDOMComponentWithClass(controls, 's-show_less');
 
     beforeEach(() => {
         onMore = sinon.stub();

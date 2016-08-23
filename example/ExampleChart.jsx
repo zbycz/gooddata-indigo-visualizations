@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import DefaultSizeVisualization from './DefaultSizeVisualization';
 import SourceListing from './SourceListing';
 
 export default function ExampleChart(ComposedVisualization) {
-    return props => {
+    const component = (props) => {
         return (
             <div className="indigo-component">
                 <h2>Chart</h2>
@@ -31,4 +31,11 @@ export default function ExampleChart(ComposedVisualization) {
             </div>
         );
     };
+
+    component.propTypes = {
+        chartOptions: PropTypes.object,
+        hcOptions: PropTypes.object
+    };
+
+    return component;
 }

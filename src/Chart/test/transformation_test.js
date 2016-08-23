@@ -1,12 +1,13 @@
 // Copyright (C) 2007-2016, GoodData(R) Corporation. All rights reserved.
+/* eslint no-underscore-dangle: 0 */
 import find from 'lodash/find';
 import map from 'lodash/map';
 
 import * as Transformation from '../transformation';
 
-describe('Transformation', function() {
-    describe('splitting headers', function() {
-        var headers = [{
+describe('Transformation', () => {
+    describe('splitting headers', () => {
+        const headers = [{
             id: 'id1',
             title: 'Probability',
             type: 'metric'
@@ -24,21 +25,21 @@ describe('Transformation', function() {
             type: 'attrLabel'
         }];
 
-        it('should split headers to metrics', function() {
-            var metrics = Transformation._splitHeaders(headers).metrics;
+        it('should split headers to metrics', () => {
+            const metrics = Transformation._splitHeaders(headers).metrics;
             expect(metrics).to.have.length(2);
             expect(metrics[0]).to.eql({ index: 0, header: headers[0] });
             expect(metrics[1]).to.eql({ index: 1, header: headers[1] });
         });
 
-        it('should split headers to the rest', function() {
-            var newHeaders = Transformation._splitHeaders(headers).headers;
+        it('should split headers to the rest', () => {
+            const newHeaders = Transformation._splitHeaders(headers).headers;
             expect(newHeaders).to.eql(headers.slice(2));
         });
 
         describe('getMetricNamesValuesHeaderItems', () => {
             it('adds metricNames and metricValues headers', () => {
-                let headersWithoutMetrics = [{
+                const headersWithoutMetrics = [{
                     id: 'metricNames',
                     title: 'Metric',
                     type: 'attrLabel',
@@ -51,18 +52,18 @@ describe('Transformation', function() {
                     format: Transformation.DEFAULT_FORMAT,
                     title: ''
                 }];
-                let actual = Transformation.getMetricNamesValuesHeaderItems([], []);
+                const actual = Transformation.getMetricNamesValuesHeaderItems([], []);
                 expect(actual).to.eql(headersWithoutMetrics);
             });
 
             it('uses first metric format when metric present', () => {
-                let metrics = [{
+                const metrics = [{
                     header: {
                         title: 'Metric 1',
                         format: '00##00'
                     }
                 }];
-                let mockHeaders = [{
+                const mockHeaders = [{
                     id: 'metricNames',
                     title: 'Metric',
                     type: 'attrLabel',
@@ -75,21 +76,21 @@ describe('Transformation', function() {
                     format: '00##00',
                     title: 'Metric 1'
                 }];
-                let actual = Transformation.getMetricNamesValuesHeaderItems([], metrics);
+                const actual = Transformation.getMetricNamesValuesHeaderItems([], metrics);
                 expect(actual).to.eql(mockHeaders);
             });
         });
     });
 
-    describe('transposing data', function() {
-        it('should return one row per metric on input', function() {
-            var headers = [
+    describe('transposing data', () => {
+        it('should return one row per metric on input', () => {
+            const headers = [
                 { title: 'Employees' },
                 { title: 'Company', type: 'attrLabel' },
                 { title: 'Since' },
                 { title: 'Country', type: 'attrLabel' }
             ];
-            var metrics = [{
+            const metrics = [{
                 index: 0,
                 header: headers[0]
             }, {
@@ -97,11 +98,11 @@ describe('Transformation', function() {
                 header: headers[2]
             }];
 
-            var rawData = [
+            const rawData = [
                 [300, 'GoodData', 2007, 'Czech Republic']
             ];
 
-            var transposed = Transformation._transposeData(headers, metrics, rawData);
+            const transposed = Transformation._transposeData(headers, metrics, rawData);
 
             expect(transposed).to.have.length(2);
 
@@ -120,39 +121,38 @@ describe('Transformation', function() {
         });
     });
 
-    describe('data transformation to metricNames/Values', function() {
-        it('should add two extra headers', function() {
-            var M1Header = { type: 'metric', title: 'M1', format: '#.##' },
-                M2Header = { type: 'metric', title: 'M2', format: '#.##%' };
+    describe('data transformation to metricNames/Values', () => {
+        it('should add two extra headers', () => {
+            const M1Header = { type: 'metric', title: 'M1', format: '#.##' };
+            const M2Header = { type: 'metric', title: 'M2', format: '#.##%' };
 
+            const input = { headers: [M1Header, M2Header], rawData: [] };
+            const transformed = Transformation.transformData(input);
 
-            var input = { headers: [M1Header, M2Header], rawData: [] };
-            var transformed = Transformation.transformData(input);
-
-            var metricNames = find(transformed.headers, { uri: '/metricGroup' });
-            var expected = [{ header: M1Header, index: 0 }, { header: M2Header, index: 1 }];
+            const metricNames = find(transformed.headers, { uri: '/metricGroup' });
+            const expected = [{ header: M1Header, index: 0 }, { header: M2Header, index: 1 }];
             expect(metricNames.metrics).to.eql(expected);
 
-            var metricValues = find(transformed.headers, { uri: '/metricValues' });
+            const metricValues = find(transformed.headers, { uri: '/metricValues' });
             expect(metricValues.title).to.eql('M1');
         });
 
-        it('should not act on currently loading data', function() {
+        it('should not act on currently loading data', () => {
             expect(Transformation.transformData()).to.equal(undefined);
 
-            var data = { isLoading: true };
+            const data = { isLoading: true };
             expect(Transformation.transformData(data)).to.equal(data);
         });
 
-        it('should not do transformation if there are no metrics', function() {
-            var data = { headers: [] }; // FIXME: have to inject headers now for _splitHeaders
+        it('should not do transformation if there are no metrics', () => {
+            const data = { headers: [] }; // FIXME: have to inject headers now for _splitHeaders
             expect(Transformation.transformData(data)).to.eql(data);
         });
     });
 
-    describe('Getting chart data', function() {
-        it('should correctly transform with metrics with/without formats', function() {
-            var data = {
+    describe('Getting chart data', () => {
+        it('should correctly transform with metrics with/without formats', () => {
+            const data = {
                 headers: [
                     { id: 'a1', type: 'attrLabel' },
                     {
@@ -181,7 +181,7 @@ describe('Transformation', function() {
                 /* eslint-enable max-len */
             };
 
-            var configuration = {
+            const configuration = {
                 indices: {
                     category: 0,
                     series: 1,
@@ -190,7 +190,7 @@ describe('Transformation', function() {
                 sortSeries: true
             };
 
-            var expectedData = {
+            const expectedData = {
                 categories: ['a', 'b', 'c'],
                 series: [
                     {
@@ -227,8 +227,8 @@ describe('Transformation', function() {
             expect(Transformation.getChartData(data, configuration)).to.eql(expectedData);
         });
 
-        it('should correctly transform when multiple attributes present', function() {
-            var data = {
+        it('should correctly transform when multiple attributes present', () => {
+            const data = {
                 headers: [
                     { id: 'a1', type: 'attrLabel' },
                     { id: 'a2', type: 'attrLabel' },
@@ -253,7 +253,7 @@ describe('Transformation', function() {
                 /* eslint-enable max-len */
             };
 
-            var configuration = {
+            const configuration = {
                 indices: {
                     category: 0,
                     series: 1,
@@ -262,7 +262,7 @@ describe('Transformation', function() {
                 sortSeries: true
             };
 
-            var expectedData = {
+            const expectedData = {
                 categories: ['a', 'b', 'c'],
                 series: [
                     {
@@ -289,8 +289,8 @@ describe('Transformation', function() {
             expect(Transformation.getChartData(data, configuration)).to.eql(expectedData);
         });
 
-        it('should produce sorted legend even if some values are missing', function() {
-            var data = {
+        it('should produce sorted legend even if some values are missing', () => {
+            const data = {
                 headers: [
                     { id: 'a1', type: 'attrLabel' },
                     { id: 'a2', type: 'attrLabel' },
@@ -314,7 +314,7 @@ describe('Transformation', function() {
                 /* eslint-enable max-len */
             };
 
-            var configuration = {
+            const configuration = {
                 indices: {
                     category: 0,
                     series: 1,
@@ -323,16 +323,16 @@ describe('Transformation', function() {
                 sortSeries: true
             };
 
-            var expectedSeries = ['x', 'y', 'z'];
-            var series = map(Transformation.getChartData(data, configuration).series, 'name');
+            const expectedSeries = ['x', 'y', 'z'];
+            const series = map(Transformation.getChartData(data, configuration).series, 'name');
 
             expect(series).to.eql(expectedSeries);
         });
     });
 
-    describe('Generating palette', function() {
-        it('should insert lightened color for pop metrics', function() {
-            var data = {
+    describe('Generating palette', () => {
+        it('should insert lightened color for pop metrics', () => {
+            const data = {
                 headers: [
                     { id: 'a1', type: 'attrLabel' },
                     {
@@ -348,7 +348,7 @@ describe('Transformation', function() {
                     { id: 'abc.generated.pop.123', type: 'metric' }
                 ]
             };
-            var palette = [
+            const palette = [
                 'rgb(00,131,255)',
                 'rgb(00,128,255)',
                 'rgb(241,35,61)',
@@ -356,7 +356,7 @@ describe('Transformation', function() {
                 'rgb(188,90,178)'
             ];
 
-            var expectedData = [
+            const expectedData = [
                 'rgb(00,131,255)',
                 'rgb(153,204,255)',
                 'rgb(00,128,255)',
@@ -369,8 +369,8 @@ describe('Transformation', function() {
         });
     });
 
-    describe('Lighten color', function() {
-        it('should lighten and darken color correctly', function() {
+    describe('Lighten color', () => {
+        it('should lighten and darken color correctly', () => {
             const getLighterColor = Transformation._getLighterColor;
 
             expect(getLighterColor('rgb(00,128,255)', 0.5)).to.eql('rgb(128,192,255)');

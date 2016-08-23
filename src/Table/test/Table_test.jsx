@@ -66,35 +66,35 @@ describe('Table', () => {
     });
 
     it('should align metric columns to the right', () => {
-        let columns = table.props.children;
+        const columns = table.props.children;
         expect(columns[0].props.align).to.equal('left');
         expect(columns[1].props.align).to.equal('right');
         expect(columns[2].props.align).to.equal('right');
     });
 
     it('should distribute width evenly between columns', () => {
-        let columns = table.props.children;
+        const columns = table.props.children;
         expect(columns[0].props.width).to.equal(200);
     });
 
     describe('renderers', () => {
         function renderCell(columnKey) {
-            let columns = table.props.children;
-            let cell = columns[columnKey].props.cell({ rowIndex: 0, columnKey });
-            let span = cell.props.children;
+            const columns = table.props.children;
+            const cell = columns[columnKey].props.cell({ rowIndex: 0, columnKey });
+            const span = cell.props.children;
             return span;
         }
 
         it('should format metrics', () => {
-            let span = renderCell(2);
-            let spanContent = span.props.children;
+            const span = renderCell(2);
+            const spanContent = span.props.children;
             expect(spanContent).to.equal('1,324');
             expect(span.props.style.color).to.equal('#FF0000');
         });
 
         it('should render attributes as strings', () => {
-            let span = renderCell(0);
-            let spanContent = span.props.children;
+            const span = renderCell(0);
+            const spanContent = span.props.children;
             expect(spanContent).to.equal('Wile E. Coyote');
             expect(span.props.style).to.eql({});
         });
@@ -109,36 +109,36 @@ describe('Table', () => {
         context('default header renderer', () => {
             it('should render up arrow', () => {
                 table = renderTable({ sortBy: 0, sortDir: ASC });
-                let columns = table.props.children;
-                let header = columns[0].props.header({ columnKey: 0 });
-                let sort = header.props.children[1];
+                const columns = table.props.children;
+                const header = columns[0].props.header({ columnKey: 0 });
+                const sort = header.props.children[1];
 
                 expect(sort.props.className).to.equal('gd-table-arrow-up');
             });
 
             it('should render down arrow', () => {
                 table = renderTable({ sortBy: 0, sortDir: DESC });
-                let columns = table.props.children;
-                let header = columns[0].props.header({ columnKey: 0 });
-                let sort = header.props.children[1];
+                const columns = table.props.children;
+                const header = columns[0].props.header({ columnKey: 0 });
+                const sort = header.props.children[1];
 
                 expect(sort.props.className).to.equal('gd-table-arrow-down');
             });
 
             it('should render arrow on second column', () => {
                 table = renderTable({ sortBy: 1, sortDir: ASC });
-                let columns = table.props.children;
-                let header = columns[1].props.header({ columnKey: 0 });
-                let sort = header.props.children[1];
+                const columns = table.props.children;
+                const header = columns[1].props.header({ columnKey: 0 });
+                const sort = header.props.children[1];
 
                 expect(sort.props.className).to.equal('gd-table-arrow-up');
             });
 
             it('should not render arrow if sort info is missing', () => {
                 table = renderTable({ sortBy: 0, sortDir: null });
-                let columns = table.props.children;
-                let header = columns[0].props.header({ columnKey: 0 });
-                let sort = header.props.children[1];
+                const columns = table.props.children;
+                const header = columns[0].props.header({ columnKey: 0 });
+                const sort = header.props.children[1];
 
                 expect(sort.props.className).to.equal('');
             });

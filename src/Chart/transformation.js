@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0 */
 import cloneDeep from 'lodash/cloneDeep';
 import get from 'lodash/get';
 import map from 'lodash/map';
@@ -17,10 +18,10 @@ export const DEFAULT_FORMAT = '#,##0.00';
  * One group contains all the metric headers, the other contains everything else.
  */
 export function _splitHeaders(headers) {
-    var metrics = [],
-        newHeaders = [];
+    const metrics = [];
+    const newHeaders = [];
 
-    headers.forEach(function(header, i) {
+    headers.forEach((header, i) => {
         if (header.type === 'metric') {
             metrics.push({
                 index: i,
@@ -74,15 +75,15 @@ export function enrichHeaders(_headers) {
 }
 
 export function _transposeData(headers, metrics, rawData) {
-    var data = [];
+    const data = [];
 
-    for (var mi = 0; mi < metrics.length; mi++) {
-        for (var ri = 0; ri < rawData.length; ri++) {
-            var row = [];
+    for (let mi = 0; mi < metrics.length; mi++) {
+        for (let ri = 0; ri < rawData.length; ri++) {
+            const row = [];
 
-            for (var ci = 0; ci < headers.length; ci++) {
+            for (let ci = 0; ci < headers.length; ci++) {
                 if (headers[ci].type === 'attrLabel') {
-                    var value = rawData[ri][ci];
+                    const value = rawData[ri][ci];
                     row.push({
                         id: value,
                         value
@@ -90,15 +91,15 @@ export function _transposeData(headers, metrics, rawData) {
                 }
             }
 
-            var metric = metrics[mi];
+            const metric = metrics[mi];
             row.push({
-                id: 'metric-' + mi, // let each metric have unique id
+                id: `metric-${mi}`, // let each metric have unique id
                 value: metric.header.title
             });
 
-            var metricValue = rawData[ri][metric.index],
-                parsedValue = parseFloat(metricValue),
-                y = isNaN(parsedValue) ? null : parsedValue;
+            const metricValue = rawData[ri][metric.index];
+            const parsedValue = parseFloat(metricValue);
+            const y = isNaN(parsedValue) ? null : parsedValue;
 
             row.push({
                 format: metric.header.format || DEFAULT_FORMAT,
@@ -154,13 +155,13 @@ export function _transposeData(headers, metrics, rawData) {
  **/
 export function _transformMetrics(data) {
     // don't modify original data structure
-    var dataCopy = cloneDeep(data);
+    const dataCopy = cloneDeep(data);
 
-    var { headers, metrics } = enrichHeaders(dataCopy.headers);
+    const { headers, metrics } = enrichHeaders(dataCopy.headers);
 
     if (metrics.length < 1) return dataCopy;
 
-    var transposedData = _transposeData(dataCopy.headers, metrics, dataCopy.rawData);
+    const transposedData = _transposeData(dataCopy.headers, metrics, dataCopy.rawData);
 
     dataCopy.rawData = transposedData;
     dataCopy.headers = headers;
@@ -180,7 +181,7 @@ export function _getElements(data, index) {
 
 // get series data
 export function _getSeries(data, seriesNames, categories, indices) {
-    var seriesData = seriesNames.reduce((acc, series) => {
+    const seriesData = seriesNames.reduce((acc, series) => {
         acc[series.id] = times( // eslint-disable-line no-param-reassign
             categories.length,
             constant(null)
@@ -191,26 +192,26 @@ export function _getSeries(data, seriesNames, categories, indices) {
     // prepare data points
     if (indices.series !== -1) {
         if (indices.category !== -1) {
-            var categoriesIndex = categories.reduce((acc, category, idx) => {
+            const categoriesIndex = categories.reduce((acc, category, idx) => {
                 if (category) {
                     acc[category.id] = idx; // eslint-disable-line no-param-reassign
                 }
                 return acc;
             }, {});
 
-            data.rawData.forEach(function(dataRow) {
+            data.rawData.forEach((dataRow) => {
                 const categoryItemIndex = categoriesIndex[dataRow[indices.category].id];
                 seriesData[dataRow[indices.series].id][categoryItemIndex] = dataRow[indices.metric];
             });
         } else {
-            data.rawData.forEach(function(dataRow) {
+            data.rawData.forEach((dataRow) => {
                 seriesData[dataRow[indices.series].id][0] = dataRow[indices.metric];
             });
         }
     }
 
     // return series in the same order as requested in seriesNames
-    return seriesNames.map(function(name, index) {
+    return seriesNames.map((name, index) => {
         return {
             name: name.value,
             legendIndex: index,
@@ -235,10 +236,10 @@ function formatColor(red, green, blue) {
  *     http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
  */
 export function _getLighterColor(color, percent) {
-    var f = color.split(','),
-        R = parseInt(f[0].slice(4), 10),
-        G = parseInt(f[1], 10),
-        B = parseInt(f[2], 10);
+    const f = color.split(',');
+    const R = parseInt(f[0].slice(4), 10);
+    const G = parseInt(f[1], 10);
+    const B = parseInt(f[2], 10);
 
     return formatColor(
         lighter(R, percent),
@@ -248,7 +249,7 @@ export function _getLighterColor(color, percent) {
 }
 
 export function getColorPalette(data, palette) {
-    let newPalette = cloneDeep(palette);
+    const newPalette = cloneDeep(palette);
 
     filter(data.headers, header => header.type === 'metric')
         .forEach((metric, idx) => {
@@ -311,15 +312,15 @@ export function getColorPalette(data, palette) {
  * </pre>
  **/
 export function getChartData(data, configuration) {
-    var indices = configuration.indices;
+    const indices = configuration.indices;
 
-    var categories = _getElements(data, indices.category);
-    var seriesNames = _getElements(data, indices.series);
+    const categories = _getElements(data, indices.category);
+    const seriesNames = _getElements(data, indices.series);
 
-    var seriesNamesSorted = configuration.sortSeries ? sortBy(seriesNames, 'value') : seriesNames;
-    var seriesNamesCompact = compact(seriesNamesSorted);
+    const seriesNamesSorted = configuration.sortSeries ? sortBy(seriesNames, 'value') : seriesNames;
+    const seriesNamesCompact = compact(seriesNamesSorted);
 
-    var seriesData = _getSeries(data, seriesNamesCompact, categories, indices);
+    const seriesData = _getSeries(data, seriesNamesCompact, categories, indices);
 
     return {
         categories: map(categories, 'value'),

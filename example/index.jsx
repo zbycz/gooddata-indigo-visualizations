@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { partial, assign } from 'lodash';
+import { translation } from 'js-utils';
+import 'goodstrap/packages/theme-indigo.scss';
 
 import translations from '../src/translations/en';
-import { translation } from 'js-utils';
 
-import 'goodstrap/packages/theme-indigo.scss';
-import './example';
+import './example.scss';
 
 import ExampleVisualization from './ExampleVisualization';
 import ExampleStickyHeaderTable from './ExampleStickyHeaderTable';
@@ -42,7 +42,7 @@ ReactDOM.render(
             />
             <ExampleVisualization config={TestConfig.table} data={TestData.stackedBar} />
             <ExampleStickyHeaderTable config={TestConfig.table} data={TestData.stackedBar} />
-            <div style={{ height: 600 }}></div>
+            <div style={{ height: 600 }} />
         </div>
     </IntlProvider>,
     document.getElementById('viz-example')

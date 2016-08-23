@@ -37,6 +37,7 @@ export default class LineFamilyChartTransformation extends Component {
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
+        height: PropTypes.number,
 
         lineFamilyChartRenderer: PropTypes.func.isRequired,
         onDataTooLarge: PropTypes.func
