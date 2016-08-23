@@ -109,13 +109,13 @@ describe('Transformation', function() {
                 { value: 'GoodData', id: 'GoodData' },
                 { value: 'Czech Republic', id: 'Czech Republic' },
                 { value: 'Employees', id: 'metric-0' },
-                { y: 300, format: Transformation.DEFAULT_FORMAT }
+                { y: 300, format: Transformation.DEFAULT_FORMAT, marker: { enabled: true } }
             ]);
             expect(transposed[1]).to.eql([
                 { value: 'GoodData', id: 'GoodData' },
                 { value: 'Czech Republic', id: 'Czech Republic' },
                 { value: 'Since', id: 'metric-1' },
-                { y: 2007, format: Transformation.DEFAULT_FORMAT }
+                { y: 2007, format: Transformation.DEFAULT_FORMAT, marker: { enabled: true } }
             ]);
         });
     });
