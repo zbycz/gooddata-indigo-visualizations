@@ -64,7 +64,8 @@ export const stackedBar = {
         type: 'attrLabel',
         id: 'label.owner.id.name',
         uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/1028',
-        title: 'Sales Rep'
+        title: `Sales Rep (element 1, element 2, element 3, element 4,
+            element 5, element 6, element 7, element 8, element 9, element 10, element 11)`
     }, {
         type: 'metric',
         id: 'aaYh6Voua2yj',
