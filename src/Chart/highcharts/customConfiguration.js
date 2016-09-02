@@ -112,7 +112,7 @@ function positionTooltip(chartType, boxWidth, boxHeight, _point) {
     return {
         x: this.chart.plotLeft + x,
         // point size + tooltip arrow
-        y: (this.chart.plotTop + _point.plotY) - (boxHeight - 14)
+        y: (this.chart.plotTop + _point.plotY) - (boxHeight + 14)
     };
 }
 
