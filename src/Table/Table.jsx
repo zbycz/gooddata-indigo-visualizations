@@ -314,7 +314,7 @@ export class TableVisualization extends Component {
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <span className="gd-table-header-title">{column.title}</span>
+                <span className="gd-table-header-title" title={column.title}>{column.title}</span>
                 <span className={sort.sortDirClass} />
             </Cell>
         );
@@ -333,7 +333,7 @@ export class TableVisualization extends Component {
 
             return (
                 <Cell {...cellProps}>
-                    <span className={classes} style={style}>{label}</span>
+                    <span className={classes} style={style} title={label}>{label}</span>
                 </Cell>
             );
         };
