@@ -5,7 +5,7 @@ import Dimensions from 'react-dimensions';
 import classNames from 'classnames';
 import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
-import 'fixed-data-table/dist/fixed-data-table.css'; // TODO import from fixed-data-table-2
+import 'fixed-data-table-2/dist/fixed-data-table.css';
 
 import Bubble from 'goodstrap/packages/Bubble/ReactBubble';
 import TableSortBubbleContent from './TableSortBubbleContent';
