@@ -1,21 +1,23 @@
 #!/bin/bash
 
 setupGrunt () {
-    # this should really be a dependency of the client
-    npm install grunt-cli
-
-    export MODULES_HASH="$(echo -n "$(cat package.json) $(node --version) $(npm --version)" | md5sum | awk '{ print $1 }')"
+    export MODULES_HASH="$(echo -n "$(cat npm-shrinkwrap.json) $(node --version) $(npm --version)" | md5sum | awk '{ print $1 }')"
     export MODULES_FILE="/tmp/node-modules-cache.${MODULES_HASH}.tar.gz"
 
     if [ -f ${MODULES_FILE} ]; then
+        echo "Using node_modules cache..."
         tar xzf ${MODULES_FILE} ./
     else
+        echo "Installing npm dependencies..."
         npm install
         tar czf ${MODULES_FILE} ./node_modules/
         if [ $? -ne 0 ]; then
             rm ${MODULES_FILE}
         fi
     fi
+
+    echo "Checking shrinkwrap with package.json..."
+    npm-shrinkwrap-check --v3 --dev
 
     export SETUP="1"
 }

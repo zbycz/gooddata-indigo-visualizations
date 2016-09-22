@@ -51,7 +51,9 @@ module.exports = (config) => {
 
         junitReporter: {
             suite: 'Indigo Vizualisations Unit',
-            outputFile: 'ci/results/test-results.xml'
+            useBrowserName: false,
+            outputDir: 'ci/results',
+            outputFile: 'test-results.xml'
         },
 
         // full (default)  all output is printed to the console
