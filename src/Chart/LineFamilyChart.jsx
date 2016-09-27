@@ -1,5 +1,13 @@
 import ReactHighcharts from 'react-highcharts';
 import React, { Component, PropTypes } from 'react';
+import { cloneDeep } from 'lodash';
+
+import { initChartPlugins } from './highcharts/chartPlugins';
+
+const Highcharts = ReactHighcharts.Highcharts;
+const CHART_TEXT_PADDING = 50;
+
+initChartPlugins(Highcharts, CHART_TEXT_PADDING);
 
 export default class LineFamilyChart extends Component {
     static propTypes = {
@@ -11,6 +19,22 @@ export default class LineFamilyChart extends Component {
         super(props);
 
         this.afterRender = this.afterRender.bind(this);
+    }
+
+    createChartConfig(chartConfig) {
+        const config = cloneDeep(chartConfig);
+
+        config.yAxis.title.style = {
+            ...config.yAxis.title.style,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+        };
+        config.legend.itemStyle = {
+            ...config.legend.itemStyle,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
+        };
+        return config;
     }
 
     afterRender(chart) {
@@ -25,7 +49,8 @@ export default class LineFamilyChart extends Component {
     render() {
         return (
             <ReactHighcharts
-                config={this.props.hcOptions}
+                ref={ref => (this.chart = ref)}
+                config={this.createChartConfig(this.props.hcOptions)}
                 callback={this.afterRender}
             />
         );
