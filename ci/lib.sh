@@ -1,7 +1,7 @@
 #!/bin/bash
 
 setupGrunt () {
-    export MODULES_HASH="$(echo -n "$(cat npm-shrinkwrap.json) $(node --version) $(npm --version)" | md5sum | awk '{ print $1 }')"
+    export MODULES_HASH="$(echo -n "$(cat package.json) $(node --version) $(npm --version)" | md5sum | awk '{ print $1 }')"
     export MODULES_FILE="/tmp/node-modules-cache.${MODULES_HASH}.tar.gz"
 
     if [ -f ${MODULES_FILE} ]; then
@@ -15,9 +15,6 @@ setupGrunt () {
             rm ${MODULES_FILE}
         fi
     fi
-
-    echo "Checking shrinkwrap with package.json..."
-    npm-shrinkwrap-check --v3 --dev
 
     export SETUP="1"
 }
