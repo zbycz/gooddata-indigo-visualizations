@@ -80,6 +80,7 @@
     "fixed-data-table-2": "0.7.2",
     "gdc-numberjs": "git+ssh://git@github.com:gooddata/gdc-numberjs.git#v2.3.0",
     "goodstrap": "git+ssh://git@github.com:gooddata/gdc-goodstrap.git#v10.0.0",
+    "highcharts": "4.2.6",
     "invariant": "2.2.1",
     "js-utils": "git+ssh://git@github.com:gooddata/gdc-js-utils#v0.2.1",
     "lodash": "4.15.0",
