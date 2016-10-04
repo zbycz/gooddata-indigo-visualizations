@@ -8,6 +8,7 @@ $table-small-only: "only screen and (max-width: 480px)";
     font-family: "Avenir", "Helvetica Neue", Arial, sans-serif;
     font-size: 12px;
     font-weight: normal;
+    line-height: 100%;
     overflow: hidden;
 
     &.has-hidden-rows {
