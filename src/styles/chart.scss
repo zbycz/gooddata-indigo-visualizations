@@ -19,7 +19,6 @@ g.highcharts-tooltip {
     z-index: 3005;
 
     span {
-        position: relative !important; // Override HighCharts inline styles
         flex: 0 0 auto;
     }
 }

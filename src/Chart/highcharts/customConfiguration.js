@@ -80,14 +80,14 @@ const alignTooltip = ({ pointX, boxWidth = 0, chartWidth }) => {
     const minX = -TOOLTIP_OFFSET;
     const maxX = chartWidth + TOOLTIP_OFFSET;
 
-    if ((pointX + TOOLTIP_MAX_WIDTH) / 2 > maxX && (pointX - TOOLTIP_MAX_WIDTH) > minX) {
+    if (pointX + (TOOLTIP_MAX_WIDTH / 2) > maxX && (pointX - TOOLTIP_MAX_WIDTH) > minX) {
         return {
             align: 'right',
             x: (pointX - boxWidth) + TOOLTIP_OFFSET
         };
     }
 
-    if ((pointX - TOOLTIP_MAX_WIDTH) / 2 < minX && (pointX + TOOLTIP_MAX_WIDTH) < maxX) {
+    if (pointX - (TOOLTIP_MAX_WIDTH / 2) < minX && (pointX + TOOLTIP_MAX_WIDTH) < maxX) {
         return {
             align: 'left',
             x: pointX - TOOLTIP_OFFSET
