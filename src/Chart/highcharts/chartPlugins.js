@@ -108,7 +108,7 @@ const extendReflowChart = (Highcharts, chartTextPadding) => {
             }
         });
 
-        proceed.call(chart, event);
+        proceed.call(chart, resizeEvent);
 
         chart.oldContainerWidth = chart.oldContainerWidth || getUsableContWidth(chart);
         if (chart.legend.itemStyle) {
