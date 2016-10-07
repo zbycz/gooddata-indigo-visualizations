@@ -8,7 +8,11 @@ const COLUMN_TEMPLATE = {
     },
     plotOptions: {
         column: {
-            dataLabels: { enabled: true, crop: false, overflow: 'none' },
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            },
             maxPointWidth: MAX_POINT_WIDTH
         },
         series: {

@@ -9,11 +9,11 @@ import {
     tail
 } from 'lodash';
 
-import { BAR_CHART, COLUMN_CHART } from '../../../../VisualizationTypes';
+import { BAR_CHART, COLUMN_CHART } from '../../VisualizationTypes';
 
 // https://silentmatt.com/rectangle-intersection/
 export const rectanglesAreOverlapping = (r1, r2) =>
-r1.left < r2.right && r1.right > r2.left && r1.top < r2.bottom && r1.bottom > r2.top;
+    r1.left < r2.right && r1.right > r2.left && r1.top < r2.bottom && r1.bottom > r2.top;
 
 export const toNeighbors = (array) => zip(initial(array), tail(array));
 export const getVisibleSeries = (chart) => chart.series && chart.series.filter(s => s.visible);

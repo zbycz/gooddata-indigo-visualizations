@@ -9,7 +9,7 @@ import {
     getPointPositions,
     rectanglesAreOverlapping,
     hideAllLabels
-} from './helpers';
+} from '../../helpers';
 
 import { BAR_CHART } from '../../../../VisualizationTypes';
 

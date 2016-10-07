@@ -1,4 +1,4 @@
-import { getChartType, hideAllLabels } from './helpers';
+import { getChartType, hideAllLabels } from '../../helpers';
 import { COLUMN_CHART, BAR_CHART } from '../../../../VisualizationTypes';
 import autohideColumnLabels from './autohideColumnLabels';
 import autohideBarLabels from './autohideBarLabels';

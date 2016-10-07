@@ -1,5 +1,6 @@
 import { debounce } from 'lodash';
 import autohideLabels from './plugins/autohideLabels/autohideLabels';
+import { extendDataLabelColors } from './plugins/dataLabelsColors';
 
 const LEGEND_TEXT_PADDING = 10;
 
@@ -124,4 +125,5 @@ export function initChartPlugins(Highcharts, chartTextPadding) {
     extendInitAxis(Highcharts, chartTextPadding);
     extendReflowChart(Highcharts, chartTextPadding);
     autohideLabels(Highcharts);
+    extendDataLabelColors(Highcharts);
 }

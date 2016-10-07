@@ -19,7 +19,7 @@ import {
     hideDataLabels,
     getPointPositions,
     rectanglesAreOverlapping
-} from './helpers';
+} from '../../helpers';
 
 import { COLUMN_CHART } from '../../../../VisualizationTypes';
 

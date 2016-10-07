@@ -190,16 +190,26 @@ function getTooltipConfiguration(chartOptions) {
 }
 
 function getLabelsConfiguration(chartOptions) {
+    const style = chartOptions.stacking ? {
+        color: '#ffffff',
+        textShadow: '0 0 1px #000000'
+    } : {
+        color: '#000000',
+        textShadow: 'none'
+    };
+
     return {
         plotOptions: {
             bar: {
                 dataLabels: {
-                    formatter: labelFormatter
+                    formatter: labelFormatter,
+                    style
                 }
             },
             column: {
                 dataLabels: {
-                    formatter: labelFormatter
+                    formatter: labelFormatter,
+                    style
                 }
             }
         },
