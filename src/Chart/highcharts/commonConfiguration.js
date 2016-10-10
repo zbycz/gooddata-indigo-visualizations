@@ -82,7 +82,14 @@ const BASE_TEMPLATE = {
     plotOptions: {
         series: {
             enableMouseTracking: true, // !Status.exportMode,
-            turboThreshold: DEFAULT_CATEGORIES_LIMIT
+            turboThreshold: DEFAULT_CATEGORIES_LIMIT,
+            events: {
+                legendItemClick() {
+                    if (this.visible) {
+                        this.points.forEach(point => point.dataLabel && point.dataLabel.hide());
+                    }
+                }
+            }
         }
     },
     chart: {

@@ -118,7 +118,7 @@ const toggleStackedLabels = chart => {
     const shapesBCR = map(
         groupBy(getDataPoints(visibleSeries), point => point.category), pointGroup => {
             const pointsBCR = pointGroup
-                .filter(point => (point.graphic))
+                .filter(point => point.graphic)
                 .map(point => point.graphic.element.getBoundingClientRect());
             const topElement = minBy(pointsBCR, point => point.top);
             const bottomElement = maxBy(pointsBCR, point => point.bottom);
@@ -182,9 +182,5 @@ const toggleLabels = (chart) => {
 
 export default function autohideColumnLabels(chart, quick = false) {
     const timeout = quick ? 0 : 500;
-
-    if (quick) {
-        hideAllLabels(chart);
-    }
     setTimeout(() => toggleLabels(chart), timeout);
 }

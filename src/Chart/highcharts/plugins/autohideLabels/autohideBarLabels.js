@@ -76,9 +76,5 @@ const toggleLabels = (chart) => {
 
 export default function autohideBarLabels(chart, quick = false) {
     const timeout = quick ? 0 : 500;
-
-    if (quick) {
-        hideAllLabels(chart);
-    }
     setTimeout(() => toggleLabels(chart), timeout);
 }
