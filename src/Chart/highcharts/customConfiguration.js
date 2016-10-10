@@ -126,8 +126,7 @@ function formatTooltip(chartType, tooltipCallback) {
 
     const { align } = alignTooltip(
         {
-            // with bar charts, the plotX property doesn't seem to give us the right value
-            pointX: chartType !== 'bar' ? this.point.plotX : this.point.tooltipPos[0],
+            pointX: chartType === 'line' ? this.point.plotX : this.point.tooltipPos[0],
             chartWidth: chart.plotWidth
         }
     );
