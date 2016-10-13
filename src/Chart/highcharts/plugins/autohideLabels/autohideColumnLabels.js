@@ -13,7 +13,6 @@ import {
     getDataPoints,
     isStacked,
     areLabelsStacked,
-    hideAllLabels,
     toNeighbors,
     showDataLabels,
     hideDataLabels,
@@ -21,82 +20,45 @@ import {
     rectanglesAreOverlapping
 } from '../../helpers';
 
-import { COLUMN_CHART } from '../../../../VisualizationTypes';
-
-const areLabelsIntersecting = (firstPointPositions, nextPointPositions) => {
-    const isIntersectingOnX = (firstPointPositions.labelRight > nextPointPositions.labelLeft);
-    const isIntersectingOnY =
-        (
-            (nextPointPositions.labelTop < firstPointPositions.labelBottom) &&
-            (nextPointPositions.labelTop > firstPointPositions.labelTop)
-        ) ||
-        (
-            (nextPointPositions.labelBottom > firstPointPositions.labelTop) &&
-            (nextPointPositions.labelBottom < firstPointPositions.labelBottom)
-        );
-    const isFirstLabelIntersectingWithNextShape =
-        (firstPointPositions.labelRight > nextPointPositions.shapeLeft) &&
-        (firstPointPositions.labelBottom > nextPointPositions.shapeTop);
-    const isSecondLabelIntersectingWithFirstShape =
-        (nextPointPositions.labelLeft < firstPointPositions.shapeRight) &&
-        (nextPointPositions.labelBottom > firstPointPositions.shapeTop);
-
-    return (
-        (isIntersectingOnX && isIntersectingOnY) ||
-        isFirstLabelIntersectingWithNextShape ||
-        isSecondLabelIntersectingWithFirstShape
-    );
-};
-
-const toggleNonStackedChartLabels = chart => {
-    const visibleSeries = getVisibleSeries(chart);
-    const hiddenSeries = getHiddenSeries(chart);
-    const visiblePoints = getDataPoints(visibleSeries);
-    const hiddenPoints = getDataPoints(hiddenSeries);
+const toggleNonStackedChartLabels = (visiblePoints, hiddenPoints) => {
     const foundIntersection = toNeighbors(
         // some data labels may not be rendered (too many points)
-        visiblePoints.filter((point) => point.dataLabel)
-    )
-        .some(([firstPoint, nextPoint]) =>
-            areLabelsIntersecting(
-                getPointPositions(firstPoint, COLUMN_CHART),
-                getPointPositions(nextPoint, COLUMN_CHART)
-            )
-        );
+        visiblePoints.filter((point) => point.dataLabel))
+        .some(([first, next]) => {
+            const firstPoint = getPointPositions(first);
+            const nextPoint = getPointPositions(next);
+            return rectanglesAreOverlapping(firstPoint.label, nextPoint.label)
+                || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape)
+                || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label);
+        });
 
     if (foundIntersection) {
         hideDataLabels(visiblePoints);
-        return;
+    } else {
+        showDataLabels(visiblePoints);
     }
-
-    showDataLabels(visiblePoints);
     hideDataLabels(hiddenPoints);
 };
 
-const toggleStackedChartLabels = chart => {
-    const visibleSeries = getVisibleSeries(chart);
-    const hiddenSeries = getHiddenSeries(chart);
-    const visiblePoints = getDataPoints(visibleSeries);
-    const hiddenPoints = getDataPoints(hiddenSeries);
-
+const toggleStackedChartLabels = (visiblePoints, hiddenPoints) => {
+    // hideDataLabels(visiblePoints);
     const toggleLabel = point => {
         const { dataLabel } = point;
         if (dataLabel) {
-            const pointProperties = getPointPositions(point, COLUMN_CHART);
-            const isOverlappingHeight = pointProperties.labelHeight > pointProperties.shapeHeight;
-            if (isOverlappingHeight) {
-                dataLabel.hide();
-            } else {
-                dataLabel.show();
-            }
+            const pointProperties = getPointPositions(point);
+            const labelHeight = pointProperties.label.height + (2 * pointProperties.labelPadding);
+            const isOverlappingHeight = labelHeight > pointProperties.shape.height;
+            const toggle = isOverlappingHeight ? pointProperties.hide : pointProperties.show;
+            toggle();
         }
     };
 
     const isOverlappingWidth = visiblePoints.some(point => {
         const { dataLabel } = point;
         if (dataLabel) {
-            const pointProperties = getPointPositions(point, COLUMN_CHART);
-            return pointProperties.labelWidth > pointProperties.shapeWidth;
+            const pointProperties = getPointPositions(point);
+            const labelWidth = pointProperties.label.width + (2 * pointProperties.labelPadding);
+            return labelWidth > pointProperties.shape.width;
         }
         return false;
     });
@@ -169,10 +131,15 @@ const toggleStackedLabels = chart => {
 const toggleLabels = (chart) => {
     const isStackedChart = isStacked(chart);
     const hasLabelsStacked = areLabelsStacked(chart);
+    const visibleSeries = getVisibleSeries(chart);
+    const hiddenSeries = getHiddenSeries(chart);
+    const visiblePoints = getDataPoints(visibleSeries);
+    const hiddenPoints = getDataPoints(hiddenSeries);
+
     if (isStackedChart) {
-        toggleStackedChartLabels(chart);
+        toggleStackedChartLabels(visiblePoints, hiddenPoints);
     } else {
-        toggleNonStackedChartLabels(chart);
+        toggleNonStackedChartLabels(visiblePoints, hiddenPoints);
     }
 
     if (hasLabelsStacked) {

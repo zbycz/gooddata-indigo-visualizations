@@ -49,38 +49,15 @@ export const showDataLabels = (points) => {
     points.forEach(point => point.dataLabel && point.dataLabel.show());
 };
 
-export const getPointPositions = (point, visualizationType) => {
-    const { dataLabel, shapeArgs } = point;
-
-    // TODO unify bar types & use bounding client rect as bellow
-    if (visualizationType === COLUMN_CHART) {
-        return {
-            labelTop: dataLabel.y,
-            labelBottom: dataLabel.y + Math.ceil(dataLabel.height),
-            labelLeft: dataLabel.x + dataLabel.padding,
-            labelRight: (dataLabel.x + Math.ceil(dataLabel.width)) - dataLabel.padding,
-            labelWidth: Math.ceil(dataLabel.width),
-            labelHeight: Math.ceil(dataLabel.height),
-            shapeTop: shapeArgs.y,
-            shapeBottom: shapeArgs.y + Math.ceil(shapeArgs.height),
-            shapeLeft: shapeArgs.x,
-            shapeRight: shapeArgs.x + Math.ceil(shapeArgs.width),
-            shapeWidth: Math.ceil(shapeArgs.width),
-            shapeHeight: Math.ceil(shapeArgs.height)
-        };
-    }
-
-    if (visualizationType === BAR_CHART) {
-        const labelRect = point.dataLabel.element.getBoundingClientRect();
-        const shapeRect = point.graphic.element.getBoundingClientRect();
-        return {
-            shape: shapeRect,
-            label: labelRect,
-            labelPadding: point.dataLabel.padding,
-            show: () => point.dataLabel.show(),
-            hide: () => point.dataLabel.hide()
-        };
-    }
-
-    return null;
+export const getPointPositions = (point) => {
+    const { dataLabel, graphic } = point;
+    const labelRect = dataLabel.element.getBoundingClientRect();
+    const shapeRect = graphic.element.getBoundingClientRect();
+    return {
+        shape: shapeRect,
+        label: labelRect,
+        labelPadding: dataLabel.padding,
+        show: () => dataLabel.show(),
+        hide: () => dataLabel.hide()
+    };
 };

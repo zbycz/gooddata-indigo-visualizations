@@ -16,7 +16,7 @@ import { BAR_CHART } from '../../../../VisualizationTypes';
 // some data labels may not be rendered (too many points)
 const getRenderedPointsRects = (points) => {
     return points.filter((point) => point.dataLabel)
-        .map((point) => getPointPositions(point, BAR_CHART));
+        .map((point) => getPointPositions(point));
 };
 
 const toggleStackedChartLabels = (visiblePoints, hiddenPoints) => {

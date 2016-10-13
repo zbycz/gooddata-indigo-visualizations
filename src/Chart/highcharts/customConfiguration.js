@@ -204,14 +204,14 @@ function getLabelsConfiguration(chartOptions) {
                 dataLabels: {
                     formatter: labelFormatter,
                     style,
-                    allowOverlap: true
+                    allowOverlap: false
                 }
             },
             column: {
                 dataLabels: {
                     formatter: labelFormatter,
                     style,
-                    allowOverlap: true
+                    allowOverlap: false
                 }
             }
         },

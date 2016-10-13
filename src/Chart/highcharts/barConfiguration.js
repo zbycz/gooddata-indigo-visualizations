@@ -10,7 +10,8 @@ const BAR_TEMPLATE = {
         bar: {
             maxPointWidth: MAX_POINT_WIDTH,
             dataLabels: {
-                enabled: true
+                enabled: true,
+                padding: 2
             }
         },
         series: {
