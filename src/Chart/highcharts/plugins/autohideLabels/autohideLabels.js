@@ -8,13 +8,12 @@ const autohideLabels = Highcharts => {
         const chartType = getChartType(chart);
         const reformatLabels = () => {
             if (chartType === COLUMN_CHART) {
-                autohideColumnLabels(chart, true);
+                autohideColumnLabels(chart, false);
             }
             if (chartType === BAR_CHART) {
-                autohideBarLabels(chart, true);
+                autohideBarLabels(chart, false);
             }
         };
-
 
         hideAllLabels(chart);
         reformatLabels();

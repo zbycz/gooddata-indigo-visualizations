@@ -10,8 +10,6 @@ import {
     isEmpty
 } from 'lodash';
 
-import { BAR_CHART, COLUMN_CHART } from '../../VisualizationTypes';
-
 // https://silentmatt.com/rectangle-intersection/
 export const rectanglesAreOverlapping = (r1, r2, padding = 0) =>
     r1.left - padding < r2.right + padding &&

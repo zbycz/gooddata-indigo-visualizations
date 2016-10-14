@@ -27,9 +27,9 @@ const toggleNonStackedChartLabels = (visiblePoints, hiddenPoints) => {
         .some(([first, next]) => {
             const firstPoint = getPointPositions(first);
             const nextPoint = getPointPositions(next);
-            return rectanglesAreOverlapping(firstPoint.label, nextPoint.label, firstPoint.labelPadding)
-                || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape, firstPoint.labelPadding)
-                || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label, firstPoint.labelPadding);
+            return rectanglesAreOverlapping(firstPoint.label, nextPoint.label)
+                || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape)
+                || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label);
         });
 
     if (foundIntersection) {
@@ -111,27 +111,32 @@ function toggleStackedLabels() {
     const neighbors = zip(toNeighbors(dlgNodesBCR), toNeighbors(shapesBCR));
     const foundIntersection = neighbors
         .some(([[currentLabelBCR, nextLabelBCR], [currentShapePositions, nextShapePositions]]) => {
-            if (rectanglesAreOverlapping(currentLabelBCR, nextLabelBCR, 2)) {
+            if (currentLabelBCR &&
+                nextLabelBCR &&
+                rectanglesAreOverlapping(currentLabelBCR, nextLabelBCR, 0)) {
                 return true;
             }
-            if (nextShapePositions &&
-                rectanglesAreOverlapping(currentLabelBCR, nextShapePositions, 2)) {
+            if (currentLabelBCR &&
+                nextShapePositions &&
+                rectanglesAreOverlapping(currentLabelBCR, nextShapePositions, 0)) {
                 return true;
             }
-            if (currentShapePositions &&
-                rectanglesAreOverlapping(nextLabelBCR, currentShapePositions, 2)) {
+            if (nextLabelBCR &&
+                currentShapePositions &&
+                rectanglesAreOverlapping(nextLabelBCR, currentShapePositions, 0)) {
                 return true;
             }
             return false;
         });
 
     if (foundIntersection) {
+        this.userOptions.stackLabelsVisibility = 'hidden';
         dlg.hide();
     } else {
+        this.userOptions.stackLabelsVisibility = 'visible';
         dlg.show();
     }
-};
-
+}
 
 const toggleLabels = (chart) => {
     const isStackedChart = isStacked(chart);
@@ -147,11 +152,13 @@ const toggleLabels = (chart) => {
         toggleNonStackedChartLabels(visiblePoints, hiddenPoints);
     }
     if (hasLabelsStacked) {
-        toggleStackedLabels.call(chart);
+        setTimeout(() => {
+            toggleStackedLabels.call(chart);
+        }, 500);
     }
 };
 
 export default function autohideColumnLabels(chart, quick = false) {
-    const timeout = quick ? 0 : 1000;
+    const timeout = quick ? 0 : 500;
     setTimeout(() => toggleLabels(chart), timeout);
 }

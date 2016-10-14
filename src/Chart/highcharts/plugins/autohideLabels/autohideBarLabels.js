@@ -7,11 +7,8 @@ import {
     hideDataLabels,
     toNeighbors,
     getPointPositions,
-    rectanglesAreOverlapping,
-    hideAllLabels
+    rectanglesAreOverlapping
 } from '../../helpers';
-
-import { BAR_CHART } from '../../../../VisualizationTypes';
 
 // some data labels may not be rendered (too many points)
 const getRenderedPointsRects = (points) => {
@@ -44,9 +41,9 @@ const toggleNonStackedChartLabels = (visiblePoints, hiddenPoints) => {
     const neighbors = toNeighbors(getRenderedPointsRects(visiblePoints));
 
     const isIntersecting = neighbors.some(([firstPoint, nextPoint]) => {
-        return rectanglesAreOverlapping(firstPoint.label, nextPoint.label, firstPoint.labelPadding)
-            || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape, firstPoint.labelPadding)
-            || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label, firstPoint.labelPadding);
+        return rectanglesAreOverlapping(firstPoint.label, nextPoint.label)
+            || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape)
+            || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label);
     });
 
     if (isIntersecting) {
