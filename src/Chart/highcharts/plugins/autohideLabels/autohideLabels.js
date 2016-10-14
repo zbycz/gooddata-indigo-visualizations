@@ -1,5 +1,3 @@
-import { debounce } from 'lodash';
-
 import { getChartType, hideAllLabels } from '../../helpers';
 import { COLUMN_CHART, BAR_CHART } from '../../../../VisualizationTypes';
 import autohideColumnLabels from './autohideColumnLabels';
@@ -17,9 +15,10 @@ const autohideLabels = Highcharts => {
             }
         };
 
+
         hideAllLabels(chart);
         reformatLabels();
-        Highcharts.addEvent(chart, 'redraw', debounce(reformatLabels, 200));
+        Highcharts.addEvent(chart, 'redraw', reformatLabels);
     });
 };
 

@@ -6,14 +6,18 @@ import {
     zip,
     unzip,
     initial,
-    tail
+    tail,
+    isEmpty
 } from 'lodash';
 
 import { BAR_CHART, COLUMN_CHART } from '../../VisualizationTypes';
 
 // https://silentmatt.com/rectangle-intersection/
-export const rectanglesAreOverlapping = (r1, r2) =>
-    r1.left < r2.right && r1.right > r2.left && r1.top < r2.bottom && r1.bottom > r2.top;
+export const rectanglesAreOverlapping = (r1, r2, padding = 0) =>
+    r1.left - padding < r2.right + padding &&
+    r1.right + padding > r2.left - padding &&
+    r1.top - padding < r2.bottom + padding &&
+    r1.bottom + padding > r2.top - padding;
 
 export const toNeighbors = (array) => zip(initial(array), tail(array));
 export const getVisibleSeries = (chart) => chart.series && chart.series.filter(s => s.visible);
@@ -23,12 +27,12 @@ export const getChartType = (chart) => get(chart, 'options.chart.type');
 export const isStacked = (chart) => {
     const chartType = getChartType(chart);
     if (get(chart, `userOptions.plotOptions.${chartType}.stacking`, false) &&
-        chart.series.length > 1) {
+        chart.axes.some(axis => !isEmpty(axis.stacks))) {
         return true;
     }
 
     if (get(chart, 'userOptions.plotOptions.series.stacking', false) &&
-        chart.series.length > 1) {
+        chart.axes.some(axis => !isEmpty(axis.stacks))) {
         return true;
     }
 

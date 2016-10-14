@@ -27,9 +27,9 @@ const toggleNonStackedChartLabels = (visiblePoints, hiddenPoints) => {
         .some(([first, next]) => {
             const firstPoint = getPointPositions(first);
             const nextPoint = getPointPositions(next);
-            return rectanglesAreOverlapping(firstPoint.label, nextPoint.label)
-                || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape)
-                || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label);
+            return rectanglesAreOverlapping(firstPoint.label, nextPoint.label, firstPoint.labelPadding)
+                || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape, firstPoint.labelPadding)
+                || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label, firstPoint.labelPadding);
         });
 
     if (foundIntersection) {
@@ -72,11 +72,16 @@ const toggleStackedChartLabels = (visiblePoints, hiddenPoints) => {
     hideDataLabels(hiddenPoints);
 };
 
-const toggleStackedLabels = chart => {
-    const dlg = chart.yAxis[0].stackTotalGroup;
+function toggleStackedLabels() {
+    const dlg = this.yAxis[0].stackTotalGroup;
+    const visibleSeries = getVisibleSeries(this);
+    if (!visibleSeries.length) {
+        dlg.hide();
+        return;
+    }
+
     const dlgNodes = dlg.element.childNodes;
     const dlgNodesBCR = sortBy(map(dlgNodes, node => node.getBoundingClientRect()), 'left');
-    const visibleSeries = getVisibleSeries(chart);
     const shapesBCR = map(
         groupBy(getDataPoints(visibleSeries), point => point.category), pointGroup => {
             const pointsBCR = pointGroup
@@ -106,15 +111,15 @@ const toggleStackedLabels = chart => {
     const neighbors = zip(toNeighbors(dlgNodesBCR), toNeighbors(shapesBCR));
     const foundIntersection = neighbors
         .some(([[currentLabelBCR, nextLabelBCR], [currentShapePositions, nextShapePositions]]) => {
-            if (rectanglesAreOverlapping(currentLabelBCR, nextLabelBCR)) {
+            if (rectanglesAreOverlapping(currentLabelBCR, nextLabelBCR, 2)) {
                 return true;
             }
             if (nextShapePositions &&
-                rectanglesAreOverlapping(currentLabelBCR, nextShapePositions)) {
+                rectanglesAreOverlapping(currentLabelBCR, nextShapePositions, 2)) {
                 return true;
             }
             if (currentShapePositions &&
-                rectanglesAreOverlapping(nextLabelBCR, currentShapePositions)) {
+                rectanglesAreOverlapping(nextLabelBCR, currentShapePositions, 2)) {
                 return true;
             }
             return false;
@@ -141,13 +146,12 @@ const toggleLabels = (chart) => {
     } else {
         toggleNonStackedChartLabels(visiblePoints, hiddenPoints);
     }
-
     if (hasLabelsStacked) {
-        toggleStackedLabels(chart);
+        toggleStackedLabels.call(chart);
     }
 };
 
 export default function autohideColumnLabels(chart, quick = false) {
-    const timeout = quick ? 0 : 500;
+    const timeout = quick ? 0 : 1000;
     setTimeout(() => toggleLabels(chart), timeout);
 }
