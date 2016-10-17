@@ -7,16 +7,13 @@ import {
     hideDataLabels,
     toNeighbors,
     getPointPositions,
-    rectanglesAreOverlapping,
-    hideAllLabels
+    rectanglesAreOverlapping
 } from '../../helpers';
-
-import { BAR_CHART } from '../../../../VisualizationTypes';
 
 // some data labels may not be rendered (too many points)
 const getRenderedPointsRects = (points) => {
     return points.filter((point) => point.dataLabel)
-        .map((point) => getPointPositions(point, BAR_CHART));
+        .map((point) => getPointPositions(point));
 };
 
 const toggleStackedChartLabels = (visiblePoints, hiddenPoints) => {
@@ -76,9 +73,5 @@ const toggleLabels = (chart) => {
 
 export default function autohideBarLabels(chart, quick = false) {
     const timeout = quick ? 0 : 500;
-
-    if (quick) {
-        hideAllLabels(chart);
-    }
     setTimeout(() => toggleLabels(chart), timeout);
 }

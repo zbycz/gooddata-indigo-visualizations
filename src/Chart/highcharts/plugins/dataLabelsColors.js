@@ -17,7 +17,8 @@ const setBlackColor = (point) => {
 };
 
 function setLabelsColor(chart) {
-    const points = flatMap(getVisibleSeries(chart), series => series.points);
+    const points = flatMap(getVisibleSeries(chart), series => series.points)
+        .filter(point => (point.dataLabel && point.graphic));
 
     return points.forEach(point => {
         const labelRect =
@@ -46,7 +47,5 @@ export function extendDataLabelColors(Highcharts) {
 
         changeLabelColor();
         Highcharts.addEvent(chart, 'redraw', changeLabelColor);
-        Highcharts.addEvent(chart, 'resize', changeLabelColor);
-        Highcharts.addEvent(chart, 'init', changeLabelColor);
     });
 }

@@ -6,29 +6,18 @@ import autohideBarLabels from './autohideBarLabels';
 const autohideLabels = Highcharts => {
     Highcharts.Chart.prototype.callbacks.push(chart => {
         const chartType = getChartType(chart);
-
         const reformatLabels = () => {
-            hideAllLabels(chart);
             if (chartType === COLUMN_CHART) {
-                autohideColumnLabels(chart);
+                autohideColumnLabels(chart, false);
             }
             if (chartType === BAR_CHART) {
-                autohideBarLabels(chart);
-            }
-        };
-        const reformatLabelsQuick = () => {
-            if (chartType === COLUMN_CHART) {
-                autohideColumnLabels(chart, true);
-            }
-            if (chartType === BAR_CHART) {
-                autohideBarLabels(chart, true);
+                autohideBarLabels(chart, false);
             }
         };
 
-        reformatLabelsQuick();
+        hideAllLabels(chart);
+        reformatLabels();
         Highcharts.addEvent(chart, 'redraw', reformatLabels);
-        Highcharts.addEvent(chart, 'resize', reformatLabelsQuick);
-        Highcharts.addEvent(chart, 'init', reformatLabelsQuick);
     });
 };
 

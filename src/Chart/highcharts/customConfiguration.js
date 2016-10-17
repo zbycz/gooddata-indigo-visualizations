@@ -202,13 +202,15 @@ function getLabelsConfiguration(chartOptions) {
             bar: {
                 dataLabels: {
                     formatter: labelFormatter,
-                    style
+                    style,
+                    allowOverlap: false
                 }
             },
             column: {
                 dataLabels: {
                     formatter: labelFormatter,
-                    style
+                    style,
+                    allowOverlap: false
                 }
             }
         },

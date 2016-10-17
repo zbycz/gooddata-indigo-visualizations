@@ -11,7 +11,8 @@ const COLUMN_TEMPLATE = {
             dataLabels: {
                 enabled: true,
                 crop: false,
-                overflow: 'none'
+                overflow: 'none',
+                padding: 2
             },
             maxPointWidth: MAX_POINT_WIDTH
         },
