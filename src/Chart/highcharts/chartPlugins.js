@@ -79,7 +79,7 @@ const extendInitAxis = (Highcharts, chartTextPadding) => {
 
         if (options.title) {
             if (!xAxisHorizontal(chart.chartType)) {
-                options.title.style.width = `${chart.chartHeight - chartTextPadding}px`; // eslint-disable-line
+                options.title.style.width = `${chart.plotHeight - chartTextPadding}px`; // eslint-disable-line
             } else {
                 options.title.style.width = `${chart.plotWidth}px`; // eslint-disable-line
             }
