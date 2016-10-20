@@ -12,6 +12,8 @@ import {
     numberFormat
 } from 'gdc-numberjs/lib/number';
 
+import { BAR_CHART, COLUMN_CHART, LINE_CHART } from '../../VisualizationTypes';
+
 const LEGEND_OPTIONS = {
     horizontal: {
         enabled: true,
@@ -30,14 +32,13 @@ const LEGEND_OPTIONS = {
 
 const EMPTY_DATA = { categories: [], series: [] };
 
-export const DEFAULT_COLOR_PALETTE = [
-    'rgba(7,1,2, 0.4)',
-    'rgba(77,133,255, 0.4)',
-    'rgba(57,191,73, 0.4)',
-    'rgba(255,159,0, 0.4)',
-    'rgba(213,60,56, 0.4)',
-    'rgba(137,77,148, 0.4)'
-];
+const ALIGN_LEFT = 'left';
+const ALIGN_RIGHT = 'right';
+const ALIGN_CENTER = 'center';
+
+const TOOLTIP_ARROW_OFFSET = 23;
+const TOOLTIP_MAX_WIDTH = 366;
+const TOOLTIP_VERTICAL_OFFSET = 14;
 
 const escapeAngleBrackets = str => str && str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -73,50 +74,84 @@ function getShowInPercentConfiguration(chartOptions) {
     } : {};
 }
 
-const TOOLTIP_MAX_WIDTH = 366;
-const TOOLTIP_OFFSET = 23;
+function getArrowAlignment(arrowPosition, chartWidth) {
+    const minX = -TOOLTIP_ARROW_OFFSET;
+    const maxX = chartWidth + TOOLTIP_ARROW_OFFSET;
 
-const alignTooltip = ({ pointX, boxWidth = 0, chartWidth }) => {
-    const minX = -TOOLTIP_OFFSET;
-    const maxX = chartWidth + TOOLTIP_OFFSET;
-
-    if (pointX + (TOOLTIP_MAX_WIDTH / 2) > maxX && (pointX - TOOLTIP_MAX_WIDTH) > minX) {
-        return {
-            align: 'right',
-            x: (pointX - boxWidth) + TOOLTIP_OFFSET
-        };
+    if (
+        arrowPosition + (TOOLTIP_MAX_WIDTH / 2) > maxX &&
+        arrowPosition - TOOLTIP_MAX_WIDTH > minX
+    ) {
+        return ALIGN_RIGHT;
     }
 
-    if (pointX - (TOOLTIP_MAX_WIDTH / 2) < minX && (pointX + TOOLTIP_MAX_WIDTH) < maxX) {
-        return {
-            align: 'left',
-            x: pointX - TOOLTIP_OFFSET
-        };
+    if (
+        arrowPosition - (TOOLTIP_MAX_WIDTH / 2) < minX &&
+        arrowPosition + TOOLTIP_MAX_WIDTH < maxX
+    ) {
+        return ALIGN_LEFT;
     }
 
-    return {
-        align: 'center',
-        x: pointX - (boxWidth / 2)
-    };
+    return ALIGN_CENTER;
+}
+
+const getTooltipHorizontalStartingPosition = (arrowPosition, chartWidth, tooltipWidth) => {
+    switch (getArrowAlignment(arrowPosition, chartWidth)) {
+        case ALIGN_RIGHT:
+            return (arrowPosition - tooltipWidth) + TOOLTIP_ARROW_OFFSET;
+        case ALIGN_LEFT:
+            return arrowPosition - TOOLTIP_ARROW_OFFSET;
+        default:
+            return arrowPosition - (tooltipWidth / 2);
+    }
 };
 
-function positionTooltip(chartType, boxWidth, boxHeight, _point) {
-    const { x } = alignTooltip(
-        {
-            pointX: _point.plotX,
-            boxWidth,
-            chartWidth: this.chart.plotWidth
-        }
+function getArrowHorizontalPosition(chartType, stacking, dataPointEnd, dataPointHeight) {
+    if (chartType === BAR_CHART && stacking) {
+        return dataPointEnd - (dataPointHeight / 2);
+    }
+
+    return dataPointEnd;
+}
+
+function getDataPointEnd(chartType, isNegative, endPoint, height, stacking) {
+    return (chartType === BAR_CHART && isNegative && stacking) ? endPoint + height : endPoint;
+}
+
+function getDataPointStart(chartType, isNegative, endPoint, height, stacking) {
+    return (chartType === COLUMN_CHART && isNegative && stacking) ? endPoint - height : endPoint;
+}
+
+function positionTooltip(chartType, stacking, labelWidth, labelHeight, point) {
+    const dataPointEnd = getDataPointEnd(chartType, point.negative, point.plotX, point.h, stacking);
+    const arrowPosition = getArrowHorizontalPosition(chartType, stacking, dataPointEnd, point.h);
+    const chartWidth = this.chart.plotWidth;
+
+    const tooltipHorizontalStartingPosition = getTooltipHorizontalStartingPosition(
+        arrowPosition,
+        chartWidth,
+        labelWidth
+    );
+
+    const verticalOffset = (chartType === COLUMN_CHART && (stacking || point.negative))
+        ? 0
+        : TOOLTIP_VERTICAL_OFFSET;
+
+    const dataPointStart = getDataPointStart(
+        chartType,
+        point.negative,
+        point.plotY,
+        point.h,
+        stacking
     );
 
     return {
-        x: this.chart.plotLeft + x,
-        // point size + tooltip arrow
-        y: (this.chart.plotTop + _point.plotY) - (boxHeight + 14)
+        x: this.chart.plotLeft + tooltipHorizontalStartingPosition,
+        y: (this.chart.plotTop + dataPointStart) - (labelHeight + verticalOffset)
     };
 }
 
-function formatTooltip(chartType, tooltipCallback) {
+function formatTooltip(chartType, stacking, tooltipCallback) {
     const { chart } = this.series;
 
     // when brushing, do not show tooltip
@@ -124,12 +159,27 @@ function formatTooltip(chartType, tooltipCallback) {
         return false;
     }
 
-    const { align } = alignTooltip(
-        {
-            pointX: chartType === 'line' ? this.point.plotX : this.point.tooltipPos[0],
-            chartWidth: chart.plotWidth
-        }
+    const dataPointEnd = (chartType === LINE_CHART)
+        ? this.point.plotX
+        : getDataPointEnd(
+            chartType,
+            this.point.negative,
+            this.point.tooltipPos[0],
+            this.point.tooltipPos[2],
+            stacking
+        );
+
+    const dataPointHeight = (chartType === LINE_CHART) ? 0 : this.point.shapeArgs.height;
+
+    const arrowPosition = getArrowHorizontalPosition(
+        chartType,
+        stacking,
+        dataPointEnd,
+        dataPointHeight
     );
+
+    const chartWidth = chart.plotWidth;
+    const align = getArrowAlignment(arrowPosition, chartWidth);
 
     return (
         `<div class="hc-tooltip">
@@ -175,6 +225,7 @@ function stackLabelFormatter() {
 function getTooltipConfiguration(chartOptions) {
     const tooltipAction = get(chartOptions, 'actions.tooltip');
     const chartType = chartOptions.type;
+    const stacking = chartOptions.stacking;
 
     return tooltipAction ? {
         tooltip: {
@@ -182,8 +233,8 @@ function getTooltipConfiguration(chartOptions) {
             borderRadius: 0,
             shadow: false,
             useHTML: true,
-            positioner: partial(positionTooltip, chartType),
-            formatter: partial(formatTooltip, chartType, tooltipAction)
+            positioner: partial(positionTooltip, chartType, stacking),
+            formatter: partial(formatTooltip, chartType, stacking, tooltipAction)
         }
     } : {};
 }
