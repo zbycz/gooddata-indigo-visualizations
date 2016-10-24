@@ -14,22 +14,6 @@ import {
 
 import { BAR_CHART, COLUMN_CHART, LINE_CHART } from '../../VisualizationTypes';
 
-const LEGEND_OPTIONS = {
-    horizontal: {
-        enabled: true,
-        layout: 'horizontal'
-    },
-    vertical: {
-        enabled: true,
-        layout: 'vertical',
-        width: 140,
-        itemWidth: 140,
-        itemStyle: {
-            width: 120
-        }
-    }
-};
-
 const EMPTY_DATA = { categories: [], series: [] };
 
 const ALIGN_LEFT = 'left';
@@ -319,23 +303,6 @@ function getDataConfiguration(chartOptions) {
     };
 }
 
-function getLegendConfiguration(chartOptions) {
-    const stacking = chartOptions.stacking;
-    const seriesLength = get(chartOptions, 'data.series', []).length;
-
-    if (seriesLength <= 1 && !stacking) {
-        return {
-            legend: {
-                enabled: false
-            }
-        };
-    }
-
-    return {
-        legend: LEGEND_OPTIONS[chartOptions.legendLayout]
-    };
-}
-
 function getZoomableConfiguration(chartOptions) {
     return chartOptions.zoomable ? {
         chart: {
@@ -351,7 +318,6 @@ export function getCustomizedConfiguration(chartOptions) {
         getShowInPercentConfiguration,
         getLabelsConfiguration,
         getDataConfiguration,
-        getLegendConfiguration,
         getTooltipConfiguration,
         getZoomableConfiguration
     ];

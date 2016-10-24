@@ -58,10 +58,6 @@ export function getLineFamilyChartData(config, rawData) {
     return getChartData(data, configuration);
 }
 
-export function getLegendLayout(config, headers) { // TODO export only for test
-    return (isMetricNamesInSeries(config, headers)) ? 'horizontal' : 'vertical';
-}
-
 export function getCategoryAxisLabel(config, headers) { // TODO export only for test
     return get(propertiesToHeaders(config, headers), 'x.title', '');
 }
@@ -140,7 +136,6 @@ export function getLineFamilyChartOptions(config, data) {
         type: config.type,
         stacking: config.stacking,
         colorPalette: getColorPalette(data, config.colorPalette || DEFAULT_COLOR_PALETTE),
-        legendLayout: getLegendLayout(config, data.headers),
         actions: {
             tooltip: generateTooltipFn({
                 categoryAxisLabel

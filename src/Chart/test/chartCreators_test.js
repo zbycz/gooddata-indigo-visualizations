@@ -2,7 +2,6 @@ import {
     propertiesToHeaders,
     getIndices,
     isMetricNamesInSeries,
-    getLegendLayout,
     getCategoryAxisLabel,
     getMetricAxisLabel,
     showInPercent,
@@ -86,15 +85,6 @@ describe('chartCreators', () => {
             config.y = 'metricNames';
             config.color = 'metricValues';
             expect(isMetricNamesInSeries(config, mockHeaders)).to.equal(false);
-        });
-    });
-
-    describe('getLegendLayout', () => {
-        it('works', () => {
-            expect(getLegendLayout(config, mockHeaders)).to.equal('horizontal');
-            config.y = 'metricNames';
-            config.color = 'metricValues';
-            expect(getLegendLayout(config, mockHeaders)).to.equal('vertical');
         });
     });
 

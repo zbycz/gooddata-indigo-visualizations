@@ -14,29 +14,7 @@ const BASE_TEMPLATE = {
     },
     series: [],
     legend: {
-        align: 'right',
-        verticalAlign: 'top',
-        floating: false,
-        x: -10,
-        y: -15,
-        symbolPadding: 6,
-        symbolWidth: 8,
-        symbolHeight: 8,
-        itemStyle: {
-            paddingTop: '2px',
-            paddingBottom: '5px',
-            font: '12px Avenir, "Helvetica Neue", Arial, sans-serif',
-            color: '#6D7680',
-            textDecoration: 'none',
-            textOverflow: 'ellipsis',
-            cursor: 'default'
-        },
-        itemHoverStyle: {
-            color: '#6D7680',
-            cursor: 'default'
-        },
-        borderRadius: 0,
-        borderWidth: 0
+        enabled: false
     },
     yAxis: {
         gridLineColor: '#ebebeb',

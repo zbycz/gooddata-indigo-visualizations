@@ -110,7 +110,10 @@ function toggleStackedLabels() {
 
     const neighbors = zip(toNeighbors(dlgNodesBCR), toNeighbors(shapesBCR));
     const foundIntersection = neighbors
-        .some(([[currentLabelBCR, nextLabelBCR], [currentShapePositions, nextShapePositions]]) => {
+        .some(([labels, shapes]) => {
+            const [currentLabelBCR, nextLabelBCR] = labels || [];
+            const [currentShapePositions, nextShapePositions] = shapes || [];
+
             if (currentLabelBCR &&
                 nextLabelBCR &&
                 rectanglesAreOverlapping(currentLabelBCR, nextLabelBCR, 0)) {

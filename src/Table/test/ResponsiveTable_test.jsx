@@ -5,7 +5,7 @@ import { range } from 'lodash';
 import { withIntl } from '../../test/utils';
 
 import ResponsiveTable from '../ResponsiveTable';
-import TableVisualization from '../Table';
+import Table from '../Table';
 import { TableControls } from '../TableControls';
 
 const {
@@ -52,7 +52,7 @@ describe('Responsive Table', () => {
             />
         );
 
-        visualization = findRenderedComponentWithType(table, TableVisualization);
+        visualization = findRenderedComponentWithType(table, Table);
         controls = findRenderedComponentWithType(table, TableControls);
     };
 

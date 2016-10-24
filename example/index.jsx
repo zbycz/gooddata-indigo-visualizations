@@ -30,11 +30,21 @@ ReactDOM.render(
         <div>
             <h1>Examples</h1>
             <ExampleVisualization
+                height={400}
                 config={TestConfig.barChart2Series}
                 data={TestData.barChart2Series}
             />
-            <ExampleVisualization config={TestConfig.stackedBar} data={TestData.stackedBar} />
-            <ExampleVisualization config={TestConfig.bar} data={TestData.barChart2Series} />
+            <ExampleVisualization
+                height={400}
+                config={TestConfig.stackedBar}
+                data={TestData.stackedBar}
+                responsiveLegend
+            />
+            <ExampleVisualization
+                config={TestConfig.bar}
+                data={TestData.barChart2Series}
+                height={400}
+            />
             <ExampleVisualization
                 isResponsive
                 config={assign({}, TestConfig.table, { onMore, onLess, sortInTooltip: true })}

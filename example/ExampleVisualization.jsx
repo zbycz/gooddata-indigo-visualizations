@@ -10,9 +10,12 @@ import Table from '../src/Table/Table';
 function ExampleVisualization(props) {
     const TableRenderer = props.isResponsive ? ResponsiveTable : Table;
 
+    // eslint-disable-next-line new-cap
+    const chartRenderer = ExampleChart(LineFamilyChart, props.height);
+
     return (
         <Visualization
-            lineFamilyChartRenderer={ExampleChart(LineFamilyChart)} // eslint-disable-line new-cap
+            lineFamilyChartRenderer={chartRenderer}
             tableRenderer={ExampleTable(TableRenderer)} // eslint-disable-line new-cap
             {...props}
         />
@@ -20,7 +23,8 @@ function ExampleVisualization(props) {
 }
 
 ExampleVisualization.propTypes = {
-    isResponsive: PropTypes.bool
+    isResponsive: PropTypes.bool,
+    height: PropTypes.number
 };
 
 export default ExampleVisualization;

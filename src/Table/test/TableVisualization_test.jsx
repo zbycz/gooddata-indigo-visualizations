@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import { Table } from 'fixed-data-table-2';
 
-import { TableVisualization } from '../Table';
+import TableVisualization from '../TableVisualization';
 import { ASC, DESC } from '../Sort';
 import { withIntl } from '../../test/utils';
 

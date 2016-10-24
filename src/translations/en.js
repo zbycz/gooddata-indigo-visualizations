@@ -5,5 +5,6 @@ export default {
     less: 'Show Less',
     sorting: 'Column sorting',
     asc: 'Ascending',
-    desc: 'Descending'
+    desc: 'Descending',
+    of: '{page} of {pagesCount}'
 };

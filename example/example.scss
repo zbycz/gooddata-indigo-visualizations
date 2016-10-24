@@ -20,3 +20,9 @@ body {
 .flex-half {
     flex: 1;
 }
+
+.indigo-component {
+    .viz-line-family-chart-wrap.non-responsive-legend .viz-line-family-chart .viz-react-highchart-wrap {
+        position: static;
+    }
+}

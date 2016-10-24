@@ -1,4 +1,11 @@
+@import "~goodstrap/packages/Bubble/styles/themes/indigo/bubble-mixins";
+@import "~goodstrap/packages/core/styles/themes/indigo/variables";
+@import "~goodstrap/packages/core/styles/themes/_mixins";
+
 $font-stack-roman: "Avenir", "Helvetica Neue", Arial, sans-serif;
+$legend-paging-background: #eeeeee;
+$legend-right-width: 190px;
+$paging-button-small-size: 22px;
 
 // override highcharts default overflow for chart container
 // to allow tooltip overlap chart container area
@@ -23,26 +30,249 @@ g.highcharts-tooltip {
     }
 }
 
-/**
- * Normally this would be in legend.itemStyle. But, there seems to be a bug
- * in charts such that it only applies white-space: nowrap after you first
- * hover the element. The !important is here to override white-space: normal
- * inline style.
- */
-.highcharts-legend-item span {
-    white-space: nowrap !important;
+$responsive-legend: "only screen and (max-width: 767px)";
+
+@media #{$responsive-legend} {
+    .viz-line-family-chart-wrap {
+        &.responsive-legend {
+            &.flex-row {
+                flex-direction: column;
+            }
+        }
+    }
+}
+
+.viz-legend-wrap {
+    height: 100%;
+    width: 100%;
+}
+
+.viz-static-legend-wrap {
+    &.position-right {
+        flex: 0 0 210px;
+    }
+}
+
+.viz-fluid-legend-wrap {
+    flex: 1 1 auto;
+
+    // react-dimensions v2.0.0-alpha1 workaround
+    > div {
+        height: 100% !important;
+        width: 100% !important;
+    }
+}
+
+.viz-line-family-chart-wrap {
+    display: flex;
+    align-items: stretch;
+    height: 100%;
+
+    &.flex-row {
+        flex-direction: row;
+    }
+
+    &.flex-column {
+        flex-direction: column;
+    }
+
+    .viz-line-family-chart {
+        flex: 1 1 auto;
+    }
+
+    &.non-responsive-legend {
+        .viz-line-family-chart {
+            height: 100%;
+            position: relative;
+
+            // http://stackoverflow.com/questions/8809852/highcharts-how-to-have-a-chart-with-dynamic-height
+            .viz-react-highchart-wrap {
+                position: absolute;;
+                height: 100% !important;
+                width: 100% !important;
+            }
+        }
+    }
+
+    &.responsive-legend {
+        .viz-line-family-chart {
+            // Dynamic width with flexbox
+            // https://github.com/highcharts/highcharts/issues/4649#issuecomment-147629662
+            .highcharts-container,
+            .highcharts-container svg {
+                width: 100% !important;
+            }
+        }
+    }
+}
+
+.viz-legend {
+    display: flex;
+
+    .series {
+        display: flex;
+        text-align: left;
+    }
+
+    .series-item {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .series-icon {
+            height: 9px;
+            width: 9px;
+            flex: 0 0 auto;
+
+            margin-right: 5px;
+        }
+
+        .series-name {
+            flex: 1 1 auto;
+
+            font-family: Avenir, "Helvetica Neue", Arial, sans-serif;
+            font-size: 12px;
+            line-height: 20px;
+
+            color: $gd-color-link;
+
+            @include text-overflow();
+        }
+    }
+
+    .paging {
+        white-space: nowrap;
+
+        button.paging-button {
+            padding: 0;
+            border-radius: 50%;
+
+            &:before {
+                font-size: 11px;
+            }
+
+            @include active-states-and-self {
+                background-color: $legend-paging-background;
+                text-decoration: none;
+
+                &:before {
+                    color: $gd-color-dark;
+                }
+            }
+
+            &:hover {
+                &:before {
+                    color: $gd-color-highlight;
+                }
+            }
+
+            &[disabled] {
+                @include active-states-and-self {
+                    background-color: transparentize($legend-paging-background, .5);
+
+                    &:before {
+                        color: $gd-color-disabled;
+                    }
+                }
+            }
+        }
+    }
+
+    &.static {
+        flex-direction: column;
+        margin-left: 20px;
+
+        &.position-top {
+            margin-left: 0;
+
+            .series {
+                flex-direction: row;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+                width: 100%;
+
+                .series-item {
+                    margin-left: 15px;
+                }
+            }
+        }
+
+        &.position-right {
+            .paging {
+                width: $legend-right-width;
+            }
+        }
+
+        .series {
+            justify-content: flex-start;
+            flex-direction: column;
+            width: $legend-right-width;
+            min-width: $legend-right-width;
+
+            .series-item {
+                max-width: 100%;
+            }
+        }
+
+        .paging {
+            width: 100%;
+            display: flex;
+            margin-top: 20px;
+
+            line-height: $paging-button-small-size;
+
+            .paging-button {
+                width: $paging-button-small-size;
+                height: $paging-button-small-size;
+                min-width: $paging-button-small-size;
+                min-height: $paging-button-small-size;
+            }
+
+            span {
+                display: inline-block;
+                margin: 0 10px;
+                color: $gd-color-state-blank;
+                font-size: 12px;
+
+                strong {
+                    color: $gd-color-dark;
+                }
+            }
+        }
+    }
+
+    &.fluid {
+        margin: 0 12px;
+
+        .series {
+            flex-wrap: wrap;
+
+            .series-name {
+                flex: 1 1 auto;
+            }
+        }
+
+        .paging {
+            text-align: right;
+
+            .paging-button {
+                height: 30px;
+                width: 30px;
+            }
+        }
+    }
 }
 
 .hc-tooltip {
     font-family: $font-stack-roman;
     position: relative;
-    color: #000;
-    background-color: transparentize(#fff, .05);
+    color: $gd-color-dark;
+    background-color: transparentize($gd-color-white, .05);
 
     .content {
         max-width: 320px;
         padding: 13px 13px 9px 13px;
-        border: 1px solid transparentize(#C9D5E0, .3);
+        border: 1px solid transparentize($bubble-light-border-base, .3);
         border-radius: 3px;
         box-shadow: 0 1px 3px 0 rgba(20,56,93, 0.10), 0 2px 9px 0 rgba(20,56,93,0.15);
 
@@ -84,7 +314,7 @@ g.highcharts-tooltip {
 
             .title {
                 max-width: 140px;
-                color: #6D7680;
+                color: $gd-color-label;
                 text-align: right;
                 font-size: 12px;
                 font-weight: normal;
@@ -116,7 +346,7 @@ g.highcharts-tooltip {
         margin-left: -10px;
 
         width:0;height:0;
-        border-color:transparentize(#C9D5E0, .5) transparent transparent transparent;
+        border-color:transparentize($bubble-light-border-base, .5) transparent transparent transparent;
         border-width:10px;
         border-style:solid;
 

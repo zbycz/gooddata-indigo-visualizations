@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { bindAll, noop } from 'lodash';
-import TableVisualization, { DEFAULT_HEADER_HEIGHT, DEFAULT_ROW_HEIGHT } from './Table';
+import { DEFAULT_HEADER_HEIGHT, DEFAULT_ROW_HEIGHT } from './TableVisualization';
+import Table from './Table';
 import TableControls from './TableControls';
 
 export const HEIGHT_PADDING = 20;
@@ -86,7 +87,7 @@ export default class ResponsiveTable extends Component {
 
         return (
             <div className="gdc-indigo-responsive-table" ref={this.setTableRef}>
-                <TableVisualization {...newProps} />
+                <Table {...newProps} />
                 <TableControls
                     {...props}
                     onMore={this.onMore}

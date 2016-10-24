@@ -2,40 +2,8 @@ import { debounce } from 'lodash';
 import autohideLabels from './plugins/autohideLabels/autohideLabels';
 import { extendDataLabelColors } from './plugins/dataLabelsColors';
 
-const LEGEND_TEXT_PADDING = 10;
-
 const getUsableContWidth = (chart, chartTextPadding) =>
     chart.renderTo.getBoundingClientRect().width - chartTextPadding;
-
-const getFittingLegendWidth = (chart, chartTextPadding) => {
-    const widthByContainer = getUsableContWidth(chart, chartTextPadding);
-    const widthByLegend = chart.legend.legendWidth - LEGEND_TEXT_PADDING;
-    const plotWidth = chart.plotWidth;
-
-    const legendIsOnRight = chart.legendLayout === 'vertical';
-    const chartEnlarges = chart.oldContainerWidth < widthByContainer;
-
-    const widerWidth = Math.max(plotWidth, widthByContainer);
-    const tinierWidth = Math.min(plotWidth, widthByContainer);
-    const widthByResize = chartEnlarges ? widerWidth : tinierWidth;
-
-    return legendIsOnRight ? widthByLegend : widthByResize;
-};
-
-const resizeLegend = (chart, chartTextPadding) => {
-    if (chart.legend) {
-        const fittingLegendWidth = getFittingLegendWidth(chart, chartTextPadding);
-
-        chart.legend.itemStyle.width = fittingLegendWidth; // eslint-disable-line
-        chart.isDirtyLegend = true; // eslint-disable-line
-        chart.isDirtyBox = true; // eslint-disable-line
-        chart.series.forEach(series => {
-            chart.legend.destroyItem(series);
-        });
-        chart.redraw();
-        chart.legend.render();
-    }
-};
 
 const resizeYAxisLabel = (axis, chartTextPadding) => {
     if (axis.chart && axis.axisTitle) {
@@ -53,21 +21,14 @@ const resizeYAxisLabel = (axis, chartTextPadding) => {
 
 const xAxisHorizontal = (chartType) => chartType === 'bar';
 
-const extendInitChart = (Highcharts, chartTextPadding) => {
+const extendInitChart = (Highcharts) => {
     Highcharts.wrap(Highcharts.Chart.prototype, 'init', function(proceed, options, callback) { // eslint-disable-line
         const chart = this;
         const widthByContainer = `${getUsableContWidth(options.chart)}px`;
 
-        options.legend.itemStyle.width = widthByContainer; // eslint-disable-line
         chart.resizeYAxisLabel = debounce(resizeYAxisLabel, 500);
-        chart.resizeLegend = debounce(resizeLegend, 500);
+
         proceed.call(chart, options, callback);
-
-        chart.legendLayout = options.legend.layout;
-
-        if (chart.legendLayout === 'vertical') {
-            chart.resizeLegend(chart, chartTextPadding);
-        }
 
         chart.oldContainerWidth = widthByContainer;
     });

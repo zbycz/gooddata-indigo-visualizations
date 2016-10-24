@@ -21,12 +21,11 @@ module.exports = function getWebpackConfig() {
                     test: /\.jsx?$/,
                     loader: `babel?${babelOptions}`,
                     include: [
-                        path.join(__dirname, 'src'),
-                        path.join(__dirname, 'example'),
-                        path.join(__dirname, 'test'),
-                        path.join(__dirname, 'node_modules/js-utils'),
+                        fs.realpathSync(`${__dirname}/src`),
+                        fs.realpathSync(`${__dirname}/example`),
+                        fs.realpathSync(`${__dirname}/node_modules/js-utils/src`),
                         fs.realpathSync(`${__dirname}/node_modules/goodstrap/packages`),
-                        fs.realpathSync(`${__dirname}/node_modules/goodstrap/node_modules/js-utils`)
+                        fs.realpathSync(`${__dirname}/node_modules/goodstrap/node_modules/js-utils/src`)
                     ]
                 },
 

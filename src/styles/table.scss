@@ -2,6 +2,14 @@
 
 $table-small-only: "only screen and (max-width: 480px)";
 
+.viz-table-wrap {
+    // react-dimensions v2.0.0-alpha1 workaround
+    > div {
+        height: 100% !important;
+        width: 100% !important;
+    }
+}
+
 .indigo-table-component {
     position: relative;
     color: #333333;

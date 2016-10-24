@@ -40,6 +40,7 @@ export default class LineFamilyChartTransformation extends Component {
         height: PropTypes.number,
 
         lineFamilyChartRenderer: PropTypes.func.isRequired,
+        responsiveLegend: PropTypes.bool,
         onDataTooLarge: PropTypes.func
     };
 
@@ -78,6 +79,7 @@ export default class LineFamilyChartTransformation extends Component {
             return null;
         }
 
+        const { responsiveLegend, height } = this.props;
         const type = this.props.config.type;
         const chartOptions = this.chartOptions;
 
@@ -92,14 +94,15 @@ export default class LineFamilyChartTransformation extends Component {
             hcOptions = getLineChartConfiguration(chartOptions);
         }
 
-        if (this.props.height) {
-            hcOptions.chart.height = this.props.height;
-        }
-
         if (!type) {
             invariant(`Unknown visualization type: ${type}`);
         }
 
-        return this.props.lineFamilyChartRenderer({ chartOptions, hcOptions });
+        return this.props.lineFamilyChartRenderer({
+            chartOptions,
+            hcOptions,
+            responsiveLegend,
+            height
+        });
     }
 }
