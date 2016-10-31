@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-import Dimensions from 'react-dimensions';
+import Measure from 'react-measure';
 import TableVisualization from './TableVisualization';
 
 export default class Table extends Component {
 
     render() {
-        const Wrapped = Dimensions()(TableVisualization); // eslint-disable-line new-cap
-
         return (
-            <div className="viz-table-wrap">
-                <Wrapped {...this.props} />
-            </div>
+            <Measure>
+                {dimensions => (
+                    <div className="viz-table-wrap">
+                        <TableVisualization
+                            {...this.props}
+                            containerWidth={dimensions.width}
+                            containerHeight={dimensions.height}
+                        />
+                    </div>
+                )}
+            </Measure>
         );
     }
 }

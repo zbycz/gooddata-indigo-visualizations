@@ -1,8 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { BAR } from '../../../VisualizationTypes';
+import { render } from 'enzyme';
+import { BAR_CHART } from '../../../VisualizationTypes';
 import Legend, { FLUID_LEGEND_THRESHOLD } from '../Legend';
-import StaticLegend from '../StaticLegend';
+import withIntl from '../../../utils/with_intl';
 
 describe('Legend', () => {
     const series = [
@@ -26,25 +26,29 @@ describe('Legend', () => {
 
     function createComponent(userProps = {}) {
         const props = {
-            chartType: BAR,
+            chartType: BAR_CHART,
+            legendLayout: 'vertical',
             series,
             onItemClick: () => {},
             ...userProps
         };
-        return shallow(<Legend {...props} />);
+
+        const Wrapped = withIntl(Legend);
+
+        return render(<Wrapped {...props} />);
     }
 
     it('should render StaticLegend on desktop', () => {
         window.innerWidth = FLUID_LEGEND_THRESHOLD + 10;
 
         const legend = createComponent();
-        expect(legend.find(StaticLegend)).to.have.length(1);
+        expect(legend.find('.viz-static-legend-wrap')).to.have.length(1);
     });
 
     it('should render fluid legend on mobile', () => {
         window.innerWidth = FLUID_LEGEND_THRESHOLD - 10;
 
         const legend = createComponent({ isResponsive: true });
-        expect(legend.find('div.viz-fluid-legend-wrap')).to.have.length(1);
+        expect(legend.find('.viz-fluid-legend-wrap')).to.have.length(1);
     });
 });

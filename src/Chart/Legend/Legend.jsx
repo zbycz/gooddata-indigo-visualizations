@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { throttle } from 'lodash';
 import shallowCompare from 'react-addons-shallow-compare';
-import Dimensions from 'react-dimensions';
+import Measure from 'react-measure';
 import cx from 'classnames';
 
 import FluidLegend from './FluidLegend';
@@ -15,13 +15,12 @@ export default class Legend extends Component {
         chartType: PropTypes.string.isRequired,
         series: PropTypes.array.isRequired,
         onItemClick: PropTypes.func.isRequired,
-        isStacking: PropTypes.bool,
+        legendLayout: PropTypes.string.isRequired,
         isResponsive: PropTypes.bool,
         height: PropTypes.number
     };
 
     static defaultProps = {
-        isStacking: false,
         isResponsive: false
     };
 
@@ -92,23 +91,25 @@ export default class Legend extends Component {
         const { chartType } = this.props;
 
         return (
-            <div className="viz-fluid-legend-wrap">
-                <FluidLegend
-                    series={this.getSeries()}
-                    chartType={chartType}
-                    onItemClick={this.onItemClick}
-                />
-            </div>
+            <Measure>
+                {({ width }) => (
+                    <div className="viz-fluid-legend-wrap">
+                        <FluidLegend
+                            series={this.getSeries()}
+                            chartType={chartType}
+                            onItemClick={this.onItemClick}
+                            containerWidth={width}
+                        />
+                    </div>
+                )}
+            </Measure>
         );
     }
 
     renderStatic() {
-        const { height, chartType, isResponsive, isStacking } = this.props;
+        const { height, chartType, isResponsive, legendLayout } = this.props;
 
-        const position = !isStacking && !isResponsive ? 'top' : 'right';
-        const StaticLegendComponent = position === 'top' || isResponsive ?
-            StaticLegend : Dimensions()(StaticLegend); // eslint-disable-line new-cap
-
+        const position = legendLayout === 'horizontal' && !isResponsive ? 'top' : 'right';
         const classNames = cx('viz-static-legend-wrap', `position-${position}`);
 
         const props = {
@@ -118,14 +119,17 @@ export default class Legend extends Component {
             position
         };
 
-        if (height) {
-            props.containerHeight = height;
-        }
-
         return (
-            <div className={classNames}>
-                <StaticLegendComponent {...props} />
-            </div>
+            <Measure>
+                {dimensions => (
+                    <div className={classNames}>
+                        <StaticLegend
+                            {...props}
+                            containerHeight={height || dimensions.height}
+                        />
+                    </div>
+                )}
+            </Measure>
         );
     }
 

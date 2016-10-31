@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 import shallowCompare from 'react-addons-shallow-compare';
-import Dimensions from 'react-dimensions';
 
 import LegendItem from './LegendItem';
 import { calculateFluidLegend } from './helpers';
 
-export class FluidLegend extends Component {
+export default class FluidLegend extends Component {
 
     static propTypes = {
         chartType: PropTypes.string.isRequired,
@@ -85,5 +84,3 @@ export class FluidLegend extends Component {
         );
     }
 }
-
-export default Dimensions()(FluidLegend); // eslint-disable-line new-cap

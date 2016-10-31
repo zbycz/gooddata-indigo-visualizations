@@ -55,12 +55,6 @@ $responsive-legend: "only screen and (max-width: 767px)";
 
 .viz-fluid-legend-wrap {
     flex: 1 1 auto;
-
-    // react-dimensions v2.0.0-alpha1 workaround
-    > div {
-        height: 100% !important;
-        width: 100% !important;
-    }
 }
 
 .viz-line-family-chart-wrap {

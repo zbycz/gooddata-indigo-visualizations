@@ -59,6 +59,10 @@ export default class LineFamilyChart extends Component {
         });
     }
 
+    getStaticLegendLayout() {
+        return this.props.chartOptions.legendLayout;
+    }
+
     createChartConfig(chartConfig) {
         const config = cloneDeep(chartConfig);
 
@@ -84,20 +88,17 @@ export default class LineFamilyChart extends Component {
         }
     }
 
-    isStacking() {
-        return !!this.props.chartOptions.stacking; // can be null
-    }
-
     hasLegend() {
         const { chartOptions } = this.props;
         const seriesLength = get(chartOptions, 'data.series', []).length;
 
-        return seriesLength > 1 || this.isStacking();
+        return seriesLength > 1 || !!chartOptions.stacking;
     }
+
 
     hasFixedHeight() {
         const { responsiveLegend } = this.props;
-        return this.isStacking() || responsiveLegend;
+        return this.getStaticLegendLayout() === 'vertical' || responsiveLegend;
     }
 
     renderLegend() {
@@ -109,7 +110,7 @@ export default class LineFamilyChart extends Component {
 
         const legendProps = {
             isResponsive: responsiveLegend,
-            isStacking: this.isStacking(),
+            legendLayout: this.getStaticLegendLayout(),
             chartType: chartOptions.type,
             series: this.getSeries(),
             onItemClick: this.onLegendItemClick,
@@ -136,9 +137,8 @@ export default class LineFamilyChart extends Component {
 
     render() {
         const { responsiveLegend } = this.props;
-        const isStacking = this.isStacking();
 
-        const flexRow = isStacking || responsiveLegend;
+        const flexRow = this.getStaticLegendLayout() === 'vertical' || responsiveLegend;
 
         const classes = cx(
             'viz-line-family-chart-wrap',
@@ -146,7 +146,7 @@ export default class LineFamilyChart extends Component {
             responsiveLegend ? 'responsive-legend' : 'non-responsive-legend'
         );
 
-        const reverse = !responsiveLegend && !isStacking;
+        const reverse = !responsiveLegend && this.getStaticLegendLayout() === 'horizontal';
 
         return (
             <div className={classes}>
