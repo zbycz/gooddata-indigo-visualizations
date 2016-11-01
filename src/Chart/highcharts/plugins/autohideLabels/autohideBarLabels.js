@@ -1,77 +1,84 @@
 import {
     isStacked,
     getVisibleSeries,
-    getHiddenSeries,
     getDataPoints,
     showDataLabels,
     hideDataLabels,
+    showDataLabel,
+    hideDataLabel,
+    hasDataLabel,
     toNeighbors,
-    getPointPositions,
-    rectanglesAreOverlapping
+    isIntersecting,
+    getDataLabelAttributes,
+    getShapeAttributes
 } from '../../helpers';
 
-// some data labels may not be rendered (too many points)
-const getRenderedPointsRects = (points) => {
-    return points.filter((point) => point.dataLabel)
-        .map((point) => getPointPositions(point));
-};
+const toggleStackedChartLabels = (visiblePoints) => {
+    const intersectionFound = visiblePoints
+        .filter(hasDataLabel)
+        .some((point) => {
+            const { dataLabel, shapeArgs } = point;
 
-const toggleStackedChartLabels = (visiblePoints, hiddenPoints) => {
-    const renderedPointsRects = getRenderedPointsRects(visiblePoints);
+            if (dataLabel && shapeArgs) {
+                const dataLabelAttr = getDataLabelAttributes(point);
+                const shapeAttr = getShapeAttributes(point);
+                return dataLabelAttr.height + (2 * dataLabel.padding) > shapeAttr.height;
+            }
+            return false;
+        });
 
-    const isIntersecting = renderedPointsRects
-        .some((point) => point.label.height + (2 * point.labelPadding) > point.shape.height);
-
-    if (isIntersecting) {
+    if (intersectionFound) {
         hideDataLabels(visiblePoints);
     } else {
-        renderedPointsRects.forEach((point) => {
-            if (point.label.width + (2 * point.labelPadding) > point.shape.width) {
-                point.hide();
-            } else {
-                point.show();
+        visiblePoints.filter(hasDataLabel).forEach((point) => {
+            const { dataLabel, shapeArgs } = point;
+            if (dataLabel && shapeArgs) {
+                const dataLabelAttr = getDataLabelAttributes(point);
+                const shapeAttr = getShapeAttributes(point);
+                const labelWidth = dataLabelAttr.width + (2 * dataLabel.padding);
+                const foundIntersection = labelWidth > shapeAttr.width;
+                return foundIntersection ? hideDataLabel(point) : showDataLabel(point);
             }
+            return null;
         });
     }
-
-    hideDataLabels(hiddenPoints);
 };
 
-const toggleNonStackedChartLabels = (visiblePoints, hiddenPoints) => {
-    const neighbors = toNeighbors(getRenderedPointsRects(visiblePoints));
+const toggleNonStackedChartLabels = (points, shouldCheckShapeIntersection = false) => {
+    const neighbors = toNeighbors(points);
+    const intersectionFound = neighbors.some(([firstPoint, nextPoint]) => {
+        const firstDataLabelAttr = getDataLabelAttributes(firstPoint);
+        const nextDataLabelAttr = getDataLabelAttributes(nextPoint);
 
-    const isIntersecting = neighbors.some(([firstPoint, nextPoint]) => {
-        return rectanglesAreOverlapping(firstPoint.label, nextPoint.label)
-            || rectanglesAreOverlapping(firstPoint.label, nextPoint.shape)
-            || rectanglesAreOverlapping(firstPoint.shape, nextPoint.label);
+        if (shouldCheckShapeIntersection) {
+            const firstShapeAttr = getShapeAttributes(firstPoint);
+            const nextShapeAttr = getShapeAttributes(nextPoint);
+
+            return isIntersecting(firstDataLabelAttr, nextDataLabelAttr) ||
+                isIntersecting(firstDataLabelAttr, nextShapeAttr) ||
+                isIntersecting(firstShapeAttr, nextDataLabelAttr);
+        }
+
+        return isIntersecting(firstDataLabelAttr, nextDataLabelAttr);
     });
 
-    if (isIntersecting) {
-        hideDataLabels(visiblePoints);
+    if (intersectionFound) {
+        hideDataLabels(points);
     } else {
-        showDataLabels(visiblePoints);
+        showDataLabels(points);
     }
-
-    hideDataLabels(hiddenPoints);
 };
 
 
-const toggleLabels = (chart) => {
+const autohideBarLabels = (chart) => {
     const visibleSeries = getVisibleSeries(chart);
-    const hiddenSeries = getHiddenSeries(chart);
     const visiblePoints = getDataPoints(visibleSeries);
-    const hiddenPoints = getDataPoints(hiddenSeries);
 
     if (isStacked(chart)) {
-        toggleStackedChartLabels(visiblePoints, hiddenPoints);
+        toggleStackedChartLabels(visiblePoints);
     } else {
-        toggleNonStackedChartLabels(visiblePoints, hiddenPoints);
+        toggleNonStackedChartLabels(visiblePoints, false);
     }
-
-    return chart;
 };
 
-export default function autohideBarLabels(chart, quick = false) {
-    const timeout = quick ? 0 : 500;
-    setTimeout(() => toggleLabels(chart), timeout);
-}
+export default autohideBarLabels;
