@@ -22,6 +22,7 @@ const ALIGN_CENTER = 'center';
 
 const TOOLTIP_ARROW_OFFSET = 23;
 const TOOLTIP_MAX_WIDTH = 366;
+const TOOLTIP_BAR_CHART_VERTICAL_OFFSET = 5;
 const TOOLTIP_VERTICAL_OFFSET = 14;
 
 const escapeAngleBrackets = str => str && str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -106,6 +107,18 @@ function getDataPointStart(chartType, isNegative, endPoint, height, stacking) {
     return (chartType === COLUMN_CHART && isNegative && stacking) ? endPoint - height : endPoint;
 }
 
+function getTooltipVerticalOffset(chartType, stacking, point) {
+    if (chartType === COLUMN_CHART && (stacking || point.negative)) {
+        return 0;
+    }
+
+    if (chartType === BAR_CHART) {
+        return TOOLTIP_BAR_CHART_VERTICAL_OFFSET;
+    }
+
+    return TOOLTIP_VERTICAL_OFFSET;
+}
+
 function positionTooltip(chartType, stacking, labelWidth, labelHeight, point) {
     const dataPointEnd = getDataPointEnd(chartType, point.negative, point.plotX, point.h, stacking);
     const arrowPosition = getArrowHorizontalPosition(chartType, stacking, dataPointEnd, point.h);
@@ -117,9 +130,7 @@ function positionTooltip(chartType, stacking, labelWidth, labelHeight, point) {
         labelWidth
     );
 
-    const verticalOffset = (chartType === COLUMN_CHART && (stacking || point.negative))
-        ? 0
-        : TOOLTIP_VERTICAL_OFFSET;
+    const verticalOffset = getTooltipVerticalOffset(chartType, stacking, point);
 
     const dataPointStart = getDataPointStart(
         chartType,
