@@ -25,7 +25,7 @@ const BASE_TEMPLATE = {
             }
         },
         title: {
-            margin: 20,
+            margin: 15,
             style: {
                 color: '#6D7680',
                 font: '14px Avenir, "Helvetica Neue", Arial, sans-serif'
@@ -50,7 +50,7 @@ const BASE_TEMPLATE = {
             autoRotation: [-90]
         },
         title: {
-            margin: 20,
+            margin: 10,
             style: {
                 color: '#6D7680',
                 font: '14px Avenir, "Helvetica Neue", Arial, sans-serif'
