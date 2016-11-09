@@ -19,8 +19,6 @@ const resizeYAxisLabel = (axis, chartTextPadding) => {
     }
 };
 
-const xAxisHorizontal = (chartType) => chartType === 'bar';
-
 const extendInitChart = (Highcharts) => {
     Highcharts.wrap(Highcharts.Chart.prototype, 'init', function(proceed, options, callback) { // eslint-disable-line
         const chart = this;
@@ -39,11 +37,9 @@ const extendInitAxis = (Highcharts, chartTextPadding) => {
         chart.chartType = chart.options.chart.type; // eslint-disable-line
 
         if (options.title) {
-            if (!xAxisHorizontal(chart.chartType)) {
-                options.title.style.width = `${chart.plotHeight - chartTextPadding}px`; // eslint-disable-line
-            } else {
-                options.title.style.width = `${chart.plotWidth}px`; // eslint-disable-line
-            }
+            options.title.style.width = (options.title.rotation === 0) // eslint-disable-line
+                ? `${chart.plotWidth - chartTextPadding}px` // axis title is horizontal
+                : `${chart.plotHeight}px`; // axis title is vertical i.e. rotation === 270
         }
         proceed.call(this, chart, options);
     });
