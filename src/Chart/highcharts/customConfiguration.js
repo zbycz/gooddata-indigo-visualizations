@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
 import cloneDeep from 'lodash/cloneDeep';
 import every from 'lodash/every';
+import cx from 'classnames';
 
 import {
     stripColors,
@@ -21,6 +22,7 @@ const ALIGN_RIGHT = 'right';
 const ALIGN_CENTER = 'center';
 
 const TOOLTIP_ARROW_OFFSET = 23;
+const TOOLTIP_FULLSCREEN_THRESHOLD = 480;
 const TOOLTIP_MAX_WIDTH = 366;
 const TOOLTIP_BAR_CHART_VERTICAL_OFFSET = 5;
 const TOOLTIP_VERTICAL_OFFSET = 14;
@@ -65,14 +67,14 @@ function getArrowAlignment(arrowPosition, chartWidth) {
 
     if (
         arrowPosition + (TOOLTIP_MAX_WIDTH / 2) > maxX &&
-        arrowPosition - TOOLTIP_MAX_WIDTH > minX
+        arrowPosition - (TOOLTIP_MAX_WIDTH / 2) > minX
     ) {
         return ALIGN_RIGHT;
     }
 
     if (
         arrowPosition - (TOOLTIP_MAX_WIDTH / 2) < minX &&
-        arrowPosition + TOOLTIP_MAX_WIDTH < maxX
+        arrowPosition + (TOOLTIP_MAX_WIDTH / 2) < maxX
     ) {
         return ALIGN_LEFT;
     }
@@ -146,6 +148,10 @@ function positionTooltip(chartType, stacking, labelWidth, labelHeight, point) {
     };
 }
 
+const showFullscreenTooltip = () => {
+    return window.innerWidth <= TOOLTIP_FULLSCREEN_THRESHOLD;
+};
+
 function formatTooltip(chartType, stacking, tooltipCallback) {
     const { chart } = this.series;
 
@@ -176,13 +182,22 @@ function formatTooltip(chartType, stacking, tooltipCallback) {
     const chartWidth = chart.plotWidth;
     const align = getArrowAlignment(arrowPosition, chartWidth);
 
+    const tailStyle = showFullscreenTooltip() ?
+        `style="left: ${arrowPosition + chart.plotLeft}px;"` : '';
+
+    const getTailClasses = (classname) => {
+        return cx(classname, {
+            [align]: !showFullscreenTooltip()
+        });
+    };
+
     return (
         `<div class="hc-tooltip">
             <div class="content">
                 ${tooltipCallback(this.point)}
             </div>
-            <div class="tail1 ${align}"></div>
-            <div class="tail2 ${align}"></div>
+            <div class="${getTailClasses('tail1')}" ${tailStyle}></div>
+            <div class="${getTailClasses('tail2')}" ${tailStyle}></div>
         </div>`
     );
 }

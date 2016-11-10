@@ -1,8 +1,14 @@
 import cloneDeep from 'lodash/cloneDeep';
+import invoke from 'lodash/invoke';
+import get from 'lodash/get';
+
+const isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 
 export const DEFAULT_SERIES_LIMIT = 1000;
 export const DEFAULT_CATEGORIES_LIMIT = 365;
 export const MAX_POINT_WIDTH = 100;
+
+let previousChart = null;
 
 const BASE_TEMPLATE = {
     credits: {
@@ -65,6 +71,28 @@ const BASE_TEMPLATE = {
                 legendItemClick() {
                     if (this.visible) {
                         this.points.forEach(point => point.dataLabel && point.dataLabel.hide());
+                    }
+                }
+            },
+            point: {
+                events: {
+                    click() {
+                        if (isTouchDevice) {
+                            // Close opened tooltip on previous clicked chart
+                            // (click between multiple charts on dashboards)
+                            const currentChart = this.series.chart;
+                            const currentId = get(currentChart, 'container.id');
+                            const prevId = get(previousChart, 'container.id');
+                            if (previousChart && prevId !== currentId) {
+                                // Remove line chart point bubble
+                                invoke(previousChart, 'hoverSeries.onMouseOut');
+                                previousChart.tooltip.hide();
+                            }
+
+                            if (!previousChart || prevId !== currentId) {
+                                previousChart = currentChart;
+                            }
+                        }
                     }
                 }
             }

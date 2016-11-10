@@ -1,6 +1,5 @@
 @import "~goodstrap/packages/core/styles/themes/indigo/colors";
-
-$table-small-only: "only screen and (max-width: 480px)";
+@import "variables";
 
 .indigo-table-component {
     position: relative;
@@ -212,7 +211,7 @@ $table-small-only: "only screen and (max-width: 480px)";
 }
 
 .gd-table-header-bubble-overlay {
-    @media #{$table-small-only} {
+    @media #{$insight-small-only} {
         left: 20px !important;
         right: 20px !important;
 
@@ -228,7 +227,7 @@ $table-small-only: "only screen and (max-width: 480px)";
     &.bubble {
         max-width: 300px;
 
-        @media #{$table-small-only} {
+        @media #{$insight-small-only} {
             max-width: none;
         }
     }

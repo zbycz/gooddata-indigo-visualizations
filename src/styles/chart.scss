@@ -1,6 +1,7 @@
 @import "~goodstrap/packages/Bubble/styles/themes/indigo/bubble-mixins";
 @import "~goodstrap/packages/core/styles/themes/indigo/variables";
 @import "~goodstrap/packages/core/styles/themes/_mixins";
+@import "variables";
 
 $font-stack-roman: "Avenir", "Helvetica Neue", Arial, sans-serif;
 $legend-paging-background: #eeeeee;
@@ -25,8 +26,16 @@ g.highcharts-tooltip {
     display: flex;
     z-index: 3005;
 
-    span {
+    > span {
         flex: 0 0 auto;
+    }
+
+    &,
+    > span {
+        @media #{$insight-small-only} {
+            left: 0 !important;
+            right: 0;
+        }
     }
 }
 
@@ -328,6 +337,10 @@ $responsive-legend: "only screen and (max-width: 767px)";
                 overflow: hidden;
                 white-space: nowrap;
             }
+        }
+
+        @media #{$insight-small-only} {
+            max-width: none;
         }
     }
 
