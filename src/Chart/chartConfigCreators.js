@@ -15,7 +15,6 @@ export function transformConfigToLine(config) {
         type: config.type,
         x: category ? category.category.displayForm : '',
         y: '/metricValues',
-        zoomable: !!config.zoomable,
         where: {},
         orderBy: []
     };

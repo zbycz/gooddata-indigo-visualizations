@@ -26,7 +26,6 @@ export default class LineFamilyChart extends Component {
     constructor(props) {
         super(props);
 
-        this.afterRender = this.afterRender.bind(this);
         this.setChartRef = this.setChartRef.bind(this);
         this.onLegendItemClick = this.onLegendItemClick.bind(this);
     }
@@ -77,15 +76,6 @@ export default class LineFamilyChart extends Component {
         }
 
         return config;
-    }
-
-    afterRender(chart) {
-        if (!this.props.chartOptions.zoomable) {
-            // do not trap mouse events, for details @see
-            // https://stackoverflow.com/questions/11618075/highcharts-stop-chart-from-trapping-mouse-events-or-capture-mouse-click-on-the
-            chart.container.onclick = null; //eslint-disable-line
-            chart.container.onmousedown = null; //eslint-disable-line
-        }
     }
 
     hasLegend() {
