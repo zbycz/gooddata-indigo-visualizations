@@ -329,14 +329,6 @@ function getDataConfiguration(chartOptions) {
     };
 }
 
-function getZoomableConfiguration(chartOptions) {
-    return chartOptions.zoomable ? {
-        chart: {
-            zoomType: 'x'
-        }
-    } : {};
-}
-
 export function getCustomizedConfiguration(chartOptions) {
     const configurators = [
         getTitleConfiguration,
@@ -344,8 +336,7 @@ export function getCustomizedConfiguration(chartOptions) {
         getShowInPercentConfiguration,
         getLabelsConfiguration,
         getDataConfiguration,
-        getTooltipConfiguration,
-        getZoomableConfiguration
+        getTooltipConfiguration
     ];
 
     const commonData = configurators.reduce((config, configurator) => {

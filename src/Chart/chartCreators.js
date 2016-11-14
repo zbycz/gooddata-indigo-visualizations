@@ -152,7 +152,6 @@ export function getLineFamilyChartOptions(config, data) {
             y: metricAxisLabel,
             yFormat: get(propertiesToHeaders(config, data.headers), 'y.format')
         },
-        showInPercent: showInPercent(config, data.headers),
-        zoomable: config.zoomable
+        showInPercent: showInPercent(config, data.headers)
     };
 }
