@@ -52,37 +52,14 @@ export const hasDataLabel = (point) => point.dataLabel;
 export const hideDataLabel = (point) => {
     const { dataLabel } = point;
     if (dataLabel) {
-        dataLabel.oldOpacity = dataLabel.opacity;
-        dataLabel.newOpacity = 0;
-        const isOpacityDifferent = dataLabel.oldOpacity !== dataLabel.newOpacity;
-        if (isOpacityDifferent) {
-            dataLabel.alignAttr.opacity = dataLabel.newOpacity;
-            dataLabel[dataLabel.isOld ? 'animate' : 'attr'](
-                dataLabel.alignAttr,
-                null,
-                () => dataLabel.hide()
-            );
-        }
-        dataLabel.isOld = true;
+        dataLabel.hide();
     }
 };
 
 export const showDataLabel = (point) => {
     const { dataLabel } = point;
     if (dataLabel) {
-        dataLabel.oldOpacity = dataLabel.opacity;
-        dataLabel.newOpacity = 1;
-        const isOpacityDifferent = dataLabel.oldOpacity !== dataLabel.newOpacity;
-        if (isOpacityDifferent) {
-            dataLabel.show(true);
-            dataLabel.alignAttr.opacity = dataLabel.newOpacity;
-            dataLabel[dataLabel.isOld ? 'animate' : 'attr'](
-                dataLabel.alignAttr,
-                null,
-                null
-            );
-        }
-        dataLabel.isOld = true;
+        dataLabel.show();
     }
 };
 
