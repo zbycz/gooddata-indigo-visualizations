@@ -117,8 +117,10 @@ export function getShapeAttributes(point) {
 }
 
 export function getDataLabelAttributes(point) {
-    const { dataLabel, dataLabel: { parentGroup } } = point;
-    if (dataLabel) {
+    const dataLabel = get(point, 'dataLabel', null);
+    const parentGroup = get(point, 'dataLabel.parentGroup', null);
+
+    if (dataLabel && parentGroup) {
         return {
             x: dataLabel.x + parentGroup.translateX,
             y: dataLabel.y + parentGroup.translateY,
