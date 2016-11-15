@@ -278,8 +278,18 @@ export default class TableVisualization extends Component {
                         className="gd-table-header-bubble bubble-light"
                         overlayClassName="gd-table-header-bubble-overlay"
                         alignPoints={alignPoints}
-                        arrowDirections={{ 'bl tr': 'top', 'br tl': 'top' }}
-                        arrowOffsets={{ 'bl tr': [11, 7], 'br tl': [-11, 7] }}
+                        arrowDirections={{
+                            'bl tr': 'top',
+                            'br tl': 'top',
+                            'tl br': 'bottom',
+                            'tr bl': 'bottom'
+                        }}
+                        arrowOffsets={{
+                            'bl tr': [11, 7],
+                            'br tl': [-11, 7],
+                            'tl br': [11, -7],
+                            'tr bl': [-11, -7]
+                        }}
                         arrowStyle={getArrowPositions}
                         onClose={this.closeBubble}
                     >

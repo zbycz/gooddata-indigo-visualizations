@@ -215,7 +215,8 @@
         left: 20px !important;
         right: 20px !important;
 
-        .gd-table-header-bubble.bubble.arrow-top-direction {
+        .gd-table-header-bubble.bubble.arrow-top-direction,
+        .gd-table-header-bubble.bubble.arrow-bottom-direction {
             .arrow-position {
                 margin: 0;
             }

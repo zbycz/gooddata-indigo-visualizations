@@ -111,12 +111,20 @@ export function getTooltipSortAlignPoints(columnAlign) {
         { align: 'bl tl', offset: getPoints(HEADER_PADDING) },
         { align: 'bl tc', offset: getPoints(HEADER_PADDING) },
         { align: 'bl tr', offset: getPoints(HEADER_PADDING) },
-        { align: 'br tl', offset: getPoints(-HEADER_PADDING) }
+        { align: 'br tl', offset: getPoints(-HEADER_PADDING) },
+        { align: 'tl bl', offset: getPoints(HEADER_PADDING, HEADER_PADDING) },
+        { align: 'tl bc', offset: getPoints(HEADER_PADDING, HEADER_PADDING) },
+        { align: 'tl br', offset: getPoints(HEADER_PADDING, HEADER_PADDING) },
+        { align: 'tr bl', offset: getPoints(-HEADER_PADDING, HEADER_PADDING) }
     ] : [
         { align: 'br tr', offset: getPoints(-HEADER_PADDING) },
         { align: 'br tc', offset: getPoints(-HEADER_PADDING) },
         { align: 'br tl', offset: getPoints(-HEADER_PADDING) },
-        { align: 'bl tr', offset: getPoints(HEADER_PADDING) }
+        { align: 'bl tr', offset: getPoints(HEADER_PADDING) },
+        { align: 'tr br', offset: getPoints(-HEADER_PADDING, HEADER_PADDING) },
+        { align: 'tr bc', offset: getPoints(-HEADER_PADDING, HEADER_PADDING) },
+        { align: 'tr bl', offset: getPoints(-HEADER_PADDING, HEADER_PADDING) },
+        { align: 'tl br', offset: getPoints(HEADER_PADDING, HEADER_PADDING) }
     ];
     return alignPoints;
 }
