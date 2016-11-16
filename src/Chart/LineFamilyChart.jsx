@@ -5,6 +5,7 @@ import cx from 'classnames';
 
 import Legend from './Legend/Legend';
 import { initChartPlugins } from './highcharts/chartPlugins';
+import { hideDataLabels } from './highcharts/helpers';
 
 const Highcharts = ReactHighcharts.Highcharts;
 const CHART_TEXT_PADDING = 50;
@@ -44,6 +45,7 @@ export default class LineFamilyChart extends Component {
         if (isDisabled) {
             seriesItem.show();
         } else {
+            hideDataLabels(seriesItem.points);
             seriesItem.hide();
         }
     }
