@@ -149,7 +149,7 @@ function positionTooltip(chartType, stacking, labelWidth, labelHeight, point) {
 }
 
 const showFullscreenTooltip = () => {
-    return window.innerWidth <= TOOLTIP_FULLSCREEN_THRESHOLD;
+    return document.documentElement.clientWidth <= TOOLTIP_FULLSCREEN_THRESHOLD;
 };
 
 function formatTooltip(chartType, stacking, tooltipCallback) {
