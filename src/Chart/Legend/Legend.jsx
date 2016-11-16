@@ -17,11 +17,17 @@ export default class Legend extends Component {
         onItemClick: PropTypes.func.isRequired,
         legendLayout: PropTypes.string.isRequired,
         isResponsive: PropTypes.bool,
-        height: PropTypes.number
+        height: PropTypes.number,
+        documentObj: PropTypes.shape({
+            documentElement: PropTypes.shape({
+                clientWidth: PropTypes.number.isRequired
+            })
+        })
     };
 
     static defaultProps = {
-        isResponsive: false
+        isResponsive: false,
+        documentObj: document
     };
 
     constructor(props) {
@@ -84,7 +90,8 @@ export default class Legend extends Component {
     }
 
     shouldShowFluid() {
-        return window.innerWidth < FLUID_LEGEND_THRESHOLD;
+        const { documentObj } = this.props;
+        return documentObj.documentElement.clientWidth < FLUID_LEGEND_THRESHOLD;
     }
 
     renderFluid() {

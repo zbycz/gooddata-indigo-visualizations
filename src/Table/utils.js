@@ -72,7 +72,7 @@ export function getColumnAlign(column) {
 }
 
 function fullscreenTooltipEnabled() {
-    return window.innerWidth <= FULLSCREEN_TOOLTIP_VIEWPORT_THRESHOLD;
+    return document.documentElement.clientWidth <= FULLSCREEN_TOOLTIP_VIEWPORT_THRESHOLD;
 }
 
 export function calculateArrowPositions(column, tableScrollX, tableWrapRef) {

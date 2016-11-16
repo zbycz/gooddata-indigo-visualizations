@@ -39,16 +39,25 @@ describe('Legend', () => {
     }
 
     it('should render StaticLegend on desktop', () => {
-        window.innerWidth = FLUID_LEGEND_THRESHOLD + 10;
-
-        const legend = createComponent();
+        const legend = createComponent({
+            documentObj: {
+                documentElement: {
+                    clientWidth: FLUID_LEGEND_THRESHOLD + 10
+                }
+            }
+        });
         expect(legend.find('.viz-static-legend-wrap')).to.have.length(1);
     });
 
     it('should render fluid legend on mobile', () => {
-        window.innerWidth = FLUID_LEGEND_THRESHOLD - 10;
-
-        const legend = createComponent({ isResponsive: true });
+        const legend = createComponent({
+            isResponsive: true,
+            documentObj: {
+                documentElement: {
+                    clientWidth: FLUID_LEGEND_THRESHOLD - 10
+                }
+            }
+        });
         expect(legend.find('.viz-fluid-legend-wrap')).to.have.length(1);
     });
 });
