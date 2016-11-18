@@ -30,6 +30,8 @@ export const DEFAULT_HEADER_HEIGHT = 26;
 
 const DEBOUNCE_SCROLL_STOP = 500;
 
+const scrollEvents = ['scroll', 'goodstrap.scrolled', 'goodstrap.drag'];
+
 export default class TableVisualization extends Component {
     static propTypes = {
         containerWidth: PropTypes.number.isRequired,
@@ -124,7 +126,7 @@ export default class TableVisualization extends Component {
 
     setListeners(action) {
         const method = `${action}EventListener`;
-        window[method]('scroll', this.scrolled);
+        scrollEvents.forEach(name => window[method](name, this.scrolled));
     }
 
     setHeader(position = '', x = 0, y = 0) {
