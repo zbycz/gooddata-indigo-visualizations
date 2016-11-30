@@ -136,7 +136,7 @@ export class TableSortBubbleContent extends Component {
                     className="close-button button-link button-icon-only icon-cross"
                     onClick={onClose}
                 />
-                <div className="gd-dialog-header gd-heading-2" ref={this.setTitleRef}>
+                <div className="gd-dialog-header gd-heading-3" ref={this.setTitleRef}>
                     {displayTitle}
                 </div>
                 <FormattedMessage id="visualizations.sorting" />

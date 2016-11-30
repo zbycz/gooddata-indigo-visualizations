@@ -215,22 +215,22 @@
         left: 20px !important;
         right: 20px !important;
 
-        .gd-table-header-bubble.bubble.arrow-top-direction,
-        .gd-table-header-bubble.bubble.arrow-bottom-direction {
-            .arrow-position {
-                margin: 0;
+        .gd-table-header-bubble.bubble {
+            &.arrow-top-direction,
+            &.arrow-bottom-direction {
+                .arrow-position {
+                    margin: 0;
+                }
             }
         }
     }
 }
 
-.gd-table-header-bubble {
-    &.bubble {
-        max-width: 300px;
+.gd-table-header-bubble.bubble {
+    max-width: 300px;
 
-        @media #{$insight-small-only} {
-            max-width: none;
-        }
+    @media #{$insight-small-only} {
+        max-width: none;
     }
 
     .bubble-content {
@@ -242,20 +242,65 @@
         }
     }
 
+    &.arrow-top-direction,
+    &.arrow-bottom-direction {
+        .arrow,
+        .arrow-border {
+            left: -7px;
+            border-width: 10px;
+        }
+
+        .helper {
+            height: 11px;
+        }
+    }
+
+    &.arrow-top-direction {
+        .helper {
+            top: -11px;
+        }
+
+        .arrow {
+            top: -4px;
+        }
+
+        .arrow-border {
+            top: -5px;
+        }
+    }
+
+    &.arrow-bottom-direction {
+        .helper {
+            bottom: -11px;
+        }
+
+        .arrow {
+            top: -1px;
+        }
+    }
+
+    &.arrow-tr,
+    &.arrow-br {
+        .arrow,
+        .arrow-border {
+            left: -13px;
+        }
+    }
+
     .content {
         .close-button.button-link {
             position: absolute;
-            top: 7px;
-            right: 7px;
+            top: 12px;
+            right: 12px;
         }
 
         .gd-dialog-header {
-            margin-bottom: 10px;
+            margin: 0 0 10px 0;
             white-space: normal;
         }
 
-        .gd-heading-2 {
-            line-height: 24px;
+        .close-button ~ .gd-dialog-header {
+            margin-right: 30px;
         }
     }
 

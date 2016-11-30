@@ -287,10 +287,10 @@ export default class TableVisualization extends Component {
                             'tr bl': 'bottom'
                         }}
                         arrowOffsets={{
-                            'bl tr': [11, 7],
-                            'br tl': [-11, 7],
-                            'tl br': [11, -7],
-                            'tr bl': [-11, -7]
+                            'bl tr': [14, 10],
+                            'br tl': [-14, 10],
+                            'tl br': [14, -10],
+                            'tr bl': [-14, -10]
                         }}
                         arrowStyle={getArrowPositions}
                         onClose={this.closeBubble}
