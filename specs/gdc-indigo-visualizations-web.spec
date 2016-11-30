@@ -1,32 +1,34 @@
 %global gdc_prefix /var/www/doc
 
-%define _builddir %(pwd)
-
-%define _rpmfilename %{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}.rpm
-
-# Release tag updates
-%define branchname "%{?branch:%(echo %{branch} |sed 's/\.//')}%{!?branch:snapshot}"
-
 Name: gdc-indigo-visualizations-web
-Version: %{_version}
-Release: %{_release}
+Version: 3.%{gdcversion}
+Release: 1%{dist}
 Summary: GDC Indigo Visualizations Web
 
 Group: Applications/Productivity
 License: Proprietary
-URL: http://gooddata.com/
+URL: https://github.com/gooddata/gdc-indigo-visualizations
+Source0: %{name}.tar.gz
 BuildArch: noarch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires: npm
+%if "%{?dist}" == ".el6"
+BuildRequires:  nodejs < 5.0, npm < 4, git
+%else
+BuildRequires:  nodejs > 1:6.0, nodejs < 1:7.0, npm > 3.10, git
+%endif
 
 %description
 %{summary}
 
 %prep
+%setup -q -n %{name} -c
 
 %build
+export PATH="$PATH:$PWD/node_modules/.bin/"
+node --version
+npm --version
 . ci/lib.sh
 grunt web
 
