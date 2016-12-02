@@ -44,7 +44,7 @@ export default class LegendItem extends Component {
                 <div
                     className="series-name"
                     style={nameStyle}
-                    dangerouslySetInnerHTML={{ __html: item.name }}
+                    dangerouslySetInnerHTML={{ __html: item.name }} // eslint-disable-line react/no-danger
                 />
             </div>
         );

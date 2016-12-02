@@ -55,7 +55,7 @@ export default class LineFamilyChart extends Component {
     }
 
     getSeries() {
-        return this.props.hcOptions.series.map(s => {
+        return this.props.hcOptions.series.map((s) => {
             return pick(s, ['name', 'color', 'legendIndex']);
         });
     }

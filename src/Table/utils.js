@@ -34,11 +34,11 @@ function findFirstSort(items, typeName) {
 
     if (isObject(item.sort)) { // measure only
         if (item.showPoP && !item.sort.sortByPoP) {
-            index++;
+            index += 1;
         }
     } else if (item.showPoP) {
         // TODO: backward compatibility, remove if branch after CL-9654 will be released
-        index++;
+        index += 1;
     }
 
     return { index, item };

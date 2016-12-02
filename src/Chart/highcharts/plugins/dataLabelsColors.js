@@ -20,7 +20,7 @@ function setLabelsColor(chart) {
     const points = flatMap(getVisibleSeries(chart), series => series.points)
         .filter(point => (point.dataLabel && point.graphic));
 
-    return points.forEach(point => {
+    return points.forEach((point) => {
         const labelRect =
             point.dataLabel.element.childNodes[0].getBoundingClientRect();
         const barRect = point.graphic.element.getBoundingClientRect();
@@ -34,7 +34,7 @@ function setLabelsColor(chart) {
 }
 
 export function extendDataLabelColors(Highcharts) {
-    Highcharts.Chart.prototype.callbacks.push(chart => {
+    Highcharts.Chart.prototype.callbacks.push((chart) => {
         const type = getChartType(chart);
 
         const changeLabelColor = () => {

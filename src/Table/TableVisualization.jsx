@@ -334,7 +334,7 @@ export default class TableVisualization extends Component {
     renderCell(column, index) {
         const { sortBy } = this.props;
         const isSorted = sortBy === index;
-        return cellProps => {
+        return (cellProps) => {
             const { rowIndex, columnKey } = cellProps;
 
             const content = this.props.rows[rowIndex][columnKey];

@@ -5,8 +5,8 @@ import { COLUMN_CHART, BAR_CHART } from '../../../../VisualizationTypes';
 import autohideColumnLabels from './autohideColumnLabels';
 import autohideBarLabels from './autohideBarLabels';
 
-const autohideLabels = Highcharts => {
-    Highcharts.Chart.prototype.callbacks.push(chart => {
+const autohideLabels = (Highcharts) => {
+    Highcharts.Chart.prototype.callbacks.push((chart) => {
         const chartType = getChartType(chart);
         const reformatLabels = () => {
             if (chartType === COLUMN_CHART) {

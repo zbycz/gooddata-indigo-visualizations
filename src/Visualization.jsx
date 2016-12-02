@@ -21,8 +21,7 @@ export default class Visualization extends Component {
     static propTypes = {
         config: PropTypes.shape({
             type: PropTypes.string.isRequired
-        }).isRequired,
-        height: PropTypes.number
+        }).isRequired
     };
 
     shouldComponentUpdate(nextProps) {
