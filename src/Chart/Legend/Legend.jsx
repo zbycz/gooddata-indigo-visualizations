@@ -81,7 +81,7 @@ export default class Legend extends Component {
         const { series } = this.props;
         const { disabledSeries } = this.state;
 
-        return series.map(s => {
+        return series.map((s) => {
             return {
                 ...s,
                 isVisible: disabledSeries.indexOf(s.legendIndex) < 0

@@ -44,7 +44,7 @@ const toggleNonStackedChartLabels = (visiblePoints, shouldCheckShapeIntersection
 };
 
 const toggleStackedChartLabels = (visiblePoints) => {
-    const toggleLabel = point => {
+    const toggleLabel = (point) => {
         const { dataLabel, shapeArgs } = point;
         if (dataLabel && shapeArgs) {
             const labelHeight = dataLabel.height + (2 * dataLabel.padding || 0);
@@ -55,7 +55,7 @@ const toggleStackedChartLabels = (visiblePoints) => {
         return null;
     };
 
-    const isOverlappingWidth = visiblePoints.filter(hasDataLabel).some(point => {
+    const isOverlappingWidth = visiblePoints.filter(hasDataLabel).some((point) => {
         const { dataLabel } = point;
         if (dataLabel) {
             const labelWidth = dataLabel.width + (2 * dataLabel.padding);

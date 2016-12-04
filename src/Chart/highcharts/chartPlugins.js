@@ -49,7 +49,7 @@ const extendReflowChart = (Highcharts, chartTextPadding) => {
     Highcharts.wrap(Highcharts.Chart.prototype, 'reflow', function(proceed, resizeEvent) { // eslint-disable-line
         const chart = this;
 
-        Highcharts.each(chart.xAxis, axis => {
+        Highcharts.each(chart.xAxis, (axis) => {
             if (axis.options.title) {
                 const currentWidth = parseInt(axis.options.title.style.width.replace(/\D/, ''), 10);
                 const newWidth = chart.plotWidth - chartTextPadding;
@@ -61,7 +61,7 @@ const extendReflowChart = (Highcharts, chartTextPadding) => {
                 }
             }
         });
-        Highcharts.each(chart.yAxis, axis => {
+        Highcharts.each(chart.yAxis, (axis) => {
             if (axis.options.title) {
                 chart.resizeYAxisLabel(axis, chartTextPadding);
             }

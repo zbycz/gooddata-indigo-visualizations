@@ -25,11 +25,11 @@ export const isIntersecting = (o1, o2) =>
     o1.y < (o2.y + o2.height) &&
     (o1.y + o1.height) > o2.y;
 
-export const toNeighbors = (array) => zip(initial(array), tail(array));
-export const getVisibleSeries = (chart) => chart.series && chart.series.filter(s => s.visible);
-export const getHiddenSeries = (chart) => chart.series && chart.series.filter(s => !s.visible);
-export const getDataPoints = (series) => flatten(unzip(map(series, s => s.points)));
-export const getChartType = (chart) => get(chart, 'options.chart.type');
+export const toNeighbors = array => zip(initial(array), tail(array));
+export const getVisibleSeries = chart => chart.series && chart.series.filter(s => s.visible);
+export const getHiddenSeries = chart => chart.series && chart.series.filter(s => !s.visible);
+export const getDataPoints = series => flatten(unzip(map(series, s => s.points)));
+export const getChartType = chart => get(chart, 'options.chart.type');
 export const isStacked = (chart) => {
     const chartType = getChartType(chart);
     if (get(chart, `userOptions.plotOptions.${chartType}.stacking`, false) &&
@@ -44,10 +44,10 @@ export const isStacked = (chart) => {
 
     return false;
 };
-export const areLabelsStacked = (chart) =>
+export const areLabelsStacked = chart =>
     (get(chart, 'userOptions.yAxis.stackLabels.enabled', false) && isStacked(chart));
 
-export const hasDataLabel = (point) => point.dataLabel;
+export const hasDataLabel = point => point.dataLabel;
 
 export const hideDataLabel = (point) => {
     const { dataLabel } = point;
