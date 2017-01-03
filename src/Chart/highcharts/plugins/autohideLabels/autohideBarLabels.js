@@ -77,7 +77,7 @@ const autohideBarLabels = (chart) => {
     if (isStacked(chart)) {
         toggleStackedChartLabels(visiblePoints);
     } else {
-        toggleNonStackedChartLabels(visiblePoints, false);
+        toggleNonStackedChartLabels(visiblePoints, true);
     }
 };
 

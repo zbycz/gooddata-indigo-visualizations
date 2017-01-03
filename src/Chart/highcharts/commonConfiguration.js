@@ -65,6 +65,7 @@ const BASE_TEMPLATE = {
     },
     plotOptions: {
         series: {
+            animation: false,
             enableMouseTracking: true, // !Status.exportMode,
             turboThreshold: DEFAULT_CATEGORIES_LIMIT,
             events: {
