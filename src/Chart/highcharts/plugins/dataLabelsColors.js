@@ -1,6 +1,12 @@
 import { flatMap } from 'lodash';
 import { BAR_CHART } from '../../../VisualizationTypes';
-import { getChartType, getVisibleSeries, isStacked } from '../helpers';
+import {
+    getChartType,
+    getVisibleSeries,
+    isStacked,
+    getDataLabelAttributes,
+    getShapeAttributes
+} from '../helpers';
 
 const setWhiteColor = (point) => {
     // eslint-disable-next-line no-param-reassign
@@ -21,11 +27,12 @@ function setLabelsColor(chart) {
         .filter(point => (point.dataLabel && point.graphic));
 
     return points.forEach((point) => {
-        const labelRect =
-            point.dataLabel.element.childNodes[0].getBoundingClientRect();
-        const barRect = point.graphic.element.getBoundingClientRect();
+        const labelDimensions = getDataLabelAttributes(point);
+        const barDimensions = getShapeAttributes(point);
+        const barRight = barDimensions.x + barDimensions.width;
+        const labelLeft = labelDimensions.x;
 
-        if (labelRect.left < barRect.right) {
+        if (labelLeft < barRight) {
             setWhiteColor(point);
         } else {
             setBlackColor(point);
