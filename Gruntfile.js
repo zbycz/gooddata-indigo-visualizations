@@ -3,12 +3,15 @@ const webpackWebConfig = require('./webpack.web.config');
 const webpackDevConfig = require('./webpack.dev.config');
 const webpackTestConfig = require('./webpack.test.config');
 
+const checkstyleFormatter = require('stylelint-checkstyle-formatter');
+
 module.exports = (grunt) => {
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('gruntify-eslint');
     grunt.loadNpmTasks('grunt-grizzly');
+    grunt.loadNpmTasks('grunt-stylelint');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -65,6 +68,18 @@ module.exports = (grunt) => {
                     '!web/**/*',
                     '!node_modules/**/*',
                     '!ci/**/*'
+                ]
+            }
+        },
+
+        stylelint: {
+            all: {
+                options: {
+                    formatter: grunt.option('ci') && checkstyleFormatter,
+                    outputFile: grunt.option('ci') && 'ci/results/stylelint-results.xml'
+                },
+                src: [
+                    'src/styles/**/*.scss'
                 ]
             }
         },

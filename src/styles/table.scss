@@ -1,14 +1,14 @@
-@import "~goodstrap/packages/core/styles/themes/indigo/colors";
-@import "variables";
+@import '~goodstrap/packages/core/styles/themes/indigo/colors';
+@import 'variables';
 
 .indigo-table-component {
     position: relative;
-    color: #333333;
-    font-family: "Avenir", "Helvetica Neue", Arial, sans-serif;
+    overflow: hidden;
+    font-family: 'Avenir', 'Helvetica Neue', Arial, sans-serif;
     font-size: 12px;
     font-weight: normal;
     line-height: 100%;
-    overflow: hidden;
+    color: #333;
 
     &.has-hidden-rows {
         .indigo-table-component-content,
@@ -17,20 +17,22 @@
         }
 
         .fixedDataTableLayout_rowsContainer {
-            &:after {
-                content: "";
-                display: block;
+            &::after {
+                content: '';
                 position: absolute;
+                right: 0;
                 bottom: 13px;
                 left: 0;
-                right: 0;
+                display: block;
                 border-top: 1px solid rgba(0, 0, 0, 0.08);
                 box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.03);
             }
         }
 
         .public_fixedDataTable_horizontalScrollbar {
-            transform: translateY(-15px); // Can't use margin because the component cancels the shift by updating position
+            // Can't use margin because the component
+            // cancels the shift by updating position
+            transform: translateY(-15px);
         }
     }
 
@@ -49,7 +51,7 @@
         }
 
         .sticking {
-            box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
         }
     }
 
@@ -60,7 +62,7 @@
     }
 
     .fixedDataTableRowLayout_main {
-        background-color: #F5F7F9;
+        background-color: #f5f7f9;
     }
 
     .public_fixedDataTableRow_highlighted .fixedDataTableCellLayout_main {
@@ -76,13 +78,13 @@
     .fixedDataTableLayout_topShadow {
         height: 100px;
         margin-top: -100px;
-        box-shadow: 0 -1px 6px 0 rgba(0,0,0,0.50);
+        box-shadow: 0 -1px 6px 0 rgba(0, 0, 0, 0.5);
         pointer-events: none;
     }
 
     .fixedDataTableLayout_bottomShadow {
         margin-top: 0;
-        box-shadow: 0 -1px 5px 0 rgba(0,0,0,0.21);
+        box-shadow: 0 -1px 5px 0 rgba(0, 0, 0, 0.21);
     }
 
     .fixedDataTableCellGroupLayout_cellGroup > .public_fixedDataTableCell_main {
@@ -109,11 +111,11 @@
     }
 
     .fixedDataTableLayout_header,
-    .fixedDataTableLayout_footer  {
+    .fixedDataTableLayout_footer {
         padding: 0;
-        background: #fff;
         box-shadow: none;
         white-space: nowrap;
+        background: #fff;
 
         .gd-table-header-ordering {
             color: $gd-color-state-blank;
@@ -122,6 +124,8 @@
             &:hover {
                 color: $gd-color-highlight;
 
+                // refactor
+                // stylelint-disable-next-line max-nesting-depth
                 .public_fixedDataTableCell_cellContent {
                     background-color: $gd-color-highlight-dimmed;
                 }
@@ -134,48 +138,46 @@
             .gd-table-arrow-up,
             .gd-table-arrow-down {
                 display: inline-block;
+                flex: 0 0 auto;
                 margin-left: 4px;
 
-                flex: 0 0 auto;
-
-                &:before {
-                    content: "\e60d";
-                    display: inherit;
+                // refactor
+                // stylelint-disable-next-line max-nesting-depth
+                &::before {
+                    content: '\e60d';
                     position: relative;
                     top: 1px;
-
+                    display: inherit;
                     font-family: Indigo;
                     font-size: 10px;
-
                     vertical-align: bottom;
                 }
             }
 
-            .gd-table-arrow-up:before {
+            .gd-table-arrow-up::before {
                 top: -2px;
                 transform: rotate(180deg);
             }
 
             .gd-table-header-title {
-                flex: 0 1 auto;
                 display: inline-block;
+                flex: 0 1 auto;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
         }
 
         .fixedDataTableCellLayout_main {
-            color: $gd-color-state-blank;
             font-size: 10px;
             font-weight: normal;
             text-transform: uppercase;
-
+            color: $gd-color-state-blank;
             background: none;
         }
 
         .public_fixedDataTableCell_cellContent {
-            padding: 0 8px;
             margin: 8px 0;
+            padding: 0 8px;
             line-height: 16px;
         }
     }
@@ -212,12 +214,18 @@
 
 .gd-table-header-bubble-overlay {
     @media #{$insight-small-only} {
-        left: 20px !important;
+        // overwrite
+        // stylelint-disable-next-line declaration-no-important
         right: 20px !important;
+        // overwrite
+        // stylelint-disable-next-line declaration-no-important
+        left: 20px !important;
 
         .gd-table-header-bubble.bubble {
             &.arrow-top-direction,
             &.arrow-bottom-direction {
+                // refactor
+                // stylelint-disable-next-line max-nesting-depth
                 .arrow-position {
                     margin: 0;
                 }
@@ -295,7 +303,7 @@
         }
 
         .gd-dialog-header {
-            margin: 0 0 10px 0;
+            margin: 0 0 10px;
             white-space: normal;
         }
 
@@ -313,7 +321,7 @@
         .button-sort-desc {
             padding-right: 25px;
 
-            &:after {
+            &::after {
                 font-size: 10px;
                 line-height: 23px;
             }
@@ -321,7 +329,9 @@
 
         .button.button-primary {
             &.button-sort-asc {
-                &:after {
+                // refactor
+                // stylelint-disable-next-line max-nesting-depth
+                &::after {
                     transform: rotate(180deg) translateY(50%);
                 }
             }

@@ -1,18 +1,22 @@
-@import "~goodstrap/packages/Bubble/styles/themes/indigo/bubble-mixins";
-@import "~goodstrap/packages/core/styles/themes/indigo/variables";
-@import "~goodstrap/packages/core/styles/themes/_mixins";
-@import "variables";
+@import '~goodstrap/packages/Bubble/styles/themes/indigo/bubble-mixins';
+@import '~goodstrap/packages/core/styles/themes/indigo/variables';
+@import '~goodstrap/packages/core/styles/themes/_mixins';
+@import 'variables';
 
-$font-stack-roman: "Avenir", "Helvetica Neue", Arial, sans-serif;
-$legend-paging-background: #eeeeee;
+$font-stack-roman: 'Avenir', 'Helvetica Neue', arial, sans-serif;
+$legend-paging-background: #eee;
 $legend-right-width: 190px;
 $paging-button-small-size: 22px;
 
 // override highcharts default overflow for chart container
 // to allow tooltip overlap chart container area
 .highcharts-container {
-    overflow: visible !important;
+    // overwrite
+    // stylelint-disable-next-line declaration-no-important
     z-index: auto !important;
+    // overwrite
+    // stylelint-disable-next-line declaration-no-important
+    overflow: visible !important;
 }
 
 // hide default highcharts svg tooltip when using html-based one
@@ -23,8 +27,8 @@ g.highcharts-tooltip {
 // without this, the max-width settings for .value and .title
 // are ineffective
 .highcharts-tooltip {
-    display: flex;
     z-index: 3005;
+    display: flex;
 
     > span {
         flex: 0 0 auto;
@@ -33,13 +37,14 @@ g.highcharts-tooltip {
     &,
     > span {
         @media #{$insight-small-only} {
-            left: 0 !important;
             right: 0;
+            // overwrite
+            // stylelint-disable-next-line declaration-no-important
+            left: 0 !important;
         }
     }
 }
-
-$responsive-legend: "only screen and (max-width: 767px)";
+$responsive-legend: 'only screen and (max-width: 767px)';
 
 @media #{$responsive-legend} {
     .viz-line-family-chart-wrap {
@@ -52,8 +57,8 @@ $responsive-legend: "only screen and (max-width: 767px)";
 }
 
 .viz-legend-wrap {
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
 
 .viz-static-legend-wrap {
@@ -85,14 +90,19 @@ $responsive-legend: "only screen and (max-width: 767px)";
 
     &.non-responsive-legend {
         .viz-line-family-chart {
-            height: 100%;
             position: relative;
+            height: 100%;
 
-            // http://stackoverflow.com/questions/8809852/highcharts-how-to-have-a-chart-with-dynamic-height
+            // http://stackoverflow.com/questions/8809852/
+            // highcharts-how-to-have-a-chart-with-dynamic-height
             .viz-react-highchart-wrap {
-                position: absolute;;
-                height: 100% !important;
+                position: absolute;
+                // overwrite
+                // stylelint-disable-next-line declaration-no-important
                 width: 100% !important;
+                // overwrite
+                // stylelint-disable-next-line declaration-no-important
+                height: 100% !important;
             }
         }
     }
@@ -103,6 +113,8 @@ $responsive-legend: "only screen and (max-width: 767px)";
             // https://github.com/highcharts/highcharts/issues/4649#issuecomment-147629662
             .highcharts-container,
             .highcharts-container svg {
+                // overwrite
+                // stylelint-disable-next-line declaration-no-important
                 width: 100% !important;
             }
         }
@@ -123,20 +135,17 @@ $responsive-legend: "only screen and (max-width: 767px)";
         cursor: pointer;
 
         .series-icon {
-            height: 9px;
-            width: 9px;
             flex: 0 0 auto;
-
+            width: 9px;
+            height: 9px;
             margin-right: 5px;
         }
 
         .series-name {
             flex: 1 1 auto;
-
-            font-family: Avenir, "Helvetica Neue", Arial, sans-serif;
+            font-family: Avenir, 'Helvetica Neue', arial, sans-serif;
             font-size: 12px;
             line-height: 20px;
-
             color: $gd-color-link;
 
             @include text-overflow();
@@ -150,30 +159,38 @@ $responsive-legend: "only screen and (max-width: 767px)";
             padding: 0;
             border-radius: 50%;
 
-            &:before {
+            &::before {
                 font-size: 11px;
             }
 
             @include active-states-and-self {
-                background-color: $legend-paging-background;
                 text-decoration: none;
+                background-color: $legend-paging-background;
 
-                &:before {
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
+                &::before {
                     color: $gd-color-dark;
                 }
             }
 
             &:hover {
-                &:before {
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
+                &::before {
                     color: $gd-color-highlight;
                 }
             }
 
             &[disabled] {
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
                 @include active-states-and-self {
-                    background-color: transparentize($legend-paging-background, .5);
+                    background-color: transparentize($legend-paging-background, 0.5);
 
-                    &:before {
+                    // refactor?
+                    // stylelint-disable-next-line max-nesting-depth
+                    &::before {
                         color: $gd-color-disabled;
                     }
                 }
@@ -194,6 +211,8 @@ $responsive-legend: "only screen and (max-width: 767px)";
                 flex-wrap: wrap;
                 width: 100%;
 
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
                 .series-item {
                     margin-left: 15px;
                 }
@@ -207,8 +226,8 @@ $responsive-legend: "only screen and (max-width: 767px)";
         }
 
         .series {
-            justify-content: flex-start;
             flex-direction: column;
+            justify-content: flex-start;
             width: $legend-right-width;
             min-width: $legend-right-width;
 
@@ -218,10 +237,9 @@ $responsive-legend: "only screen and (max-width: 767px)";
         }
 
         .paging {
-            width: 100%;
             display: flex;
+            width: 100%;
             margin-top: 20px;
-
             line-height: $paging-button-small-size;
 
             .paging-button {
@@ -234,9 +252,11 @@ $responsive-legend: "only screen and (max-width: 767px)";
             span {
                 display: inline-block;
                 margin: 0 10px;
-                color: $gd-color-state-blank;
                 font-size: 12px;
+                color: $gd-color-state-blank;
 
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
                 strong {
                     color: $gd-color-dark;
                 }
@@ -259,37 +279,35 @@ $responsive-legend: "only screen and (max-width: 767px)";
             text-align: right;
 
             .paging-button {
-                height: 30px;
                 width: 30px;
+                height: 30px;
             }
         }
     }
 }
 
 .hc-tooltip {
-    font-family: $font-stack-roman;
     position: relative;
+    font-family: $font-stack-roman;
     color: $gd-color-dark;
-    background-color: transparentize($gd-color-white, .05);
+    background-color: transparentize($gd-color-white, 0.05);
 
     .content {
         max-width: 320px;
-        padding: 13px 13px 9px 13px;
-        border: 1px solid transparentize($bubble-light-border-base, .3);
+        padding: 13px 13px 9px;
         border-radius: 3px;
-        box-shadow: 0 1px 3px 0 rgba(20,56,93, 0.10), 0 2px 9px 0 rgba(20,56,93,0.15);
-
-        white-space: normal;
-
+        border: 1px solid transparentize($bubble-light-border-base, 0.3);
+        box-shadow: 0 1px 3px 0 rgba(20, 56, 93, 0.1), 0 2px 9px 0 rgba(20, 56, 93, 0.15);
         line-height: 1.3;
+        white-space: normal;
 
         // tooltip content
         .tt-name {
+            font-family: $font-stack-roman;
+            font-size: 12px;
             word-wrap: break-word;
             text-transform: uppercase;
             color: #999;
-            font-family: $font-stack-roman;
-            font-size: 12px;
         }
 
         .tt-tooltip {
@@ -302,40 +320,46 @@ $responsive-legend: "only screen and (max-width: 767px)";
             max-width: 320px;
 
             tr {
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
                 td {
                     border-bottom: 10px solid transparent;
 
+                    // refactor?
+                    // stylelint-disable-next-line max-nesting-depth
                     &:empty {
                         display: none;
                     }
                 }
 
+                // refactor?
+                // stylelint-disable-next-line max-nesting-depth
                 &:last-child td {
                     border-bottom: none;
                 }
             }
 
             .title {
+                overflow: hidden;
                 max-width: 140px;
-                color: $gd-color-label;
-                text-align: right;
                 font-size: 12px;
                 font-weight: normal;
                 line-height: 14px;
-                vertical-align: middle;
-                text-overflow: ellipsis;
-                overflow: hidden;
                 white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: right;
+                vertical-align: middle;
+                color: $gd-color-label;
             }
 
             .value {
+                overflow: hidden;
                 max-width: 165px;
                 padding: 0 0 0 5px;
-                vertical-align: top;
                 font-size: 14px;
-                text-overflow: ellipsis;
-                overflow: hidden;
                 white-space: nowrap;
+                text-overflow: ellipsis;
+                vertical-align: top;
             }
         }
 
@@ -346,16 +370,17 @@ $responsive-legend: "only screen and (max-width: 767px)";
 
     .tail1 {
         position: absolute;
-        bottom:-20px;
-
+        bottom: -20px;
         // centering
         left: 50%;
+        width: 0;
+        height: 0;
         margin-left: -10px;
-
-        width:0;height:0;
-        border-color:transparentize($bubble-light-border-base, .5) transparent transparent transparent;
-        border-width:10px;
-        border-style:solid;
+        // refactor?
+        // stylelint-disable-next-line max-line-length
+        border-color: transparentize($bubble-light-border-base, 0.5) transparent transparent transparent;
+        border-width: 10px;
+        border-style: solid;
 
         &.right {
             left: calc(100% - 14px);
@@ -368,16 +393,15 @@ $responsive-legend: "only screen and (max-width: 767px)";
 
     .tail2 {
         position: absolute;
-        bottom:-18px;
-
+        bottom: -18px;
         // centering
         left: 50%;
+        width: 0;
+        height: 0;
         margin-left: -10px;
-
-        width:0;height:0;
-        border-color:#fff transparent transparent transparent;
-        border-width:10px;
-        border-style:solid;
+        border-color: #fff transparent transparent;
+        border-width: 10px;
+        border-style: solid;
 
         &.right {
             left: calc(100% - 14px);
@@ -387,5 +411,4 @@ $responsive-legend: "only screen and (max-width: 767px)";
             left: 14px;
         }
     }
-
 }
