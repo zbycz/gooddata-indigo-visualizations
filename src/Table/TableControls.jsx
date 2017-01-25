@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { injectIntl, intlShape } from 'react-intl';
 
-import Button from 'goodstrap/packages/Button/ReactButton';
+import Button from '@gooddata/goodstrap/lib/Button/ReactButton';
 
 export class TableControls extends Component {
     static propTypes = {

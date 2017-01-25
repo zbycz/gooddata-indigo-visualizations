@@ -1,4 +1,4 @@
-import { string } from 'js-utils';
+import { string } from '@gooddata/js-utils';
 import { findIndex, isArray, isObject, clamp } from 'lodash';
 import cx from 'classnames';
 

@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { partial, assign } from 'lodash';
-import { translation } from 'js-utils';
-import 'goodstrap/packages/theme-indigo.scss';
+import { translation } from '@gooddata/js-utils';
+import '@gooddata/goodstrap/lib/theme-indigo.scss';
 
 import translations from '../src/translations/en';
 

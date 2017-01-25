@@ -11,6 +11,8 @@ module.exports = (grunt) => {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('gruntify-eslint');
     grunt.loadNpmTasks('grunt-grizzly');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-stylelint');
 
     grunt.initConfig({
@@ -47,7 +49,33 @@ module.exports = (grunt) => {
         },
 
         clean: {
-            web: './web'
+            web: './web',
+            prepublish: './lib'
+        },
+
+        babel: {
+            prepublish: {
+                files: [{
+                    expand: true,
+                    cwd: './src',
+                    src: ['**/*.{jsx,js}', '!**/test/*'],
+                    dest: './lib',
+                    ext: '.js'
+                }]
+            }
+        },
+
+        copy: {
+            prepublish: {
+                files: [{
+                    expand: true,
+                    cwd: './src',
+                    src: [
+                        '**/*.scss'
+                    ],
+                    dest: './lib'
+                }]
+            }
         },
 
         karma: {
@@ -65,9 +93,7 @@ module.exports = (grunt) => {
             all: {
                 src: [
                     '**/*.{js,jsx}',
-                    '!web/**/*',
-                    '!node_modules/**/*',
-                    '!ci/**/*'
+                    '!{ci,web,lib,node_modules}/**/*'
                 ]
             }
         },
@@ -94,6 +120,12 @@ module.exports = (grunt) => {
             test: {}
         }
     });
+
+    grunt.registerTask('prepublish', [
+        'clean:prepublish',
+        'babel:prepublish',
+        'copy:prepublish'
+    ]);
 
     grunt.registerTask('test', ['karma:unit']);
 
