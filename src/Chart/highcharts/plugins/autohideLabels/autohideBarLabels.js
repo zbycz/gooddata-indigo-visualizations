@@ -1,3 +1,5 @@
+import { sortBy } from 'lodash';
+
 import {
     isStacked,
     getVisibleSeries,
@@ -45,7 +47,12 @@ const toggleStackedChartLabels = (visiblePoints) => {
 };
 
 const toggleNonStackedChartLabels = (points, shouldCheckShapeIntersection = false) => {
-    const neighbors = toNeighbors(points);
+    const sortedPoints = sortBy(points, (a, b) => {
+        const firstLabelAttr = getDataLabelAttributes(a);
+        const nextLabelAttr = getDataLabelAttributes(b);
+        return firstLabelAttr.y - nextLabelAttr.y;
+    });
+    const neighbors = toNeighbors(sortedPoints);
     const intersectionFound = neighbors.some(([firstPoint, nextPoint]) => {
         const firstDataLabelAttr = getDataLabelAttributes(firstPoint);
         const nextDataLabelAttr = getDataLabelAttributes(nextPoint);
