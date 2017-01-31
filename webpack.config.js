@@ -1,10 +1,7 @@
-/* eslint-disable max-len */
 const path = require('path');
-const fs = require('fs');
 
 module.exports = function getWebpackConfig() {
     const year = new Date().getFullYear();
-    const babelOptions = JSON.stringify({ presets: ['es2015', 'react', 'stage-0'] });
     return {
         entry: {
             example: ['highcharts', './example/index']
@@ -19,13 +16,10 @@ module.exports = function getWebpackConfig() {
             loaders: [
                 {
                     test: /\.jsx?$/,
-                    loader: `babel?${babelOptions}`,
+                    loader: 'babel',
                     include: [
-                        fs.realpathSync(`${__dirname}/src`),
-                        fs.realpathSync(`${__dirname}/example`),
-                        fs.realpathSync(`${__dirname}/node_modules/js-utils/src`),
-                        fs.realpathSync(`${__dirname}/node_modules/goodstrap/packages`),
-                        fs.realpathSync(`${__dirname}/node_modules/goodstrap/node_modules/js-utils/src`)
+                        path.join(__dirname, '/src'),
+                        path.join(__dirname, '/example')
                     ]
                 },
 
@@ -74,13 +68,7 @@ module.exports = function getWebpackConfig() {
 
         resolve: {
             // Allow to omit extensions when requiring these files
-            extensions: ['', '.js', '.jsx', '.scss'],
-            modulesDirectories: [
-                'node_modules'
-            ],
-            alias: {
-                react: path.join(__dirname, 'node_modules/react/')
-            }
+            extensions: ['', '.js', '.jsx', '.scss']
         },
 
         plugins: []

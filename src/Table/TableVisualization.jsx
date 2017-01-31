@@ -6,7 +6,7 @@ import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
 import 'fixed-data-table-2/dist/fixed-data-table.css';
 
-import Bubble from 'goodstrap/packages/Bubble/ReactBubble';
+import Bubble from '@gooddata/goodstrap/lib/Bubble/ReactBubble';
 import TableSortBubbleContent from './TableSortBubbleContent';
 
 import '../styles/table.scss';

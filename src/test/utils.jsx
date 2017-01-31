@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
-import { translation } from 'js-utils';
+import { translation } from '@gooddata/js-utils';
 
 import translations from '../translations/en';
 
