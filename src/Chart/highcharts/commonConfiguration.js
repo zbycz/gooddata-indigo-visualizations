@@ -100,6 +100,7 @@ const BASE_TEMPLATE = {
         }
     },
     chart: {
+        animation: false,
         style: {
             fontFamily: 'Avenir, "Helvetica Neue", Arial, sans-serif'
         }
