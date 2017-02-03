@@ -12,6 +12,7 @@ export default class ResponsiveTable extends Component {
     static propTypes = {
         rowsPerPage: PropTypes.number.isRequired,
         rows: PropTypes.array.isRequired,
+        page: PropTypes.number,
         onMore: PropTypes.func,
         onLess: PropTypes.func
     };
@@ -21,14 +22,22 @@ export default class ResponsiveTable extends Component {
         onLess: noop
     };
 
-    constructor() {
-        super();
+    constructor(props, ...args) {
+        super(props, ...args);
 
         this.state = {
-            page: 1
+            page: props.page || 1
         };
 
         bindAll(this, ['onMore', 'onLess', 'setTableRef']);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.page) {
+            this.setState({
+                page: nextProps.page
+            });
+        }
     }
 
     onMore() {
@@ -36,7 +45,7 @@ export default class ResponsiveTable extends Component {
 
         this.setState({ page });
 
-        this.props.onMore({ rows: this.getRowCount(page) });
+        this.props.onMore({ page, rows: this.getRowCount(page) });
     }
 
     onLess() {

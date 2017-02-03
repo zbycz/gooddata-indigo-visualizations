@@ -117,10 +117,13 @@ describe('Responsive Table', () => {
                 expect(visualization.props.rows.length).to.equal(ROWS_PER_PAGE);
             });
 
-            it('should call onMore callback with number of rows when user clicks "More"', () => {
+            it('should call onMore callback with number of rows and page when user clicks "More"', () => {
                 click(getMore());
 
-                expect(onMore).to.be.calledWith({ rows: ROWS_PER_PAGE * 2 });
+                expect(onMore).to.be.calledWith({
+                    rows: ROWS_PER_PAGE * 2,
+                    page: 2
+                });
             });
         });
 
