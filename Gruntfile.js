@@ -184,7 +184,7 @@ module.exports = (grunt) => {
 
     grunt.registerTask('default', ['dev']);
 
-    grunt.registerTask('validate', ['eslint']);
+    grunt.registerTask('validate', ['eslint', 'stylelint']);
 
     // builds app with examples
     grunt.registerTask('web', [
