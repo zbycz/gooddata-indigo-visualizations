@@ -203,13 +203,15 @@ $responsive-legend: 'only screen and (max-width: 767px)';
         margin-left: 20px;
 
         &.position-top {
+            align-items: flex-end;
             margin-left: 0;
 
             .series {
                 flex-direction: row;
-                justify-content: flex-end;
+                justify-content: flex-start;
                 flex-wrap: wrap;
-                width: 100%;
+                width: auto;
+                min-width: 0;
 
                 // refactor?
                 // stylelint-disable-next-line max-nesting-depth
