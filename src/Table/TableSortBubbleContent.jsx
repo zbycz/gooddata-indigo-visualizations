@@ -19,6 +19,12 @@ export class TableSortBubbleContent extends Component {
         onClose: PropTypes.func
     };
 
+    static defaultProps = {
+        activeSortDir: null,
+        onSortChange: () => {},
+        onClose: () => {}
+    };
+
     constructor(props) {
         super(props);
 

@@ -11,7 +11,7 @@ import cx from 'classnames';
 import {
     stripColors,
     numberFormat
-} from 'gdc-numberjs/lib/number';
+} from '@gooddata/numberjs';
 
 import { BAR_CHART, COLUMN_CHART, LINE_CHART } from '../../VisualizationTypes';
 

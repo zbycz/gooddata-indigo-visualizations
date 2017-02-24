@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'enzyme';
 import { BAR_CHART } from '../../../VisualizationTypes';
 import Legend, { FLUID_LEGEND_THRESHOLD } from '../Legend';
-import withIntl from '../../../utils/with_intl';
+import { withIntl } from '../../../test/utils';
 
 describe('Legend', () => {
     const series = [

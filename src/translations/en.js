@@ -1,10 +1,10 @@
 // merge to application localization stores into 'visualizations' namespace
 
 export default {
-    more: 'Show More',
-    less: 'Show Less',
-    sorting: 'Column sorting',
-    asc: 'Ascending',
-    desc: 'Descending',
-    of: '{page} of {pagesCount}'
+    'visualizations.more': 'Show More',
+    'visualizations.less': 'Show Less',
+    'visualizations.sorting': 'Column sorting',
+    'visualizations.asc': 'Ascending',
+    'visualizations.desc': 'Descending',
+    'visualizations.of': '{page} of {pagesCount}'
 };

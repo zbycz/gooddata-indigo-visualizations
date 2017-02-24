@@ -52,7 +52,12 @@ export default class TableVisualization extends Component {
         headers: [],
         onSortChange: noop,
         sortInTooltip: false,
-        stickyHeader: -1
+        stickyHeader: -1,
+        containerHeight: null,
+        containerMaxHeight: null,
+        hasHiddenRows: false,
+        sortDir: null,
+        sortBy: null
     };
 
     constructor(props) {
@@ -356,7 +361,7 @@ export default class TableVisualization extends Component {
 
         return this.props.headers.map((column, index) =>
             <Column
-                key={`${index}.${column.id}`}
+                key={`${index}.${column.id}`} // eslint-disable-line react/no-array-index-key
                 width={columnWidth}
                 align={getColumnAlign(column)}
                 columnKey={index}

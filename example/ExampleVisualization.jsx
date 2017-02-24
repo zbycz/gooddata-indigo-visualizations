@@ -27,4 +27,9 @@ ExampleVisualization.propTypes = {
     height: PropTypes.number
 };
 
+ExampleVisualization.defaultProps = {
+    isResponsive: false,
+    height: 300
+};
+
 export default ExampleVisualization;

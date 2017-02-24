@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
-import { translation } from '@gooddata/js-utils';
 
 import translations from '../translations/en';
 
 const defaultIntlOptions = {
     locale: 'en',
-    messages: translation.flattenMessages({ visualizations: translations })
+    messages: translations
 };
 
 export function withIntl(WrappedComponent, intlOptions = defaultIntlOptions) {

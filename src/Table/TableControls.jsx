@@ -10,10 +10,10 @@ export class TableControls extends Component {
         isMoreButtonDisabled: PropTypes.bool,
         isMoreButtonVisible: PropTypes.bool,
         isLessButtonVisible: PropTypes.bool,
-        intl: intlShape
+        intl: intlShape.isRequired
     };
 
-    static defaultTypes = {
+    static defaultProps = {
         isMoreButtonVisible: false,
         isMoreButtonDisabled: false,
         isLessButtonVisible: false

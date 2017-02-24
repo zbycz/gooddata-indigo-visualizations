@@ -4,7 +4,7 @@ Indigo Visualizations in React
 
 ## Dev
 
-run `npm test` in console, uses `mocha` watcher for now
+Run `grunt test` in console, uses `mocha` watcher for now.
 
 ## Release
 

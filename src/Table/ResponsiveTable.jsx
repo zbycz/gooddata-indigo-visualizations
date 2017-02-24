@@ -19,7 +19,8 @@ export default class ResponsiveTable extends Component {
 
     static defaultProps = {
         onMore: noop,
-        onLess: noop
+        onLess: noop,
+        page: 1
     };
 
     constructor(props, ...args) {

@@ -33,8 +33,8 @@ export default function ExampleChart(ComposedVisualization) {
     };
 
     component.propTypes = {
-        chartOptions: PropTypes.object,
-        hcOptions: PropTypes.object
+        chartOptions: PropTypes.object.isRequired,
+        hcOptions: PropTypes.object.isRequired
     };
 
     return component;

@@ -38,7 +38,7 @@ module.exports = function createWebConfig() {
     const distWebConfig = _.assign(webpackConfig, {
         output: {
             path: OUTPUT_DIR,
-            filename: '[name].[hash].js'
+            filename: `[name].${lastCommitSHA}.[hash].js`
         }
     });
 
@@ -53,7 +53,7 @@ module.exports = function createWebConfig() {
     distWebConfig.plugins = distWebConfig.plugins.concat(
         new webpack.optimize.UglifyJsPlugin(uglifyOptions),
 
-        new ExtractTextPlugin('[name].[hash].css'),
+        new ExtractTextPlugin(`[name].${lastCommitSHA}.[hash].css`),
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the react lib size

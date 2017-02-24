@@ -18,6 +18,10 @@ export default class LegendItem extends Component {
         width: PropTypes.number
     };
 
+    static defaultProps = {
+        width: null
+    };
+
     render() {
         const { item, chartType, width } = this.props;
 

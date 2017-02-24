@@ -14,6 +14,10 @@ export default class FluidLegend extends Component {
         containerWidth: PropTypes.number
     };
 
+    static defaultProps = {
+        containerWidth: null
+    };
+
     constructor(props) {
         super(props);
 
@@ -42,12 +46,12 @@ export default class FluidLegend extends Component {
 
         return (
             <div className="series">
-                {pagedSeries.map((item, index) => {
+                {pagedSeries.map((item) => {
                     return (
                         <LegendItem
                             width={itemWidth}
                             chartType={chartType}
-                            key={index}
+                            key={item.name}
                             item={item}
                             onItemClick={onItemClick}
                         />

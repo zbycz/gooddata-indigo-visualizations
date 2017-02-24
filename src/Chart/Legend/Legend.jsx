@@ -27,7 +27,8 @@ export default class Legend extends Component {
 
     static defaultProps = {
         isResponsive: false,
-        documentObj: document
+        documentObj: document,
+        height: 0
     };
 
     constructor(props) {

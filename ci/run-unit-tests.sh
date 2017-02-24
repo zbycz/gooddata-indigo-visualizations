@@ -7,4 +7,4 @@ echo "Running tests with Karma..."
 PATH=$PATH:/opt/npm/node_modules/.bin:./node_modules/.bin
 export CHROME_BIN="/usr/bin/chromium-browser"
 
-grunt karma:unit --ci
+grunt test --ci

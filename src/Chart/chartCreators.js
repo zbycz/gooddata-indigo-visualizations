@@ -11,7 +11,7 @@ import escape from 'lodash/escape';
 import {
     colors2Object,
     numberFormat
-} from 'gdc-numberjs/lib/number';
+} from '@gooddata/numberjs';
 
 import {
     transformData,

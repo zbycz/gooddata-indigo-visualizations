@@ -21,7 +21,8 @@ export default class LineFamilyChart extends Component {
     };
 
     static defaultProps = {
-        responsiveLegend: false
+        responsiveLegend: false,
+        height: null
     };
 
     constructor(props) {

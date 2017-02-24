@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { IntlProvider } from 'react-intl';
 import { partial, assign } from 'lodash';
-import { translation } from '@gooddata/js-utils';
 import '@gooddata/goodstrap/lib/theme-indigo.scss';
 
 import translations from '../src/translations/en';
@@ -25,7 +24,7 @@ const onLess = partial(onMoreLess, 'Show Less');
 ReactDOM.render(
     <IntlProvider
         locale="en"
-        messages={translation.flattenMessages({ visualizations: translations })}
+        messages={translations}
     >
         <div>
             <h1>Examples</h1>

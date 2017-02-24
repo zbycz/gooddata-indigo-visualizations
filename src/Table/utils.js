@@ -5,7 +5,7 @@ import cx from 'classnames';
 import {
     colors2Object,
     numberFormat
-} from 'gdc-numberjs/lib/number';
+} from '@gooddata/numberjs';
 
 import { ASC, DESC } from './Sort';
 

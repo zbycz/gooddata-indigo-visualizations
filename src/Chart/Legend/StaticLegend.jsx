@@ -13,7 +13,11 @@ export default class StaticLegend extends Component {
         series: PropTypes.array.isRequired,
         onItemClick: PropTypes.func.isRequired,
         containerHeight: PropTypes.number,
-        position: PropTypes.string
+        position: PropTypes.string.isRequired
+    };
+
+    static defaultProps = {
+        containerHeight: null
     };
 
     constructor(props) {
@@ -69,11 +73,11 @@ export default class StaticLegend extends Component {
             return (
                 <div className={classNames}>
                     <div className="series">
-                        {series.map((item, index) => {
+                        {series.map((item) => {
                             return (
                                 <LegendItem
                                     chartType={chartType}
-                                    key={index}
+                                    key={item.name}
                                     item={item}
                                     onItemClick={onItemClick}
                                 />
@@ -97,11 +101,11 @@ export default class StaticLegend extends Component {
         return (
             <div className={classNames}>
                 <div className="series" style={{ height: visibleItemsCount * ITEM_HEIGHT }}>
-                    {pagedSeries.map((item, index) => {
+                    {pagedSeries.map((item) => {
                         return (
                             <LegendItem
                                 chartType={chartType}
-                                key={index}
+                                key={item.name}
                                 item={item}
                                 onItemClick={onItemClick}
                             />
