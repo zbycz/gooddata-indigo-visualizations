@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import cx from 'classnames';
-import shallowCompare from 'react-addons-shallow-compare';
 
 import LegendItem from './LegendItem';
 import { calculateFluidLegend } from './helpers';
 
-export default class FluidLegend extends Component {
+export default class FluidLegend extends PureComponent {
 
     static propTypes = {
         chartType: PropTypes.string.isRequired,
@@ -28,10 +27,6 @@ export default class FluidLegend extends Component {
         this.toggleShowAll = this.toggleShowAll.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
-    }
-
     toggleShowAll() {
         this.setState({
             showAll: !this.state.showAll
@@ -46,12 +41,12 @@ export default class FluidLegend extends Component {
 
         return (
             <div className="series">
-                {pagedSeries.map((item) => {
+                {pagedSeries.map((item, index) => {
                     return (
                         <LegendItem
                             width={itemWidth}
                             chartType={chartType}
-                            key={item.name}
+                            key={index} // eslint-disable-line react/no-array-index-key
                             item={item}
                             onItemClick={onItemClick}
                         />

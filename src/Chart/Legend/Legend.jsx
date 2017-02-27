@@ -1,6 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { throttle } from 'lodash';
-import shallowCompare from 'react-addons-shallow-compare';
 import Measure from 'react-measure';
 import cx from 'classnames';
 
@@ -9,7 +8,7 @@ import StaticLegend from './StaticLegend';
 
 export const FLUID_LEGEND_THRESHOLD = 768;
 
-export default class Legend extends Component {
+export default class Legend extends PureComponent {
 
     static propTypes = {
         chartType: PropTypes.string.isRequired,
@@ -45,10 +44,6 @@ export default class Legend extends Component {
 
     componentDidMount() {
         window.addEventListener('resize', this.throttledOnWindowResize);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
     }
 
     componentWillUnmount() {
