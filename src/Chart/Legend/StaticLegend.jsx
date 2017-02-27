@@ -1,19 +1,21 @@
-import React, { Component, PropTypes } from 'react';
-import shallowCompare from 'react-addons-shallow-compare';
+import React, { PureComponent, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import cx from 'classnames';
 
 import LegendItem from './LegendItem';
 import { calculateStaticLegend, ITEM_HEIGHT } from './helpers';
 
-export default class StaticLegend extends Component {
+export default class StaticLegend extends PureComponent {
 
     static propTypes = {
         chartType: PropTypes.string.isRequired,
         series: PropTypes.array.isRequired,
         onItemClick: PropTypes.func.isRequired,
         containerHeight: PropTypes.number,
-        position: PropTypes.string.isRequired
+        position: PropTypes.oneOf([
+            'top',
+            'right'
+        ]).isRequired
     };
 
     static defaultProps = {
@@ -25,10 +27,6 @@ export default class StaticLegend extends Component {
         this.state = {
             page: 1
         };
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
     }
 
     renderPagingButton(type, handler, disabled) {
@@ -73,11 +71,11 @@ export default class StaticLegend extends Component {
             return (
                 <div className={classNames}>
                     <div className="series">
-                        {series.map((item) => {
+                        {series.map((item, index) => {
                             return (
                                 <LegendItem
                                     chartType={chartType}
-                                    key={item.name}
+                                    key={index} // eslint-disable-line react/no-array-index-key
                                     item={item}
                                     onItemClick={onItemClick}
                                 />
@@ -101,11 +99,11 @@ export default class StaticLegend extends Component {
         return (
             <div className={classNames}>
                 <div className="series" style={{ height: visibleItemsCount * ITEM_HEIGHT }}>
-                    {pagedSeries.map((item) => {
+                    {pagedSeries.map((item, index) => {
                         return (
                             <LegendItem
                                 chartType={chartType}
-                                key={item.name}
+                                key={index} // eslint-disable-line react/no-array-index-key
                                 item={item}
                                 onItemClick={onItemClick}
                             />
