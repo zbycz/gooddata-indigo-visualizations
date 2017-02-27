@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@gooddata/goodstrap@32.0.0":
-  version "32.0.0"
-  resolved "https://registry.yarnpkg.com/@gooddata/goodstrap/-/goodstrap-32.0.0.tgz#a61c37d8dee21042963155d126b45c2b61c5f7b3"
+"@gooddata/goodstrap@33.0.0":
+  version "33.0.0"
+  resolved "https://registry.yarnpkg.com/@gooddata/goodstrap/-/goodstrap-33.0.0.tgz#71390c9d50ea746894346852bc01321e10e1c736"
   dependencies:
     "@gooddata/js-utils" "0.5.0"
     classnames "2.2.5"
