@@ -39,13 +39,15 @@ export default class LineFamilyChartTransformation extends Component {
         }).isRequired,
         height: PropTypes.number,
 
+        afterRender: PropTypes.func,
         lineFamilyChartRenderer: PropTypes.func.isRequired,
         responsiveLegend: PropTypes.bool,
         onDataTooLarge: PropTypes.func
     };
 
     static defaultProps = {
-        lineFamilyChartRenderer: renderLineFamilyChart
+        lineFamilyChartRenderer: renderLineFamilyChart,
+        afterRender: () => {}
     };
 
     componentWillMount() {
@@ -102,7 +104,8 @@ export default class LineFamilyChartTransformation extends Component {
             chartOptions,
             hcOptions,
             responsiveLegend,
-            height
+            height,
+            afterRender: this.props.afterRender
         });
     }
 }
