@@ -44,7 +44,8 @@ export default class TableVisualization extends Component {
         sortDir: PropTypes.string,
         sortBy: PropTypes.number,
         onSortChange: PropTypes.func,
-        stickyHeader: PropTypes.number
+        stickyHeader: PropTypes.number,
+        afterRender: PropTypes.func
     };
 
     static defaultProps = {
@@ -57,7 +58,8 @@ export default class TableVisualization extends Component {
         containerMaxHeight: null,
         hasHiddenRows: false,
         sortDir: null,
-        sortBy: null
+        sortBy: null,
+        afterRender: () => {}
     };
 
     constructor(props) {
@@ -113,6 +115,7 @@ export default class TableVisualization extends Component {
             this.scrollHeader(true);
             this.checkTableDimensions();
         }
+        this.props.afterRender();
     }
 
     componentWillUnmount() {

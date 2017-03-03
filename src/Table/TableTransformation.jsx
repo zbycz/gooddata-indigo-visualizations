@@ -18,12 +18,14 @@ export default class TableTransformation extends Component {
         }).isRequired,
         tableRenderer: PropTypes.func.isRequired,
         height: PropTypes.number,
-        onSortChange: PropTypes.func
+        onSortChange: PropTypes.func,
+        afterRender: PropTypes.func
     };
 
     static defaultProps = {
         config: {},
-        tableRenderer: renderTable
+        tableRenderer: renderTable,
+        afterRender: () => {}
     };
 
     render() {
@@ -36,7 +38,8 @@ export default class TableTransformation extends Component {
             sortBy,
             sortDir,
             ...pick(config, ['rowsPerPage', 'onMore', 'onLess', 'sortInTooltip', 'stickyHeader']),
-            onSortChange
+            onSortChange,
+            afterRender: this.props.afterRender
         };
 
         if (height) {

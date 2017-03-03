@@ -17,12 +17,14 @@ export default class LineFamilyChart extends Component {
         hcOptions: PropTypes.object.isRequired,
         chartOptions: PropTypes.object.isRequired,
         responsiveLegend: PropTypes.bool,
-        height: PropTypes.number
+        height: PropTypes.number,
+        afterRender: PropTypes.func
     };
 
     static defaultProps = {
         responsiveLegend: false,
-        height: null
+        height: null,
+        afterRender: () => {}
     };
 
     constructor(props) {
@@ -122,7 +124,7 @@ export default class LineFamilyChart extends Component {
                     domProps={{ className: 'viz-react-highchart-wrap' }}
                     ref={this.setChartRef}
                     config={this.createChartConfig(this.props.hcOptions)}
-                    callback={this.afterRender}
+                    callback={this.props.afterRender}
                 />
             </div>
         );
