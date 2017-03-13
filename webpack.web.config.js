@@ -5,17 +5,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const getWebpackConfig = require('./webpack.config');
 
-const pkg = require('./package.json');
 const execSync = require('child_process').execSync;
+const pkg = require('./package.json');
 
 const webpackConfig = getWebpackConfig();
-const date = new Date().toString();
-const lastCommitSHA = execSync('git log -1 --format="%h"', { encoding: 'utf8' }).replace('\n', '');
+const lastCommitSHA = execSync('git log -1 --format="%h"', { encoding: 'utf8' }).trim();
+
 const license = `/*!
  * ${pkg.name} - v${pkg.version}
  * ${webpackConfig.copyright}
  * Latest git commit: ${lastCommitSHA}
- * ${date}
+ * ${new Date().toString()}
  */\n`;
 
 const uglifyOptions = {
@@ -38,7 +38,7 @@ module.exports = function createWebConfig() {
     const distWebConfig = _.assign(webpackConfig, {
         output: {
             path: OUTPUT_DIR,
-            filename: `[name].${lastCommitSHA}.[hash].js`
+            filename: `[name].${lastCommitSHA}.js`
         }
     });
 
@@ -53,7 +53,7 @@ module.exports = function createWebConfig() {
     distWebConfig.plugins = distWebConfig.plugins.concat(
         new webpack.optimize.UglifyJsPlugin(uglifyOptions),
 
-        new ExtractTextPlugin(`[name].${lastCommitSHA}.[hash].css`),
+        new ExtractTextPlugin(`[name].${lastCommitSHA}.css`),
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the react lib size
