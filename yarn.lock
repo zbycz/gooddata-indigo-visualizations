@@ -2,18 +2,18 @@
 # yarn lockfile v1
 
 
-"@gooddata/goodstrap@33.0.0":
-  version "33.0.0"
-  resolved "https://registry.yarnpkg.com/@gooddata/goodstrap/-/goodstrap-33.0.0.tgz#71390c9d50ea746894346852bc01321e10e1c736"
+"@gooddata/goodstrap@38.0.0":
+  version "38.0.0"
+  resolved "https://registry.yarnpkg.com/@gooddata/goodstrap/-/goodstrap-38.0.0.tgz#075e6c18f8414a7d9791b4dede5ecfc92027dc62"
   dependencies:
     "@gooddata/js-utils" "0.5.0"
     classnames "2.2.5"
     custom-event "1.0.1"
     ember "git+ssh://git@github.com/gooddata/emberjs#1.8.1"
     ember-legacy "git+ssh://git@github.com/gooddata/emberjs#1.3.2"
-    fixed-data-table-2 "0.7.10"
+    fixed-data-table-2 "0.7.13"
     foundation-sites "5.5.3"
-    gooddata "1.1.0"
+    gooddata "1.4.0"
     immutable "3.8.1"
     jquery "2.1.4"
     kefir "3.7.1"
@@ -2115,6 +2115,10 @@ es5-ext@^0.10.7, es5-ext@^0.10.8, es5-ext@~0.10.11, es5-ext@~0.10.2, es5-ext@~0.
     es6-iterator "2"
     es6-symbol "~3.1"
 
+es6-denodeify@^0.1.1:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/es6-denodeify/-/es6-denodeify-0.1.5.tgz#31d4d5fe9c5503e125460439310e16a2a3f39c1f"
+
 es6-iterator@2:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/es6-iterator/-/es6-iterator-2.0.0.tgz#bd968567d61635e33c0b80727613c9cb4b096bac"
@@ -2508,6 +2512,13 @@ fbjs@^0.8.4:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
 
+fetch-cookie@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/fetch-cookie/-/fetch-cookie-0.4.0.tgz#8f78b830b380bac72df1c138d8ffeb01f3ee3b23"
+  dependencies:
+    es6-denodeify "^0.1.1"
+    tough-cookie "^2.3.1"
+
 figures@^1.3.5:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -2589,13 +2600,9 @@ findup-sync@~0.3.0:
   dependencies:
     glob "~5.0.0"
 
-fixed-data-table-2@0.7.10:
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/fixed-data-table-2/-/fixed-data-table-2-0.7.10.tgz#c93be40f6e59a06fa65013e0ff0cdd357467612f"
-
-fixed-data-table-2@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/fixed-data-table-2/-/fixed-data-table-2-0.7.2.tgz#0d65243606398fd03c513beeee1f871bf05a5120"
+fixed-data-table-2@0.7.13:
+  version "0.7.13"
+  resolved "https://registry.yarnpkg.com/fixed-data-table-2/-/fixed-data-table-2-0.7.13.tgz#093f098da9a6ce69d83634183b7566234d12ac8c"
 
 flat-cache@^1.2.1:
   version "1.2.2"
@@ -2856,11 +2863,12 @@ globule@^1.0.0:
     lodash "~4.16.4"
     minimatch "~3.0.2"
 
-gooddata@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/gooddata/-/gooddata-1.1.0.tgz#3705a9393edb7ab68e465a7028ce2c9b9240ae89"
+gooddata@1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/gooddata/-/gooddata-1.4.0.tgz#c2a955d872a60e2c66f1c2c0443394160c657fb0"
   dependencies:
     es6-promise "3.0.2"
+    fetch-cookie "0.4.0"
     invariant "2.2.2"
     isomorphic-fetch "2.2.1"
     lodash "4.17.4"
@@ -5923,7 +5931,7 @@ sugarss@^0.2.0:
   dependencies:
     postcss "^5.2.4"
 
-supports-color@3.1.2, supports-color@^3.1.1:
+supports-color@3.1.2, supports-color@^3.1.0, supports-color@^3.1.1:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.1.2.tgz#72a262894d9d408b956ca05ff37b2ed8a6e2a2d5"
   dependencies:
@@ -5933,7 +5941,7 @@ supports-color@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
 
-supports-color@^3.1.0, supports-color@^3.2.3:
+supports-color@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.2.3.tgz#65ac0504b3954171d8a64946b2ae3cbb8a5f54f6"
   dependencies:
@@ -6051,7 +6059,7 @@ toposort@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/toposort/-/toposort-1.0.3.tgz#f02cd8a74bd8be2fc0e98611c3bacb95a171869c"
 
-tough-cookie@~2.3.0:
+tough-cookie@^2.3.1, tough-cookie@~2.3.0:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.3.2.tgz#f081f76e4c85720e6c37a5faced737150d84072a"
   dependencies:
