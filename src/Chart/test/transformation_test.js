@@ -345,7 +345,7 @@ describe('Transformation', () => {
                         }
                     },
                     { id: 'metricValues', type: 'metric' },
-                    { id: 'abc.generated.pop.123', type: 'metric' }
+                    { id: 'abc.generated_pop', type: 'metric' }
                 ]
             };
             const palette = [
