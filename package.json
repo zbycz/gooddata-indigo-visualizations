@@ -93,11 +93,11 @@
     "react-dom": "^15.3.2"
   },
   "dependencies": {
-    "@gooddata/goodstrap": "33.0.0",
+    "@gooddata/goodstrap": "38.0.0",
     "@gooddata/js-utils": "0.5.0",
     "@gooddata/numberjs": "3.0.0",
     "classnames": "2.2.5",
-    "fixed-data-table-2": "0.7.2",
+    "fixed-data-table-2": "0.7.13",
     "invariant": "2.2.2",
     "lodash": "4.17.4",
     "react-highcharts": "10.0.0",
