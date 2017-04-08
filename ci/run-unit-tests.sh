@@ -1,10 +1,13 @@
 #!/bin/bash -x
 
-echo "Running tests with Karma..."
+DIR=$(dirname $0)
 
-. $(dirname $0)/lib.sh
+echo "Running unit tests..."
+
+. $DIR/lib.sh
 
 PATH=$PATH:/opt/npm/node_modules/.bin:./node_modules/.bin
-export CHROME_BIN="/usr/bin/chromium-browser"
 
-grunt test --ci
+mkdir -p $DIR/results
+
+JEST_SUITE_NAME="Indigo Visualizations Unit Tests" JEST_JUNIT_OUTPUT="$DIR/results/test-results.xml" jest --config=$DIR/../jest.ci.json --setupTestFrameworkScriptFile=$DIR/../el6-intl-polyfill.js

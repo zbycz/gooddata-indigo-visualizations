@@ -35,7 +35,7 @@ describe('chartConfigCreators', () => {
                 ]
             };
             const lineConfig = transformConfigToLine(configWithColors);
-            expect(lineConfig.colorPalette).to.eql([
+            expect(lineConfig.colorPalette).toEqual([
                 'rgb(247,0,255)',
                 'rgb(0,0,0)'
             ]);
@@ -43,7 +43,7 @@ describe('chartConfigCreators', () => {
 
         it('converts object with stack', () => {
             const lineConfig = transformConfigToLine(Object.assign({}, config));
-            expect(lineConfig).to.eql({
+            expect(lineConfig).toEqual({
                 type: 'column',
                 x: '',
                 y: '/metricValues',
@@ -61,7 +61,7 @@ describe('chartConfigCreators', () => {
             );
 
             const lineConfig = transformConfigToLine(withoutStackConfig);
-            expect(lineConfig).to.eql({
+            expect(lineConfig).toEqual({
                 type: 'column',
                 x: '/gdc/md/project/obj/2',
                 y: '/metricValues',

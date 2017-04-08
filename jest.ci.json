@@ -1,0 +1,18 @@
+{
+  "transform": {
+    ".(js|jsx)": "babel-jest"
+  },
+  "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(jsx?)$",
+  "moduleFileExtensions": [
+    "js",
+    "jsx"
+  ],
+  "moduleNameMapper": {
+    "\\.(css|scss)$": "identity-obj-proxy"
+  },
+  "collectCoverage": true,
+  "collectCoverageFrom" : ["src/**/*.{js,jsx}", "!**/node_modules/**"],
+  "coverageDirectory": "<rootDir>/ci/results/coverage",
+  "coverageReporters": ["json", "cobertura", "lcov"],
+  "testResultsProcessor": "<rootDir>/node_modules/jest-junit"
+}

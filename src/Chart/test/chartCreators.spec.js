@@ -60,13 +60,13 @@ describe('chartCreators', () => {
     describe('propertiesToHeaders', () => {
         it('converts vis ctrl properties to header format', () => {
             const res = propertiesToHeaders(config, mockHeaders);
-            expect(res.x).to.eql({
+            expect(res.x).toEqual({
                 type: 'attrLabel',
                 id: 'healthdata_finish.aci81lMifn6q',
                 uri: '/gdc/md/zro9kxjp2hejksfug8qemqwx6d92c940/obj/2577',
                 title: 'Quarter/Year (Health Data_finish)'
             });
-            expect(res.y).to.eql({
+            expect(res.y).toEqual({
                 id: 'metricValues',
                 type: 'metric',
                 uri: '/metricValues',
@@ -79,50 +79,50 @@ describe('chartCreators', () => {
     describe('getIndices', () => {
         it('return indices from config', () => {
             expect(getIndices(config, mockData.headers))
-                .to.eql({ category: 0, series: 1, metric: 2 });
+                .toEqual({ category: 0, series: 1, metric: 2 });
         });
     });
 
     describe('isMetricNamesInSeries', () => {
         it('works', () => {
-            expect(isMetricNamesInSeries(config, mockHeaders)).to.equal(true);
+            expect(isMetricNamesInSeries(config, mockHeaders)).toEqual(true);
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(isMetricNamesInSeries(config, mockHeaders)).to.equal(false);
+            expect(isMetricNamesInSeries(config, mockHeaders)).toEqual(false);
         });
     });
 
     describe('getLegendLayout', () => {
         it('works', () => {
-            expect(getLegendLayout(config, mockHeaders)).to.equal('horizontal');
+            expect(getLegendLayout(config, mockHeaders)).toEqual('horizontal');
             config.y = 'metricNames';
             config.color = 'metricValues';
-            expect(getLegendLayout(config, mockHeaders)).to.equal('vertical');
+            expect(getLegendLayout(config, mockHeaders)).toEqual('vertical');
         });
     });
 
     describe('getCategoryAxisLabel', () => {
         it('works', () => {
             expect(getCategoryAxisLabel(config, mockHeaders))
-                .to.equal('Quarter/Year (Health Data_finish)');
+                .toEqual('Quarter/Year (Health Data_finish)');
             mockHeaders[0].title = undefined;
-            expect(getCategoryAxisLabel(config, mockHeaders)).to.equal('');
+            expect(getCategoryAxisLabel(config, mockHeaders)).toEqual('');
         });
     });
 
     describe('getMetricAxisLabel', () => {
         it('works', () => {
-            expect(getMetricAxisLabel(config, mockHeaders)).to.equal('Average kilometers');
+            expect(getMetricAxisLabel(config, mockHeaders)).toEqual('Average kilometers');
             mockHeaders[1].metrics = [];
-            expect(getMetricAxisLabel(config, mockHeaders)).to.equal('Average kilometers');
+            expect(getMetricAxisLabel(config, mockHeaders)).toEqual('Average kilometers');
         });
     });
 
     describe('showInPercent', () => {
         it('works', () => {
-            expect(showInPercent(config, mockHeaders)).to.equal(false);
+            expect(showInPercent(config, mockHeaders)).toEqual(false);
             mockHeaders[2].format = '#,##0.00 %';
-            expect(showInPercent(config, mockHeaders)).to.equal(true);
+            expect(showInPercent(config, mockHeaders)).toEqual(true);
         });
     });
 
@@ -140,7 +140,7 @@ describe('chartCreators', () => {
                     }
                 });
 
-                expect(tooltip.includes('&lt;series&gt;')).to.equal(true);
+                expect(tooltip.includes('&lt;series&gt;')).toEqual(true);
             });
 
             it('should escape other html chars and have output properly escaped', () => {
@@ -151,7 +151,7 @@ describe('chartCreators', () => {
                     }
                 });
 
-                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).to.equal(true);
+                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).toEqual(true);
             });
 
             it('should unescape brackets and htmlescape category', () => {
@@ -163,7 +163,7 @@ describe('chartCreators', () => {
                     }
                 });
 
-                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.equal(true);
+                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).toEqual(true);
             });
         });
     });
@@ -178,7 +178,7 @@ describe('chartCreators', () => {
                     y: 1,
                     name: '&lt;series&gt;'
                 });
-                expect(tooltip.includes('&lt;series&gt;')).to.equal(true);
+                expect(tooltip.includes('&lt;series&gt;')).toEqual(true);
             });
 
             it('should escape other html chars and have output properly escaped', () => {
@@ -186,7 +186,7 @@ describe('chartCreators', () => {
                     y: 1,
                     name: '"&\'&lt;'
                 });
-                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).to.equal(true);
+                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).toEqual(true);
             });
 
             it('should unescape brackets and htmlescape category', () => {
@@ -195,7 +195,7 @@ describe('chartCreators', () => {
                     name: '&gt;"&\'&lt;'
                 });
 
-                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.equal(true);
+                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).toEqual(true);
             });
         });
 
@@ -209,7 +209,7 @@ describe('chartCreators', () => {
                     name: '"&\'&lt;'
                 });
 
-                expect(tooltip.includes('category-label')).to.be.ok();
+                expect(tooltip.includes('category-label')).toEqual(true);
             });
 
             it('renders correctly with metrics only', () => {
@@ -221,8 +221,8 @@ describe('chartCreators', () => {
                     name: 'opportunities'
                 });
 
-                expect(tooltip.includes('opportunities')).to.equal(true);
-                expect(tooltip.includes('category-label')).to.equal(false);
+                expect(tooltip.includes('opportunities')).toEqual(true);
+                expect(tooltip.includes('category-label')).toEqual(false);
             });
         });
     });
@@ -262,9 +262,7 @@ describe('chartCreators', () => {
 
             const data = getPieFamilyChartData(pieConfig, pieData);
 
-            console.log(data.series[0].data[0]);
-
-            expect(data).to.eql({
+            expect(data).toEqual({
                 series: [{
                     data: [
                         { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
@@ -316,7 +314,7 @@ describe('chartCreators', () => {
 
             const data = getPieFamilyChartData(pieConfig, pieData);
 
-            expect(data).to.eql({
+            expect(data).toEqual({
                 series: [{
                     data: [
                         { name: 'Next two', y: 789, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
@@ -376,14 +374,14 @@ describe('chartCreators', () => {
         it('should get chart data', () => {
             const chartData = getLineFamilyChartData(config, mockData);
 
-            expect(chartData).to.be.ok();
+            expect(chartData).toBeDefined();
         });
 
         it('should not sort data', () => {
             const chartData = getLineFamilyChartData(config, mockData);
 
-            expect(chartData.series[0].name).to.eql('Email Click Rate - previous year');
-            expect(chartData.series[1].name).to.eql('Email Click Rate');
+            expect(chartData.series[0].name).toEqual('Email Click Rate - previous year');
+            expect(chartData.series[1].name).toEqual('Email Click Rate');
         });
     });
 });

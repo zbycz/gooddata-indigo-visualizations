@@ -48,7 +48,7 @@ export default class PieChartTransformation extends Component {
         });
     }
 
-    hasLegend(chartOptions, legend) {
+    hasLegend(chartOptions, legend = {}) {
         return legend.enabled && chartOptions.data.series[0].data.length > 1;
     }
 

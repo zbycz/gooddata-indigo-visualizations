@@ -30,8 +30,8 @@ function createComponent(customProps) {
 describe('HighChartRenderer', () => {
     it('should render chart without legend', () => {
         const wrapper = createComponent();
-        expect(wrapper.find(Chart)).to.have.length(1);
-        expect(wrapper.find(Legend)).to.have.length(0);
+        expect(wrapper.find(Chart)).toHaveLength(1);
+        expect(wrapper.find(Legend)).toHaveLength(0);
     });
 
     it('should render legend if enabled', () => {
@@ -49,7 +49,7 @@ describe('HighChartRenderer', () => {
                 onItemClick: () => {}
             }
         });
-        expect(wrapper.find(Chart)).to.have.length(1);
-        expect(wrapper.find(Legend)).to.have.length(1);
+        expect(wrapper.find(Chart)).toHaveLength(1);
+        expect(wrapper.find(Legend)).toHaveLength(1);
     });
 });

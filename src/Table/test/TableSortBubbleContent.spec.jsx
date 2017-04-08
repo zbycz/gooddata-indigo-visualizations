@@ -25,35 +25,35 @@ describe('TableSortBubbleContent', () => {
     it('should render 2 sort buttons', () => {
         const bubble = createBubble();
         const buttons = scryRenderedDOMComponentsWithClass(bubble, 'button');
-        expect(buttons.length).to.eql(2);
+        expect(buttons.length).toEqual(2);
     });
 
     it('should trigger sort callback on button click & close', () => {
         const props = {
-            onSortChange: sinon.spy(),
-            onClose: sinon.spy()
+            onSortChange: jest.fn(),
+            onClose: jest.fn()
         };
         const bubble = createBubble(props);
 
         const buttonAsc = findRenderedDOMComponentWithClass(bubble, 'button-sort-asc');
         Simulate.click(buttonAsc);
-        expect(props.onSortChange.args[0][0]).to.eql(ASC);
+        expect(props.onSortChange.mock.calls[0][0]).toEqual(ASC);
 
         const buttonDesc = findRenderedDOMComponentWithClass(bubble, 'button-sort-desc');
         Simulate.click(buttonDesc);
-        expect(props.onSortChange.args[1][0]).to.eql(DESC);
+        expect(props.onSortChange.mock.calls[1][0]).toEqual(DESC);
 
-        expect(props.onClose).to.be.calledTwice();
+        expect(props.onClose).toHaveBeenCalledTimes(2);
     });
 
     it('should trigger close callback on cross button click', () => {
         const props = {
-            onClose: sinon.spy()
+            onClose: jest.fn()
         };
         const bubble = createBubble(props);
         const closeButton = findRenderedDOMComponentWithClass(bubble, 'close-button');
         Simulate.click(closeButton);
 
-        expect(props.onClose).to.be.calledOnce();
+        expect(props.onClose).toHaveBeenCalledTimes(1);
     });
 });

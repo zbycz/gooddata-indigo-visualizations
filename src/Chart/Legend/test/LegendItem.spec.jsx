@@ -15,13 +15,13 @@ describe('LegendItem', () => {
                 isVisible: true
             },
             chartType: 'bar',
-            onItemClick: sinon.spy()
+            onItemClick: jest.fn()
         };
         const component = renderIntoDocument(<LegendItem {...props} />);
         const node = findRenderedDOMComponentWithClass(component, 'series-item');
-        expect(node.textContent).to.eql('Foo');
+        expect(node.textContent).toEqual('Foo');
 
         Simulate.click(node);
-        expect(props.onItemClick).to.be.calledOnce();
+        expect(props.onItemClick).toHaveBeenCalled();
     });
 });

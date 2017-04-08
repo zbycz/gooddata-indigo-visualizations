@@ -61,14 +61,14 @@ describe('Responsive Table', () => {
     const getLess = () => findRenderedDOMComponentWithClass(controls, 's-show_less');
 
     beforeEach(() => {
-        onMore = sinon.stub();
-        onLess = sinon.stub();
+        onMore = jest.fn();
+        onLess = jest.fn();
     });
 
     it('should set container width', () => {
         renderTable({ headers: [], rawData: [] });
 
-        expect(visualization.props.containerWidth).to.equal(600);
+        expect(visualization.props.containerWidth).toEqual(600);
     });
 
     describe('when data contains less than 1 page of rows', () => {
@@ -82,15 +82,15 @@ describe('Responsive Table', () => {
         });
 
         it('should not show "More" button', () => {
-            expect(getMore).to.throw();
+            expect(getMore).toThrow();
         });
 
         it('should not show "Less" button', () => {
-            expect(getLess).to.throw();
+            expect(getLess).toThrow();
         });
 
         it('should set correct number of rows', () => {
-            expect(visualization.props.rows.length).to.equal(1);
+            expect(visualization.props.rows.length).toEqual(1);
         });
     });
 
@@ -106,21 +106,21 @@ describe('Responsive Table', () => {
 
         describe('and table is showing first page', () => {
             it('should show "More" button', () => {
-                expect(getMore).not.to.throw();
+                expect(getMore).not.toThrow();
             });
 
             it('should not show "Less" button', () => {
-                expect(getLess).to.throw();
+                expect(getLess).toThrow();
             });
 
             it('should set correct number of rows', () => {
-                expect(visualization.props.rows.length).to.equal(ROWS_PER_PAGE);
+                expect(visualization.props.rows.length).toEqual(ROWS_PER_PAGE);
             });
 
             it('should call onMore callback with number of rows and page when user clicks "More"', () => {
                 click(getMore());
 
-                expect(onMore).to.be.calledWith({
+                expect(onMore).toBeCalledWith({
                     rows: ROWS_PER_PAGE * 2,
                     page: 2
                 });
@@ -133,23 +133,23 @@ describe('Responsive Table', () => {
             });
 
             it('should show "Less" button', () => {
-                expect(getLess).not.to.throw();
+                expect(getLess).not.toThrow();
             });
 
             it('should set correct number of rows', () => {
-                expect(visualization.props.rows.length).to.equal(ROWS_PER_PAGE * 2);
+                expect(visualization.props.rows.length).toEqual(ROWS_PER_PAGE * 2);
             });
 
             it('should return to first page when user clicks "Less"', () => {
                 click(getLess());
 
-                expect(visualization.props.rows.length).to.equal(ROWS_PER_PAGE);
+                expect(visualization.props.rows.length).toEqual(ROWS_PER_PAGE);
             });
 
             it('should call onLess callback with number of rows when user clicks "Less"', () => {
                 click(getLess());
 
-                expect(onLess).to.be.calledWith({ rows: ROWS_PER_PAGE });
+                expect(onLess).toBeCalledWith({ rows: ROWS_PER_PAGE });
             });
         });
 
@@ -163,21 +163,21 @@ describe('Responsive Table', () => {
             });
 
             it('should hide "More" button', () => {
-                expect(getMore).to.throw();
+                expect(getMore).toThrow();
             });
 
             it('should show "Less" button', () => {
-                expect(getLess).not.to.throw();
+                expect(getLess).not.toThrow();
             });
 
             it('should set correct number of rows', () => {
-                expect(visualization.props.rows.length).to.equal(25);
+                expect(visualization.props.rows.length).toEqual(25);
             });
 
             it('should return to first page when user clicks "Less"', () => {
                 click(getLess());
 
-                expect(visualization.props.rows.length).to.equal(ROWS_PER_PAGE);
+                expect(visualization.props.rows.length).toEqual(ROWS_PER_PAGE);
             });
         });
     });

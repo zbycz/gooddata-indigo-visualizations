@@ -22,30 +22,30 @@ describe('Utils', () => {
         it('should get sort for category', () => {
             const sortInfo = getSortInfo(config);
 
-            expect(sortInfo.sortBy).to.eql(1);
-            expect(sortInfo.sortDir).to.eql('asc');
+            expect(sortInfo.sortBy).toEqual(1);
+            expect(sortInfo.sortDir).toEqual('asc');
         });
 
         it('should get sort for measure', () => {
             config.buckets.categories[1].category = {};
             const sortInfo = getSortInfo(config);
 
-            expect(sortInfo.sortBy).to.eql(3);
-            expect(sortInfo.sortDir).to.eql('desc');
+            expect(sortInfo.sortBy).toEqual(3);
+            expect(sortInfo.sortDir).toEqual('desc');
         });
 
         it('should handle missing config', () => {
             const sortInfo = getSortInfo();
 
-            expect(sortInfo).to.eql({});
+            expect(sortInfo).toEqual({});
         });
 
         it('should handle missing categories', () => {
             delete config.buckets.categories;
             const sortInfo = getSortInfo(config);
 
-            expect(sortInfo.sortBy).to.eql(1);
-            expect(sortInfo.sortDir).to.eql('desc');
+            expect(sortInfo.sortBy).toEqual(1);
+            expect(sortInfo.sortDir).toEqual('desc');
         });
 
         it('should handle sort object in measure', () => {
@@ -59,8 +59,8 @@ describe('Utils', () => {
                 }
             });
 
-            expect(sortInfo.sortBy).to.eql(1);
-            expect(sortInfo.sortDir).to.eql('asc');
+            expect(sortInfo.sortBy).toEqual(1);
+            expect(sortInfo.sortDir).toEqual('asc');
         });
 
         it('should handle sort for measure with pop', () => {
@@ -74,8 +74,8 @@ describe('Utils', () => {
                 }
             });
 
-            expect(sortInfo.sortBy).to.eql(2);
-            expect(sortInfo.sortDir).to.eql('asc');
+            expect(sortInfo.sortBy).toEqual(2);
+            expect(sortInfo.sortDir).toEqual('asc');
         });
 
         it('should handle sort for pop measure', () => {
@@ -89,8 +89,8 @@ describe('Utils', () => {
                 }
             });
 
-            expect(sortInfo.sortBy).to.eql(1);
-            expect(sortInfo.sortDir).to.eql('asc');
+            expect(sortInfo.sortBy).toEqual(1);
+            expect(sortInfo.sortDir).toEqual('asc');
         });
     });
 });

@@ -61,6 +61,9 @@ const SINGLE_DATA_METRIC_CONFIG = {
                 }
             }
         ]
+    },
+    legend: {
+        enabled: false
     }
 };
 
@@ -81,13 +84,13 @@ describe('PieChartTransformation', () => {
     }
 
     it('should use custom renderer', () => {
-        const pieChartRenderer = sinon.stub().returns(<div />);
+        const pieChartRenderer = jest.fn().mockReturnValue(<div />);
         renderIntoDocument(createComponent({ pieChartRenderer }));
-        expect(pieChartRenderer).to.be.calledOnce();
+        expect(pieChartRenderer).toHaveBeenCalled();
     });
 
     it('should always disable legend for serie with one value', () => {
-        const pieChartRenderer = sinon.stub().returns(<div />);
+        const pieChartRenderer = jest.fn().mockReturnValue(<div />);
         renderIntoDocument(createComponent({
             pieChartRenderer,
             data: SINGLE_DATA_METRIC_DATA,
@@ -99,13 +102,12 @@ describe('PieChartTransformation', () => {
                 }
             }
         }));
-        const calls = pieChartRenderer.getCalls();
-        const passedProps = calls[0].args[0];
-        expect(passedProps.legend.enabled).to.eql(false);
+        const passedProps = pieChartRenderer.mock.calls[0][0];
+        expect(passedProps.legend.enabled).toEqual(false);
     });
 
     it('should render HighChartRenderer', () => {
         const wrapper = shallow(createComponent());
-        expect(wrapper.find(HighChartRenderer)).to.have.length(1);
+        expect(wrapper.find(HighChartRenderer)).toHaveLength(1);
     });
 });
