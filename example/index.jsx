@@ -28,6 +28,8 @@ ReactDOM.render(
     >
         <div>
             <h1>Examples</h1>
+            <ExampleVisualization height={300} config={TestConfig.pie} data={TestData.pieChart} />
+            <ExampleVisualization config={TestConfig.metricPie} data={TestData.metricOnlyPieChart} />
             <ExampleVisualization
                 height={400}
                 config={TestConfig.barChart2Series}

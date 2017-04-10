@@ -1,3 +1,93 @@
+export const pieChart = {
+    isLoaded: true,
+    headers: [{
+        type: 'attrLabel',
+        id: 'closed.aag81lMifn6q',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/324',
+        title: 'Year (Closed)'
+    }, {
+        type: 'metric',
+        id: 'aaYh6Voua2yj',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+        title: 'aaa <b># of Open Opps.',
+        format: '<button>#,##0.00</button>'
+    }, {
+        type: 'metric',
+        id: 'aaYh6Vouasd2yj',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13468',
+        title: 'Sum of Amount',
+        format: '#,##0.00'
+    }],
+    rawData: [
+        [
+            '2010',
+            '30',
+            '64'
+        ],
+        [
+            '2011',
+            '174',
+            '2544'
+        ],
+        [
+            '2012',
+            '735',
+            '765'
+        ],
+        [
+            '2013',
+            '74',
+            '0'
+        ],
+        [
+            '2014',
+            '4',
+            '123'
+        ],
+        [
+            '2016 Frantiska',
+            '1',
+            '254'
+        ],
+        [
+            '2017',
+            '1',
+            '856'
+        ]
+    ],
+    isLoading: false
+};
+
+export const metricOnlyPieChart = {
+    isLoaded: true,
+    headers: [{
+        type: 'metric',
+        id: 'closed.aag81lMifn6q',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/324',
+        title: 'Products sold'
+    }, {
+        type: 'metric',
+        id: 'aaYh6Voua2yj',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+        title: 'aaa <b># of Open Opps.',
+        format: '<button>#,##0.00</button>'
+    }, {
+        type: 'metric',
+        id: 'aaYh6Vouasd2yj',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13468',
+        title: 'Sum of Amount',
+        format: '#,##0.00'
+    }],
+    rawData: [
+        [
+            '267',
+            '30',
+            '64'
+        ]
+    ],
+    isLoading: false
+};
+
 export const barChart2Series = {
     isLoaded: true,
     headers: [{

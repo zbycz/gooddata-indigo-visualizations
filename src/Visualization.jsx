@@ -5,6 +5,7 @@ import { isEqual, isFunction, omitBy, includes } from 'lodash';
 import './styles/chart.scss';
 
 import LineFamilyChartTransformation from './Chart/LineFamilyChartTransformation';
+import PieChartTransformation from './Chart/PieChartTransformation';
 import TableTransformation from './Table/TableTransformation';
 import * as VisualizationTypes from './VisualizationTypes';
 
@@ -36,9 +37,16 @@ export default class Visualization extends Component {
     render() {
         const visType = this.props.config.type;
 
+
         if (isLineFamily(visType)) {
             return (
                 <LineFamilyChartTransformation {...this.props} />
+            );
+        }
+
+        if (visType === VisualizationTypes.PIE_CHART) {
+            return (
+                <PieChartTransformation {...this.props} />
             );
         }
 
