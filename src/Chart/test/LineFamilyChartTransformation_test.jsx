@@ -2,20 +2,79 @@
 /* eslint react/no-find-dom-node: 0 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactTestUtils from 'react-addons-test-utils';
+import { renderIntoDocument } from 'react-addons-test-utils';
 import LineFamilyChartTransformation from '../LineFamilyChartTransformation';
+import { TOP } from '../Legend/PositionTypes';
 import { data, config } from '../../test/fixtures';
 
-const {
-    renderIntoDocument
-} = ReactTestUtils;
+const SINGLE_SERIES_DATA = {
+    isLoaded: true,
+    isLoading: false,
+    headers: [
+        {
+            id: 'm1',
+            title: 'Metric',
+            type: 'metric',
+            uri: '/gdc/m1',
+            format: '#,##0'
+        },
+        {
+            id: 'date',
+            title: 'Date',
+            type: 'attrLabel',
+            uri: '/gdc/date'
+        }
+    ],
+    rawData: [
+        [
+            '2010',
+            '1324'
+        ]
+    ]
+};
 
+const SINGLE_SERIES_CONFIG = {
+    type: 'bar',
+    buckets: {
+        measures: [
+            {
+                measure: {
+                    type: 'metric',
+                    objectUri: '/gdc/m1',
+                    metricAttributeFilters: [],
+                    showInPercent: false,
+                    showPoP: false,
+                    format: '#,##0',
+                    sorts: []
+                }
+            }
+        ],
+        categories: [
+            {
+                category: {
+                    type: 'date',
+                    collection: 'attribute',
+                    displayForm: '/gdc/date',
+                    dateFilterSettings: {
+                        granularity: 'GDC.time.year'
+                    }
+                }
+            }
+        ]
+    }
+};
 
 describe('LineFamilyChartTransformation', () => {
     function createComponent(customProps = {}) {
         const defaultProps = {
             onDataTooLarge: () => {},
-            config,
+            config: {
+                ...config,
+                legend: {
+                    enabled: true,
+                    position: TOP
+                }
+            },
             data
         };
         const props = { ...defaultProps, ...customProps };
@@ -26,6 +85,25 @@ describe('LineFamilyChartTransformation', () => {
         const lineFamilyChartRenderer = sinon.stub().returns(<div />);
         renderIntoDocument(createComponent({ lineFamilyChartRenderer }));
         expect(lineFamilyChartRenderer).to.be.calledOnce();
+    });
+
+    it('should always disable legend for single series', () => {
+        const lineFamilyChartRenderer = sinon.stub().returns(<div />);
+        renderIntoDocument(createComponent({
+            lineFamilyChartRenderer,
+            data: SINGLE_SERIES_DATA,
+            config: {
+                ...SINGLE_SERIES_CONFIG,
+                legend: {
+                    enabled: true,
+                    position: TOP
+                }
+            },
+
+        }));
+        const calls = lineFamilyChartRenderer.getCalls();
+        const passedProps = calls[0].args[0];
+        expect(passedProps.legend.enabled).to.eql(false);
     });
 
     describe('onDataTooLarge', () => {
@@ -72,6 +150,9 @@ describe('LineFamilyChartTransformation', () => {
         });
 
         it('should be invoked on props change', () => {
+            // FIXME I am very ugly testcase
+            // and I demand to be rewritten with Enzyme!
+
             // 1) create mount node for single component container
             const mountNode = document.createElement('div');
 

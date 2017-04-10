@@ -6,6 +6,7 @@ import cx from 'classnames';
 import FluidLegend from './FluidLegend';
 import StaticLegend from './StaticLegend';
 
+
 export const FLUID_LEGEND_THRESHOLD = 768;
 
 export default class Legend extends PureComponent {
@@ -14,9 +15,9 @@ export default class Legend extends PureComponent {
         chartType: PropTypes.string.isRequired,
         series: PropTypes.array.isRequired,
         onItemClick: PropTypes.func.isRequired,
-        legendLayout: PropTypes.string.isRequired,
-        isResponsive: PropTypes.bool,
-        height: PropTypes.number,
+        position: PropTypes.string.isRequired,
+        responsive: PropTypes.bool,
+        height: PropTypes.number, // Prop is required for fixed height on Dashboards
         documentObj: PropTypes.shape({
             documentElement: PropTypes.shape({
                 clientWidth: PropTypes.number.isRequired
@@ -25,7 +26,7 @@ export default class Legend extends PureComponent {
     };
 
     static defaultProps = {
-        isResponsive: false,
+        responsive: false,
         documentObj: document,
         height: 0
     };
@@ -110,9 +111,8 @@ export default class Legend extends PureComponent {
     }
 
     renderStatic() {
-        const { height, chartType, isResponsive, legendLayout } = this.props;
+        const { chartType, position, height } = this.props;
 
-        const position = legendLayout === 'horizontal' && !isResponsive ? 'top' : 'right';
         const classNames = cx('viz-static-legend-wrap', `position-${position}`);
 
         const props = {
@@ -137,10 +137,10 @@ export default class Legend extends PureComponent {
     }
 
     render() {
-        const { isResponsive } = this.props;
+        const { responsive } = this.props;
         const { showFluid } = this.state;
 
-        const fluidLegend = isResponsive && showFluid;
+        const fluidLegend = responsive && showFluid;
 
         if (fluidLegend) {
             return this.renderFluid();

@@ -111,7 +111,7 @@ export class TableSortBubbleContent extends Component {
             'icon-right', {
                 'button-sort-asc': dir === ASC,
                 'button-sort-desc': dir === DESC,
-                disabled: isDisabled
+                enabled: isDisabled
             });
 
         const msg = dir === ASC ? 'visualizations.asc' : 'visualizations.desc';

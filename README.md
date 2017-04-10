@@ -2,9 +2,11 @@
 
 Indigo Visualizations in React
 
-## Dev
+## Development
+This repository uses react-storybook, run `yarn run storybook` & see the examples
 
-Run `grunt test` in console, uses `mocha` watcher for now.
+## Testing
+Run `grunt test` in console
 
 ## Release
 

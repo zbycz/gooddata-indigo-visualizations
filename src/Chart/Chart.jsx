@@ -14,6 +14,11 @@ export default class Chart extends Component {
         domProps: {}
     };
 
+    constructor(props) {
+        super(props);
+        this.setChartRef = this.setChartRef.bind(this);
+    }
+
     componentDidMount() {
         this.createChart(this.props.config);
     }
@@ -32,6 +37,10 @@ export default class Chart extends Component {
         this.chart.destroy();
     }
 
+    setChartRef(ref) {
+        this.chartRef = ref;
+    }
+
     getChart() {
         if (!this.chart) {
             throw new Error('getChart() should not be called before the component is mounted');
@@ -47,7 +56,7 @@ export default class Chart extends Component {
                 ...config,
                 chart: {
                     ...chartConfig,
-                    renderTo: this.ref
+                    renderTo: this.chartRef
                 }
             },
             this.props.callback
@@ -58,9 +67,7 @@ export default class Chart extends Component {
         return (
             <div
                 {...this.props.domProps}
-                ref={(ref) => {
-                    this.ref = ref;
-                }}
+                ref={this.setChartRef}
             />
         );
     }

@@ -200,3 +200,50 @@ export const metricPie = {
 
 export const table = assign({}, stackedBar, { type: 'table', rowsPerPage: 10 });
 export const bar = assign({}, barChart2Series, { type: 'bar' });
+
+export const longBar = {
+    type: 'column',
+    buckets: {
+        measures: [
+            {
+                measure: {
+                    type: 'metric',
+                    objectUri: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/9211',
+                    title: '_Close [BOP]',
+                    measureFilters: [],
+                    showInPercent: false,
+                    showPoP: false
+                }
+            }
+        ],
+        categories: [
+            {
+                category: {
+                    type: 'attribute',
+                    collection: 'view',
+                    attribute: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/969',
+                    displayForm: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/970'
+                }
+            }, {
+                category: {
+                    type: 'attribute',
+                    collection: 'stack',
+                    attribute: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/969',
+                    displayForm: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/970'
+                }
+            }
+        ],
+        filters: [
+            {
+                listAttributeFilter: {
+                    attribute: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/969',
+                    displayForm: '/gdc/md/oim7k9wbfmhq1xcpbuwvr41pl7ztaat7/obj/970',
+                    default: {
+                        negativeSelection: true,
+                        attributeElements: []
+                    }
+                }
+            }
+        ]
+    }
+};

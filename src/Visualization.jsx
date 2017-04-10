@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import { isEqual, isFunction, omitBy, includes } from 'lodash';
 
-import './styles/chart.scss';
-
 import LineFamilyChartTransformation from './Chart/LineFamilyChartTransformation';
 import PieChartTransformation from './Chart/PieChartTransformation';
 import TableTransformation from './Table/TableTransformation';
