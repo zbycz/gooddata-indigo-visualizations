@@ -1,13 +1,13 @@
-import ReactHighcharts from 'react-highcharts';
+import Highcharts from 'highcharts';
 import React, { Component, PropTypes } from 'react';
 import { cloneDeep, get, pick } from 'lodash';
 import cx from 'classnames';
 
+import Chart from './Chart';
 import Legend from './Legend/Legend';
 import { initChartPlugins } from './highcharts/chartPlugins';
 import { hideDataLabels } from './highcharts/helpers';
 
-const Highcharts = ReactHighcharts.Highcharts;
 const CHART_TEXT_PADDING = 50;
 
 initChartPlugins(Highcharts, CHART_TEXT_PADDING);
@@ -120,7 +120,7 @@ export default class LineFamilyChart extends Component {
     renderHighcharts() {
         return (
             <div className="viz-line-family-chart">
-                <ReactHighcharts
+                <Chart
                     domProps={{ className: 'viz-react-highchart-wrap' }}
                     ref={this.setChartRef}
                     config={this.createChartConfig(this.props.hcOptions)}
