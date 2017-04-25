@@ -1,12 +1,16 @@
-import map from 'lodash/map';
-import indexOf from 'lodash/indexOf';
-import get from 'lodash/get';
-import set from 'lodash/set';
-import find from 'lodash/find';
-import keys from 'lodash/keys';
-import includes from 'lodash/includes';
-import isNumber from 'lodash/isNumber';
-import escape from 'lodash/escape';
+import {
+    map,
+    indexOf,
+    get,
+    set,
+    find,
+    keys,
+    includes,
+    isNumber,
+    escape,
+    sortBy,
+    zip
+} from 'lodash';
 
 import {
     colors2Object,
@@ -58,6 +62,23 @@ export function getLineFamilyChartData(config, rawData) {
     return getChartData(data, configuration);
 }
 
+export function getPieFamilyChartData(config, rawData) {
+    const { metricsOnly } = config;
+    const sortDesc = ([, value]) => -value;
+
+    const data = metricsOnly ? zip(rawData.headers.map(header => header.title), rawData.rawData[0]) :
+        rawData.rawData;
+
+    const sortedData = sortBy(data, sortDesc);
+
+    return {
+        series: [{
+            data: sortedData.map(([name, y], i) =>
+                ({ name, y: parseInt(y, 10), color: config.colorPalette[i], legendIndex: i }))
+        }]
+    };
+}
+
 export function getLegendLayout(config, headers) { // TODO export only for test
     return (isMetricNamesInSeries(config, headers)) ? 'horizontal' : 'vertical';
 }
@@ -95,14 +116,44 @@ export function generateTooltipFn(options) {
         const category = isNumber(point.category) ? '' :
             escape(unEscapeAngleBrackets(point.category));
 
-        return `<table class="tt-values"><tr>
-            <td class="title">${escape(categoryAxisLabel)}</td>
-            <td class="value">${category}</td>
-        </tr>
-        <tr>
-            <td class="title">${escape(unEscapeAngleBrackets(point.series.name))}</td>
-            <td class="value">${formattedValue}</td>
-        </tr></table>`;
+        return `
+            <table class="tt-values"><tr>
+                <td class="title">${escape(categoryAxisLabel)}</td>
+                <td class="value">${category}</td>
+            </tr>
+            <tr>
+                <td class="title">${escape(unEscapeAngleBrackets(point.series.name))}</td>
+                <td class="value">${formattedValue}</td>
+            </tr></table>`;
+    };
+}
+
+export function generatePieTooltipFn(options) {
+    const { categoryLabel, metricLabel, metricsOnly } = options;
+    const formatValue = (val, format) => {
+        return colors2Object(numberFormat(val, format));
+    };
+
+    return (point) => {
+        const formattedValue = escape(formatValue(point.y, point.format).label);
+        const category = isNumber(point.name) ? '' :
+            escape(unEscapeAngleBrackets(point.name));
+
+        const categoryRow = !metricsOnly ? `<tr>
+                <td class="title">${escape(categoryLabel)}</td>
+                <td class="value">${category}</td>
+            </tr>` : '';
+
+        const metricTitle = metricsOnly ? point.name : metricLabel;
+
+        return `
+            <table class="tt-values">
+                ${categoryRow}
+                <tr>
+                    <td class="title">${escape(metricTitle)}</td>
+                    <td class="value">${formattedValue}</td>
+                </tr>
+            </table>`;
     };
 }
 
@@ -153,5 +204,40 @@ export function getLineFamilyChartOptions(config, data) {
             yFormat: get(propertiesToHeaders(config, data.headers), 'y.format')
         },
         showInPercent: showInPercent(config, data.headers)
+    };
+}
+
+export function getPieChartOptions(config, data) {
+    const metricsOnly = !!(
+        data.headers.length >= 2 &&
+        data.headers.every(header => header.type === 'metric'));
+
+    const attrHeader = data.headers.find(header => header.type === 'attrLabel');
+    const metricHeader = data.headers.find(header => header.type === 'metric');
+
+    const categoryLabel = attrHeader ? attrHeader.title : '';
+    const metricLabel = metricHeader.title;
+
+    return {
+        type: config.type,
+        chart: {
+            height: config.height
+        },
+        colorPalette: getColorPalette(data, config.colorPalette || DEFAULT_COLOR_PALETTE),
+        legendLayout: 'horizontal',
+        actions: {
+            tooltip: generatePieTooltipFn({
+                categoryLabel,
+                metricLabel,
+                data,
+                metricsOnly
+            })
+        },
+        title: {
+            x: categoryLabel,
+            yFormat: get(propertiesToHeaders(config, data.headers), 'y.format')
+        },
+        showInPercent: showInPercent(config, data.headers),
+        metricsOnly
     };
 }
