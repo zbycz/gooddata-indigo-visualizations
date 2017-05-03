@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import invariant from 'invariant';
 import { isEqual, isFunction, omitBy, includes } from 'lodash';
+import Highcharts from 'highcharts';
 
 import './styles/chart.scss';
 
@@ -23,15 +24,39 @@ export default class Visualization extends Component {
         config: PropTypes.shape({
             type: PropTypes.string.isRequired
         }).isRequired,
+        numericSymbols: PropTypes.array,
         afterRender: PropTypes.func
     };
 
     static defaultProps = {
+        numericSymbols: [],
         afterRender: () => {}
     };
 
+    constructor(props) {
+        super(props);
+
+        this.setNumericSymbols(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setNumericSymbols(nextProps);
+    }
+
     shouldComponentUpdate(nextProps) {
         return !isEqual(omitBy(this.props, isFunction), omitBy(nextProps, isFunction));
+    }
+
+    setNumericSymbols(props = {}) {
+        const { numericSymbols } = props;
+
+        if (numericSymbols && numericSymbols.length) {
+            Highcharts.setOptions({
+                lang: {
+                    numericSymbols
+                }
+            });
+        }
     }
 
     render() {
