@@ -62,19 +62,34 @@ export function getLineFamilyChartData(config, rawData) {
     return getChartData(data, configuration);
 }
 
-export function getPieFamilyChartData(config, rawData) {
+export function getPieFamilyChartData(config, data) {
     const { metricsOnly } = config;
     const sortDesc = ([, value]) => -value;
 
-    const data = metricsOnly ? zip(rawData.headers.map(header => header.title), rawData.rawData[0]) :
-        rawData.rawData;
+    function getMetricsOnlyData(executionData) {
+        const { headers, rawData } = executionData;
+        return zip(
+            headers.map(header => header.title),
+            rawData[0],
+            headers.map(header => (header.format || ''))
+        );
+    }
 
-    const sortedData = sortBy(data, sortDesc);
+    function getMetricAttrData(executionData) {
+        const { headers, rawData } = executionData;
+        const metricHeader = find(headers, header => header.type === 'metric');
+        const format = get(metricHeader, 'format', '');
+
+        return rawData.map(dataPoint => [...dataPoint, format]);
+    }
+
+    const unsortedData = metricsOnly ? getMetricsOnlyData(data) : getMetricAttrData(data);
+    const sortedData = sortBy(unsortedData, sortDesc);
 
     return {
         series: [{
-            data: sortedData.map(([name, y], i) =>
-                ({ name, y: parseInt(y, 10), color: config.colorPalette[i], legendIndex: i }))
+            data: sortedData.map(([name, y, format], i) =>
+                ({ name, y: parseInt(y, 10), color: config.colorPalette[i], legendIndex: i, format }))
         }]
     };
 }

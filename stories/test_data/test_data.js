@@ -10,49 +10,36 @@ export const pieChart = {
         id: 'aaYh6Voua2yj',
         uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
         title: 'aaa <b># of Open Opps.',
-        format: '<button>#,##0.00</button>'
-    }, {
-        type: 'metric',
-        id: 'aaYh6Vouasd2yj',
-        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13468',
-        title: 'Sum of Amount',
         format: '#,##0.00'
     }],
     rawData: [
         [
             '2010',
-            '30',
-            '64'
+            '30'
         ],
         [
             '2011',
-            '174',
-            '2544'
+            '174'
         ],
         [
             '2012',
-            '735',
-            '765'
+            '735'
         ],
         [
             '2013',
-            '74',
-            '0'
+            '74'
         ],
         [
             '2014',
-            '4',
-            '123'
+            '4'
         ],
         [
             '2016 Frantiska',
-            '1',
-            '254'
+            '18'
         ],
         [
             '2017',
-            '1',
-            '856'
+            '58'
         ]
     ],
     isLoading: false

@@ -19,4 +19,18 @@ storiesOf('Pie Chart')
                 data={TestData.pieChart}
             />
         )
+    ))
+    .add('Metrics only', () => (
+        wrap(
+            <PieChartTransformation
+                config={{
+                    legend: {
+                        enabled: true,
+                        position: 'bottom',
+                        responsive: false
+                    }
+                }}
+                data={TestData.metricOnlyPieChart}
+            />
+        )
     ));

@@ -51,5 +51,5 @@ describe('HighChartRenderer', () => {
         });
         expect(wrapper.find(Chart)).to.have.length(1);
         expect(wrapper.find(Legend)).to.have.length(1);
-    })
+    });
 });

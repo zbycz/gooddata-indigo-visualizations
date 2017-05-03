@@ -54,7 +54,7 @@ module.exports = (grunt) => {
             all: {
                 src: [
                     '**/*.{js,jsx}',
-                    '!{ci,lib,node_modules,coverage}/**/*'
+                    '!{ci,lib,node_modules,coverage,dist-storybook}/**/*'
                 ]
             }
         },

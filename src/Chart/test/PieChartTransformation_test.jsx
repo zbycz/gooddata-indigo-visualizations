@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { renderIntoDocument } from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import PieChartTransformation from '../PieChartTransformation';
@@ -98,8 +97,7 @@ describe('PieChartTransformation', () => {
                     enabled: true,
                     position: TOP
                 }
-            },
-
+            }
         }));
         const calls = pieChartRenderer.getCalls();
         const passedProps = calls[0].args[0];

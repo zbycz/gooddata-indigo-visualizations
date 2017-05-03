@@ -98,8 +98,7 @@ describe('LineFamilyChartTransformation', () => {
                     enabled: true,
                     position: TOP
                 }
-            },
-
+            }
         }));
         const calls = lineFamilyChartRenderer.getCalls();
         const passedProps = calls[0].args[0];
