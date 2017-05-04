@@ -26,6 +26,21 @@ describe('chartConfigCreators', () => {
             }
         };
 
+        it('should pass custom colors', () => {
+            const configWithColors = {
+                ...config,
+                colors: [
+                    'rgb(247,0,255)',
+                    'rgb(0,0,0)'
+                ]
+            };
+            const lineConfig = transformConfigToLine(configWithColors);
+            expect(lineConfig.colorPalette).to.eql([
+                'rgb(247,0,255)',
+                'rgb(0,0,0)'
+            ]);
+        });
+
         it('converts object with stack', () => {
             const lineConfig = transformConfigToLine(Object.assign({}, config));
             expect(lineConfig).to.eql({

@@ -33,7 +33,8 @@ export default class LineFamilyChartTransformation extends Component {
             type: PropTypes.string.isRequired,
             legend: PropTypes.shape({
                 enabled: PropTypes.bool
-            })
+            }),
+            colors: PropTypes.arrayOf(PropTypes.string)
         }).isRequired,
         limits: PropTypes.shape({
             series: PropTypes.number,

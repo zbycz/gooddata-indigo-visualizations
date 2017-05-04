@@ -19,6 +19,10 @@ export function transformConfigToLine(config) {
         orderBy: []
     };
 
+    if (config.colors) {
+        commonConfig.colorPalette = config.colors;
+    }
+
     if (!stack) {
         return {
             ...commonConfig,
