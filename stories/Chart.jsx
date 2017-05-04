@@ -109,6 +109,26 @@ storiesOf('Chart')
             </div>
         </IntlWrapper>
     ))
+    .add('Custom color pallete', () => (
+        wrap(
+            <LineFamilyChartTransformation
+                config={{
+                    ...TestConfig.barChart2Series,
+                    legend: {
+                        enabled: false
+                    },
+                    colors: [
+                        '#980F5F',
+                        '#872D62',
+                        '#69525F',
+                        '#764361',
+                        '#A50061'
+                    ]
+                }}
+                data={TestData.barChart2Series}
+            />
+        )
+    ))
     .add('Fill parent', () => (
         <IntlWrapper>
             <div style={{ height: 500, width: '100%' }}>
