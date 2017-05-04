@@ -1,15 +1,8 @@
 const path = require('path');
 
 module.exports = function getWebpackConfig() {
-    const year = new Date().getFullYear();
     return {
-        entry: {
-            example: ['highcharts', './example/index']
-        },
-
         output: {},
-
-        copyright: `Copyright (C) 2007-${year}, GoodData(R) Corporation. All rights reserved.`,
 
         module: {
 
@@ -18,8 +11,7 @@ module.exports = function getWebpackConfig() {
                     test: /\.jsx?$/,
                     loader: 'babel',
                     include: [
-                        path.join(__dirname, '/src'),
-                        path.join(__dirname, '/example')
+                        path.join(__dirname, '/src')
                     ]
                 },
 

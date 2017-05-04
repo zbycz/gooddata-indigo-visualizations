@@ -1,4 +1,8 @@
+$gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
+
+@import '~fixed-data-table-2/dist/fixed-data-table.css';
 @import '~@gooddata/goodstrap/lib/core/styles/themes/indigo/colors';
+@import '~@gooddata/goodstrap/lib/core/styles/themes/indigo/IndigoFont';
 @import 'variables';
 
 .indigo-table-component {

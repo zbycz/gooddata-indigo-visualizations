@@ -18,6 +18,7 @@ export default class TableTransformation extends Component {
         }).isRequired,
         tableRenderer: PropTypes.func.isRequired,
         height: PropTypes.number,
+        width: PropTypes.number,
         onSortChange: PropTypes.func,
         afterRender: PropTypes.func
     };
@@ -29,10 +30,10 @@ export default class TableTransformation extends Component {
     };
 
     render() {
-        const { data: { headers, rawData }, config, height, onSortChange } = this.props;
+        const { data: { headers, rawData }, config, height, width, onSortChange } = this.props;
         const { sortBy, sortDir } = getSortInfo(config);
 
-        const tableConfig = {
+        const tableProps = {
             rows: rawData,
             headers,
             sortBy,
@@ -43,9 +44,13 @@ export default class TableTransformation extends Component {
         };
 
         if (height) {
-            tableConfig.containerHeight = height;
+            tableProps.containerHeight = height;
         }
 
-        return this.props.tableRenderer(tableConfig);
+        if (width) {
+            tableProps.containerWidth = width;
+        }
+
+        return this.props.tableRenderer(tableProps);
     }
 }

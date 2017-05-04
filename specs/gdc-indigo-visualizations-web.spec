@@ -30,13 +30,13 @@ export PATH="$PATH:$PWD/node_modules/.bin/"
 node --version
 npm --version
 . ci/lib.sh
-grunt web
+npm run build-storybook
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 mkdir -p $RPM_BUILD_ROOT%{gdc_prefix}/indigo-visualizations
-cp -a web/* $RPM_BUILD_ROOT%{gdc_prefix}/indigo-visualizations/
+cp -a dist-storybook/* $RPM_BUILD_ROOT%{gdc_prefix}/indigo-visualizations/
 
 %clean
 rm -rf $RPM_BUILD_ROOT

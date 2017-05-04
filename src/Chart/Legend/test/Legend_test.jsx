@@ -44,14 +44,16 @@ describe('Legend', () => {
                 documentElement: {
                     clientWidth: FLUID_LEGEND_THRESHOLD + 10
                 }
-            }
+            },
+            position: 'right'
         });
         expect(legend.find('.viz-static-legend-wrap')).to.have.length(1);
     });
 
     it('should render fluid legend on mobile', () => {
         const legend = createComponent({
-            isResponsive: true,
+            responsive: true,
+            position: 'right',
             documentObj: {
                 documentElement: {
                     clientWidth: FLUID_LEGEND_THRESHOLD - 10

@@ -4,12 +4,8 @@ import { Table, Column, Cell } from 'fixed-data-table-2';
 import classNames from 'classnames';
 import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
-import 'fixed-data-table-2/dist/fixed-data-table.css';
-
 import Bubble from '@gooddata/goodstrap/lib/Bubble/ReactBubble';
 import TableSortBubbleContent from './TableSortBubbleContent';
-
-import '../styles/table.scss';
 
 import {
     getNextSortDir,
@@ -23,8 +19,6 @@ import {
 } from './utils';
 
 const MIN_COLUMN_WIDTH = 100;
-const DEFAULT_WIDTH = 640;
-const DEFAULT_HEIGHT = 480;
 export const DEFAULT_ROW_HEIGHT = 30;
 export const DEFAULT_HEADER_HEIGHT = 26;
 
@@ -387,7 +381,7 @@ export default class TableVisualization extends Component {
         const columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
         const isSticky = this.isSticky(stickyHeader);
 
-        const height = containerMaxHeight ? undefined : containerHeight || DEFAULT_HEIGHT;
+        const height = containerMaxHeight ? undefined : containerHeight;
         const componentClasses =
             classNames('indigo-table-component', { 'has-hidden-rows': hasHiddenRows });
         const componentContentClasses =
@@ -402,7 +396,7 @@ export default class TableVisualization extends Component {
                         headerHeight={DEFAULT_HEADER_HEIGHT}
                         rowHeight={DEFAULT_ROW_HEIGHT}
                         rowsCount={this.props.rows.length}
-                        width={containerWidth || DEFAULT_WIDTH}
+                        width={containerWidth}
                         maxHeight={containerMaxHeight}
                         height={height}
                         onScrollStart={this.closeBubble}

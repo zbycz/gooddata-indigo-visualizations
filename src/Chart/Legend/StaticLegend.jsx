@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import cx from 'classnames';
 
 import LegendItem from './LegendItem';
+import { TOP, BOTTOM, LEFT, RIGHT } from './PositionTypes';
 import { calculateStaticLegend, ITEM_HEIGHT } from './helpers';
 
 export default class StaticLegend extends PureComponent {
@@ -11,15 +12,13 @@ export default class StaticLegend extends PureComponent {
         chartType: PropTypes.string.isRequired,
         series: PropTypes.array.isRequired,
         onItemClick: PropTypes.func.isRequired,
-        containerHeight: PropTypes.number,
+        containerHeight: PropTypes.number.isRequired,
         position: PropTypes.oneOf([
-            'top',
-            'right'
+            TOP,
+            BOTTOM,
+            LEFT,
+            RIGHT
         ]).isRequired
-    };
-
-    static defaultProps = {
-        containerHeight: null
     };
 
     constructor(props) {
@@ -27,6 +26,17 @@ export default class StaticLegend extends PureComponent {
         this.state = {
             page: 1
         };
+
+        this.showNextPage = this.showNextPage.bind(this);
+        this.showPrevPage = this.showPrevPage.bind(this);
+    }
+
+    showNextPage() {
+        this.setState({ page: this.state.page + 1 });
+    }
+
+    showPrevPage() {
+        this.setState({ page: this.state.page - 1 });
     }
 
     renderPagingButton(type, handler, disabled) {
@@ -43,12 +53,9 @@ export default class StaticLegend extends PureComponent {
         const { page } = this.state;
         const pagesCount = Math.ceil(this.props.series.length / visibleItemsCount);
 
-        const showNextPage = () => this.setState({ page: this.state.page + 1 });
-        const showPrevPage = () => this.setState({ page: this.state.page - 1 });
-
         return (
             <div className="paging">
-                {this.renderPagingButton('up', showPrevPage, page === 1)}
+                {this.renderPagingButton('up', this.showPrevPage, page === 1)}
                 <FormattedMessage
                     id="visualizations.of"
                     values={{
@@ -56,7 +63,7 @@ export default class StaticLegend extends PureComponent {
                         pagesCount
                     }}
                 />
-                {this.renderPagingButton('down', showNextPage, page === pagesCount)}
+                {this.renderPagingButton('down', this.showNextPage, page === pagesCount)}
             </div>
         );
     }
@@ -67,7 +74,8 @@ export default class StaticLegend extends PureComponent {
 
         const classNames = cx('viz-legend', 'static', `position-${position}`);
 
-        if (position === 'top') {
+        // Without paging
+        if (position === TOP || position === BOTTOM) {
             return (
                 <div className={classNames}>
                     <div className="series">

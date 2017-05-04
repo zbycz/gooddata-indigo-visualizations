@@ -7,7 +7,10 @@ import {
     getMetricAxisLabel,
     showInPercent,
     generateTooltipFn,
-    getLineFamilyChartData
+    generatePieTooltipFn,
+    getLineFamilyChartData,
+    getPieFamilyChartData,
+    DEFAULT_COLOR_PALETTE
 } from '../chartCreators';
 
 import {
@@ -161,6 +164,166 @@ describe('chartCreators', () => {
                 });
 
                 expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.equal(true);
+            });
+        });
+    });
+
+    describe('generatePieTooltipFn', () => {
+        describe('unescaping angle brackets and htmlescaping the whole value', () => {
+            const tooltipFnOptions = { categoryLabel: 'category-label', metricLabel: 'opportunities lost', metricsOnly: false };
+            const generatedTooltip = generatePieTooltipFn(tooltipFnOptions);
+
+            it('should keep &lt; and &gt; untouched (unescape -> escape)', () => {
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    name: '&lt;series&gt;'
+                });
+                expect(tooltip.includes('&lt;series&gt;')).to.equal(true);
+            });
+
+            it('should escape other html chars and have output properly escaped', () => {
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    name: '"&\'&lt;'
+                });
+                expect(tooltip.includes('&quot;&amp;&#39;&lt;')).to.equal(true);
+            });
+
+            it('should unescape brackets and htmlescape category', () => {
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    name: '&gt;"&\'&lt;'
+                });
+
+                expect(tooltip.includes('&gt;&quot;&amp;&#39;&lt;')).to.equal(true);
+            });
+        });
+
+        describe('tooltip renders correctly according to attr/metric or multiple metrics', () => {
+            it('renders correctly with attribute and metric', () => {
+                const tooltipFnOptions = { categoryLabel: 'category-label', metricLabel: 'opportunities lost', metricsOnly: false };
+                const generatedTooltip = generatePieTooltipFn(tooltipFnOptions);
+
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    name: '"&\'&lt;'
+                });
+
+                expect(tooltip.includes('category-label')).to.be.ok();
+            });
+
+            it('renders correctly with metrics only', () => {
+                const tooltipFnOptions = { categoryLabel: 'category-label', metricLabel: 'opportunities lost', metricsOnly: true };
+                const generatedTooltip = generatePieTooltipFn(tooltipFnOptions);
+
+                const tooltip = generatedTooltip({
+                    y: 1,
+                    name: 'opportunities'
+                });
+
+                expect(tooltip.includes('opportunities')).to.equal(true);
+                expect(tooltip.includes('category-label')).to.equal(false);
+            });
+        });
+    });
+
+    describe('PieFamilyChartData', () => {
+        it('should prepare data correctly when provided with one metric and one attribute', () => {
+            const pieConfig = {
+                metricsOnly: false,
+                colorPalette: DEFAULT_COLOR_PALETTE
+            };
+
+            const pieData = {
+                isLoaded: true,
+                headers: [
+                    {
+                        type: 'attrLabel',
+                        id: 'date.aag81lMifn6q',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
+                        title: 'Year (Date)'
+                    }, {
+                        type: 'metric',
+                        id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                        title: 'Email Click Rate - previous year',
+                        format: '#,##0.0%'
+                    }
+                ],
+                rawData: [
+                    ['2013', '124'],
+                    ['2014', '284'],
+                    ['2015', '123'],
+                    ['2016', '155']
+                ],
+                isEmpty: false,
+                isLoading: false
+            };
+
+            const data = getPieFamilyChartData(pieConfig, pieData);
+
+            console.log(data.series[0].data[0]);
+
+            expect(data).to.eql({
+                series: [{
+                    data: [
+                        { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
+                        { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
+                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[2], legendIndex: 2, format: '#,##0.0%' },
+                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[3], legendIndex: 3, format: '#,##0.0%' }
+                    ]
+                }]
+            });
+        });
+
+        it('should prepare data correctly when provided with multiple metrics', () => {
+            const pieConfig = {
+                metricsOnly: true,
+                colorPalette: DEFAULT_COLOR_PALETTE
+            };
+
+            const pieData = {
+                isLoaded: true,
+                headers: [
+                    {
+                        type: 'metric',
+                        id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                        title: 'First',
+                        format: '#,##0.0%'
+                    },
+                    {
+                        type: 'metric',
+                        id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                        title: 'Next one',
+                        format: '#,##0.0%'
+                    },
+                    {
+                        type: 'metric',
+                        id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                        title: 'Next two',
+                        format: '#,##0.0%'
+                    }
+                ],
+                rawData: [
+                    ['123', '456', '789']
+                ],
+                isEmpty: false,
+                isLoading: false
+            };
+
+            const data = getPieFamilyChartData(pieConfig, pieData);
+
+            expect(data).to.eql({
+                series: [{
+                    data: [
+                        { name: 'Next two', y: 789, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
+                        { name: 'Next one', y: 456, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
+                        { name: 'First', y: 123, color: DEFAULT_COLOR_PALETTE[2], legendIndex: 2, format: '#,##0.0%' }
+                    ]
+                }]
             });
         });
     });
