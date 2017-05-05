@@ -4,7 +4,7 @@
   "description": "Indigo Visualizations library",
   "main": "example/index.jsx",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "debugTest": "node debug ./node_modules/.bin/jest --runInBand",
     "build": "grunt prepublish",
     "prepublish": "npm run build",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "@kadira/react-storybook-addon-info": "3.4.0",
     "@kadira/storybook": "2.35.3",
+    "@kadira/storybook-addon-options": "1.0.2",
     "babel-cli": "6.23.0",
     "babel-core": "6.23.1",
     "babel-jest": "19.0.0",
@@ -79,7 +80,7 @@
     "react-dom": "^15.3.2"
   },
   "dependencies": {
-    "@gooddata/goodstrap": "41.0.0",
+    "@gooddata/goodstrap": "42.0.0",
     "@gooddata/js-utils": "0.5.0",
     "@gooddata/numberjs": "3.0.0",
     "classnames": "2.2.5",

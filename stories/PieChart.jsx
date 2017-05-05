@@ -12,11 +12,39 @@ storiesOf('Pie Chart')
                 config={{
                     legend: {
                         enabled: true,
-                        position: 'bottom',
+                        position: 'top',
                         responsive: false
                     }
                 }}
                 data={TestData.pieChart}
+            />
+        )
+    ))
+    .add('Basic with empty', () => (
+        wrap(
+            <PieChartTransformation
+                config={{
+                    legend: {
+                        enabled: true,
+                        position: 'top',
+                        responsive: false
+                    }
+                }}
+                data={TestData.pieChartWithEmpty}
+            />
+        )
+    ))
+    .add('Single metric', () => (
+        wrap(
+            <PieChartTransformation
+                config={{
+                    legend: {
+                        enabled: true,
+                        position: 'top',
+                        responsive: false
+                    }
+                }}
+                data={TestData.singleMetricPieCart}
             />
         )
     ))
@@ -26,11 +54,11 @@ storiesOf('Pie Chart')
                 config={{
                     legend: {
                         enabled: true,
-                        position: 'bottom',
+                        position: 'top',
                         responsive: false
                     }
                 }}
-                data={TestData.metricOnlyPieChart}
+                data={TestData.metricsOnlyPieChart}
             />
         )
     ));

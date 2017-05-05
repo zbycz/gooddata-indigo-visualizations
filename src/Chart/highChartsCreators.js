@@ -46,9 +46,8 @@ export function isDataOfReasonableSize(chartData, limits) {
 
 export function getPieChartConfiguration(chartOptions) {
     return merge({},
-            getCommonConfiguration(),
-            getPieConfiguration(),
-            getCustomizedConfiguration(chartOptions)
+        getCommonConfiguration(),
+        getPieConfiguration(),
+        getCustomizedConfiguration(chartOptions)
     );
 }
-

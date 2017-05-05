@@ -34,7 +34,7 @@ export const pieChart = {
             '4'
         ],
         [
-            '2016 Frantiska',
+            '2016 <button>Frantiska</button>',
             '18'
         ],
         [
@@ -45,7 +45,63 @@ export const pieChart = {
     isLoading: false
 };
 
-export const metricOnlyPieChart = {
+export const pieChartWithEmpty = {
+    isLoaded: true,
+    headers: [{
+        type: 'attrLabel',
+        id: 'closed.aag81lMifn6q',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/324',
+        title: 'Year (Closed)'
+    }, {
+        type: 'metric',
+        id: 'aaYh6Voua2yj',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
+        title: 'Sum of Amount',
+        format: '#,##0.00'
+    }],
+    rawData: [
+        [
+            '2010', '1788281519.44'
+        ],
+        [
+            '2011', '2849965878.5'
+        ],
+        [
+            '2012', '930234910.69'
+        ],
+        [
+            '2013', '48591716.69'
+        ],
+        [
+            '2014', '777735.4'
+        ],
+        [
+            '2016', null
+        ],
+        [
+            '2017', '61948'
+        ]
+    ],
+    isLoading: false
+};
+
+export const singleMetricPieCart = {
+    isLoaded: true,
+    headers: [{
+        type: 'metric',
+        id: 'closed.aag81lMifn6q',
+        uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/324',
+        title: 'Products sold'
+    }],
+    rawData: [
+        [
+            '267'
+        ]
+    ],
+    isLoading: false
+};
+
+export const metricsOnlyPieChart = {
     isLoaded: true,
     headers: [{
         type: 'metric',
@@ -56,7 +112,7 @@ export const metricOnlyPieChart = {
         type: 'metric',
         id: 'aaYh6Voua2yj',
         uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-        title: 'aaa <b># of Open Opps.',
+        title: 'aaa <b># of Open Opps.</b>',
         format: '<button>#,##0.00</button>'
     }, {
         type: 'metric',
@@ -86,7 +142,7 @@ export const barChart2Series = {
         type: 'metric',
         id: 'aaYh6Voua2yj',
         uri: '/gdc/md/tgqkx9leq2tntui4j6fp08tk6epftziu/obj/13465',
-        title: 'aaa <b># of Open Opps.',
+        title: 'aaa <b># of Open Opps.</b>',
         format: '<button>#,##0.00</button>'
     }, {
         type: 'metric',

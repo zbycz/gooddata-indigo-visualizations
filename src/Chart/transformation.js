@@ -12,6 +12,32 @@ import filter from 'lodash/filter';
 // default format used when creating metric
 export const DEFAULT_FORMAT = '#,##0.00';
 
+export const DEFAULT_COLOR_PALETTE = [
+    'rgb(20,178,226)',
+    'rgb(0,193,141)',
+    'rgb(229,77,66)',
+    'rgb(241,134,0)',
+    'rgb(171,85,163)',
+
+    'rgb(244,213,33)',
+    'rgb(148,161,174)',
+    'rgb(107,191,216)',
+    'rgb(181,136,177)',
+    'rgb(238,135,128)',
+
+    'rgb(241,171,84)',
+    'rgb(133,209,188)',
+    'rgb(41,117,170)',
+    'rgb(4,140,103)',
+    'rgb(181,60,51)',
+
+    'rgb(163,101,46)',
+    'rgb(140,57,132)',
+    'rgb(136,219,244)',
+    'rgb(189,234,222)',
+    'rgb(239,197,194)'
+];
+
 /**
  * Splits metrics to two separate groups.
  *
@@ -36,6 +62,11 @@ export function _splitHeaders(headers) {
         headers: newHeaders,
         metrics
     };
+}
+
+export function parseMetricValue(metricValue) {
+    const parsedValue = parseFloat(metricValue);
+    return isNaN(parsedValue) ? null : parsedValue;
 }
 
 export function getMetricNamesValuesHeaderItems(headers, metrics) {
@@ -98,9 +129,7 @@ export function _transposeData(headers, metrics, rawData) {
             });
 
             const metricValue = rawData[ri][metric.index];
-            const parsedValue = parseFloat(metricValue);
-            const y = isNaN(parsedValue) ? null : parsedValue;
-
+            const y = parseMetricValue(metricValue);
             row.push({
                 format: metric.header.format || DEFAULT_FORMAT,
                 y,
@@ -248,7 +277,7 @@ export function _getLighterColor(color, percent) {
     );
 }
 
-export function getColorPalette(data, palette) {
+export function getColorPalette(data, palette = DEFAULT_COLOR_PALETTE) {
     const newPalette = cloneDeep(palette);
 
     filter(data.headers, header => header.type === 'metric')
