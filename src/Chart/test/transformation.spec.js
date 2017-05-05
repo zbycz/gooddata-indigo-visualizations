@@ -27,14 +27,14 @@ describe('Transformation', () => {
 
         it('should split headers to metrics', () => {
             const metrics = Transformation._splitHeaders(headers).metrics;
-            expect(metrics).to.have.length(2);
-            expect(metrics[0]).to.eql({ index: 0, header: headers[0] });
-            expect(metrics[1]).to.eql({ index: 1, header: headers[1] });
+            expect(metrics).toHaveLength(2);
+            expect(metrics[0]).toEqual({ index: 0, header: headers[0] });
+            expect(metrics[1]).toEqual({ index: 1, header: headers[1] });
         });
 
         it('should split headers to the rest', () => {
             const newHeaders = Transformation._splitHeaders(headers).headers;
-            expect(newHeaders).to.eql(headers.slice(2));
+            expect(newHeaders).toEqual(headers.slice(2));
         });
 
         describe('getMetricNamesValuesHeaderItems', () => {
@@ -53,7 +53,7 @@ describe('Transformation', () => {
                     title: ''
                 }];
                 const actual = Transformation.getMetricNamesValuesHeaderItems([], []);
-                expect(actual).to.eql(headersWithoutMetrics);
+                expect(actual).toEqual(headersWithoutMetrics);
             });
 
             it('uses first metric format when metric present', () => {
@@ -77,7 +77,7 @@ describe('Transformation', () => {
                     title: 'Metric 1'
                 }];
                 const actual = Transformation.getMetricNamesValuesHeaderItems([], metrics);
-                expect(actual).to.eql(mockHeaders);
+                expect(actual).toEqual(mockHeaders);
             });
         });
     });
@@ -104,15 +104,15 @@ describe('Transformation', () => {
 
             const transposed = Transformation._transposeData(headers, metrics, rawData);
 
-            expect(transposed).to.have.length(2);
+            expect(transposed).toHaveLength(2);
 
-            expect(transposed[0]).to.eql([
+            expect(transposed[0]).toEqual([
                 { value: 'GoodData', id: 'GoodData' },
                 { value: 'Czech Republic', id: 'Czech Republic' },
                 { value: 'Employees', id: 'metric-0' },
                 { y: 300, format: Transformation.DEFAULT_FORMAT, marker: { enabled: true } }
             ]);
-            expect(transposed[1]).to.eql([
+            expect(transposed[1]).toEqual([
                 { value: 'GoodData', id: 'GoodData' },
                 { value: 'Czech Republic', id: 'Czech Republic' },
                 { value: 'Since', id: 'metric-1' },
@@ -131,22 +131,22 @@ describe('Transformation', () => {
 
             const metricNames = find(transformed.headers, { uri: '/metricGroup' });
             const expected = [{ header: M1Header, index: 0 }, { header: M2Header, index: 1 }];
-            expect(metricNames.metrics).to.eql(expected);
+            expect(metricNames.metrics).toEqual(expected);
 
             const metricValues = find(transformed.headers, { uri: '/metricValues' });
-            expect(metricValues.title).to.eql('M1');
+            expect(metricValues.title).toEqual('M1');
         });
 
         it('should not act on currently loading data', () => {
-            expect(Transformation.transformData()).to.equal(undefined);
+            expect(Transformation.transformData()).toEqual(undefined);
 
             const data = { isLoading: true };
-            expect(Transformation.transformData(data)).to.equal(data);
+            expect(Transformation.transformData(data)).toEqual(data);
         });
 
         it('should not do transformation if there are no metrics', () => {
             const data = { headers: [] }; // FIXME: have to inject headers now for _splitHeaders
-            expect(Transformation.transformData(data)).to.eql(data);
+            expect(Transformation.transformData(data)).toEqual(data);
         });
     });
 
@@ -224,7 +224,7 @@ describe('Transformation', () => {
                 ]
             };
 
-            expect(Transformation.getChartData(data, configuration)).to.eql(expectedData);
+            expect(Transformation.getChartData(data, configuration)).toEqual(expectedData);
         });
 
         it('should correctly transform when multiple attributes present', () => {
@@ -286,7 +286,7 @@ describe('Transformation', () => {
                 ]
             };
 
-            expect(Transformation.getChartData(data, configuration)).to.eql(expectedData);
+            expect(Transformation.getChartData(data, configuration)).toEqual(expectedData);
         });
 
         it('should produce sorted legend even if some values are missing', () => {
@@ -326,7 +326,7 @@ describe('Transformation', () => {
             const expectedSeries = ['x', 'y', 'z'];
             const series = map(Transformation.getChartData(data, configuration).series, 'name');
 
-            expect(series).to.eql(expectedSeries);
+            expect(series).toEqual(expectedSeries);
         });
     });
 
@@ -365,7 +365,7 @@ describe('Transformation', () => {
                 'rgb(188,90,178)'
             ];
 
-            expect(Transformation.getColorPalette(data, palette)).to.eql(expectedData);
+            expect(Transformation.getColorPalette(data, palette)).toEqual(expectedData);
         });
     });
 
@@ -373,8 +373,8 @@ describe('Transformation', () => {
         it('should lighten and darken color correctly', () => {
             const getLighterColor = Transformation._getLighterColor;
 
-            expect(getLighterColor('rgb(00,128,255)', 0.5)).to.eql('rgb(128,192,255)');
-            expect(getLighterColor('rgb(00,128,255)', -0.5)).to.eql('rgb(0,64,128)');
+            expect(getLighterColor('rgb(00,128,255)', 0.5)).toEqual('rgb(128,192,255)');
+            expect(getLighterColor('rgb(00,128,255)', -0.5)).toEqual('rgb(0,64,128)');
         });
     });
 });

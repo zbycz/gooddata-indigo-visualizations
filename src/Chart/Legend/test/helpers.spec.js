@@ -8,7 +8,7 @@ import {
 
 describe('helpers', () => {
     describe('calculateFluidLegend', () => {
-        context('2 columns layout', () => {
+        describe('2 columns layout', () => {
             const containerWidth = 500;
 
             it('should show 4 items with paging for 10 series', () => {
@@ -16,8 +16,8 @@ describe('helpers', () => {
                     hasPaging,
                     visibleItemsCount
                 } = calculateFluidLegend(10, containerWidth);
-                expect(hasPaging).to.eql(true);
-                expect(visibleItemsCount).to.eql(4);
+                expect(hasPaging).toEqual(true);
+                expect(visibleItemsCount).toEqual(4);
             });
 
             it('should show 4 items without paging for 4 series', () => {
@@ -25,12 +25,12 @@ describe('helpers', () => {
                     hasPaging,
                     visibleItemsCount
                 } = calculateFluidLegend(4, containerWidth);
-                expect(hasPaging).to.eql(false);
-                expect(visibleItemsCount).to.eql(4);
+                expect(hasPaging).toEqual(false);
+                expect(visibleItemsCount).toEqual(4);
             });
         });
 
-        context('3 columns layout', () => {
+        describe('3 columns layout', () => {
             const containerWidth = 700;
 
             it('should show 6 items with paging for 10 series', () => {
@@ -38,8 +38,8 @@ describe('helpers', () => {
                     hasPaging,
                     visibleItemsCount
                 } = calculateFluidLegend(10, containerWidth);
-                expect(hasPaging).to.eql(true);
-                expect(visibleItemsCount).to.eql(6);
+                expect(hasPaging).toEqual(true);
+                expect(visibleItemsCount).toEqual(6);
             });
 
             it('should show 6 items without paging for 6 series', () => {
@@ -47,12 +47,12 @@ describe('helpers', () => {
                     hasPaging,
                     visibleItemsCount
                 } = calculateFluidLegend(6, containerWidth);
-                expect(hasPaging).to.eql(false);
-                expect(visibleItemsCount).to.eql(6);
+                expect(hasPaging).toEqual(false);
+                expect(visibleItemsCount).toEqual(6);
             });
         });
 
-        context('overlapping columns', () => {
+        describe('overlapping columns', () => {
             const containerWidth =
                 (3 * RESPONSIVE_ITEM_MIN_WIDTH) + 1
                 + (2 * LEGEND_PADDING);
@@ -62,8 +62,8 @@ describe('helpers', () => {
                     hasPaging,
                     visibleItemsCount
                 } = calculateFluidLegend(6, containerWidth);
-                expect(hasPaging).to.eql(false);
-                expect(visibleItemsCount).to.eql(6);
+                expect(hasPaging).toEqual(false);
+                expect(visibleItemsCount).toEqual(6);
             });
 
             it('should show paging for 7 items', () => {
@@ -71,8 +71,8 @@ describe('helpers', () => {
                     hasPaging,
                     visibleItemsCount
                 } = calculateFluidLegend(7, containerWidth);
-                expect(hasPaging).to.eql(true);
-                expect(visibleItemsCount).to.eql(4);
+                expect(hasPaging).toEqual(true);
+                expect(visibleItemsCount).toEqual(4);
             });
         });
     });
@@ -83,13 +83,13 @@ describe('helpers', () => {
             const containerHeight = itemsCount * ITEM_HEIGHT;
             let legendObj = calculateStaticLegend(itemsCount, containerHeight);
 
-            expect(legendObj.hasPaging).to.eql(false);
-            expect(legendObj.visibleItemsCount).to.eql(10);
+            expect(legendObj.hasPaging).toEqual(false);
+            expect(legendObj.visibleItemsCount).toEqual(10);
 
             legendObj = calculateStaticLegend(itemsCount, containerHeight - ITEM_HEIGHT);
 
-            expect(legendObj.hasPaging).to.eql(true);
-            expect(legendObj.visibleItemsCount).to.eql(6);
+            expect(legendObj.hasPaging).toEqual(true);
+            expect(legendObj.visibleItemsCount).toEqual(6);
         });
     });
 });

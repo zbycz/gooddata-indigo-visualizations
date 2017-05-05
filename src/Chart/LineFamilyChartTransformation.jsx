@@ -87,7 +87,7 @@ export default class LineFamilyChartTransformation extends Component {
         });
     }
 
-    hasLegend(chartOptions, legend) {
+    hasLegend(chartOptions, legend = {}) {
         const seriesLength = get(chartOptions, 'data.series', []).length;
 
         return legend.enabled && (

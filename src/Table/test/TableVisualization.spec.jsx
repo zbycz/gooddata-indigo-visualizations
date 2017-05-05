@@ -57,24 +57,24 @@ describe('Table', () => {
     });
 
     it('should fit container dimensions', () => {
-        expect(table.props.width).to.equal(600);
-        expect(table.props.height).to.equal(400);
+        expect(table.props.width).toEqual(600);
+        expect(table.props.height).toEqual(400);
     });
 
     it('should render column headers', () => {
-        expect(table.props.children).to.have.length(3);
+        expect(table.props.children).toHaveLength(3);
     });
 
     it('should align metric columns to the right', () => {
         const columns = table.props.children;
-        expect(columns[0].props.align).to.equal('left');
-        expect(columns[1].props.align).to.equal('right');
-        expect(columns[2].props.align).to.equal('right');
+        expect(columns[0].props.align).toEqual('left');
+        expect(columns[1].props.align).toEqual('right');
+        expect(columns[2].props.align).toEqual('right');
     });
 
     it('should distribute width evenly between columns', () => {
         const columns = table.props.children;
-        expect(columns[0].props.width).to.equal(200);
+        expect(columns[0].props.width).toEqual(200);
     });
 
     describe('renderers', () => {
@@ -88,32 +88,32 @@ describe('Table', () => {
         it('should format metrics', () => {
             const span = renderCell(2);
             const spanContent = span.props.children;
-            expect(spanContent).to.equal('1,324');
-            expect(span.props.style.color).to.equal('#FF0000');
+            expect(spanContent).toEqual('1,324');
+            expect(span.props.style.color).toEqual('#FF0000');
         });
 
         it('should render attributes as strings', () => {
             const span = renderCell(0);
             const spanContent = span.props.children;
-            expect(spanContent).to.equal('Wile E. Coyote');
-            expect(span.props.style).to.eql({});
+            expect(spanContent).toEqual('Wile E. Coyote');
+            expect(span.props.style).toEqual({});
         });
 
         it('should render title into header', () => {
             const titles = scryRenderedDOMComponentsWithClass(table, 'gd-table-header-title');
-            expect(titles[0].textContent).to.equal('Name');
+            expect(titles[0].textContent).toEqual('Name');
         });
     });
 
     describe('sort', () => {
-        context('default header renderer', () => {
+        describe('default header renderer', () => {
             it('should render up arrow', () => {
                 table = renderTable({ sortBy: 0, sortDir: ASC });
                 const columns = table.props.children;
                 const header = columns[0].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).to.equal('gd-table-arrow-up');
+                expect(sort.props.className).toEqual('gd-table-arrow-up');
             });
 
             it('should render down arrow', () => {
@@ -122,7 +122,7 @@ describe('Table', () => {
                 const header = columns[0].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).to.equal('gd-table-arrow-down');
+                expect(sort.props.className).toEqual('gd-table-arrow-down');
             });
 
             it('should render arrow on second column', () => {
@@ -131,7 +131,7 @@ describe('Table', () => {
                 const header = columns[1].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).to.equal('gd-table-arrow-up');
+                expect(sort.props.className).toEqual('gd-table-arrow-up');
             });
 
             it('should not render arrow if sort info is missing', () => {
@@ -140,18 +140,18 @@ describe('Table', () => {
                 const header = columns[0].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).to.equal('');
+                expect(sort.props.className).toEqual('');
             });
         });
 
-        context('tooltip header renderer', () => {
+        describe('tooltip header renderer', () => {
             it('should render title into header', () => {
                 table = renderTable({ sortInTooltip: true });
                 const titles = scryRenderedDOMComponentsWithClass(table, 'gd-table-header-title');
                 Simulate.click(titles[0]);
 
                 const bubble = document.querySelector('.gd-table-header-bubble');
-                expect(bubble).to.be.ok();
+                expect(bubble).toBeDefined();
 
                 // work-around to handle overlays
                 document.body.innerHTML = '';

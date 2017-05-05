@@ -2,20 +2,21 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { BAR_CHART } from '../../../VisualizationTypes';
-import FluidLegend from '../FluidLegend';
+import StaticLegend from '../StaticLegend';
 import LegendItem from '../LegendItem';
 
-describe('FluidLegend', () => {
+describe('StaticLegend', () => {
     function render(customProps = {}) {
         const props = {
             chartType: BAR_CHART,
             series: [],
             onItemClick: () => {},
-            containerWidth: 500,
+            position: 'top',
+            containerHeight: 500,
             ...customProps
         };
         return shallow(
-            <FluidLegend {...props} />
+            <StaticLegend {...props} />
         );
     }
 
@@ -38,7 +39,10 @@ describe('FluidLegend', () => {
             }
         ];
 
-        const wrapper = render({ series });
-        expect(wrapper.find(LegendItem)).to.have.length(3);
+        const topLegend = render({ series, position: 'top' });
+        expect(topLegend.find(LegendItem)).toHaveLength(3);
+
+        const rightLegend = render({ series, position: 'right' });
+        expect(rightLegend.find(LegendItem)).toHaveLength(3);
     });
 });

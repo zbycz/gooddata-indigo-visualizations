@@ -4,6 +4,7 @@ lib/
 
 # Logs
 npm-debug.log*
+yarn-error.log
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -25,3 +26,5 @@ node_modules
 ci/results
 ci/results/coverage
 coverage
+
+junit.xml

@@ -20,15 +20,14 @@ describe('TableTransformation', () => {
     }
 
     it('should use custom renderer', () => {
-        const tableRenderer = sinon.stub().returns(<div />);
+        const tableRenderer = jest.fn().mockImplementation(() => <div />);
         renderIntoDocument(createComponent({ tableRenderer }));
-        expect(tableRenderer).to.be.calledOnce();
+        expect(tableRenderer).toHaveBeenCalled();
     });
 
     it('should pass containerHeight if height is set in props', () => {
-        const tableRenderer = sinon.stub().returns(<div />);
+        const tableRenderer = jest.fn().mockImplementation(() => <div />);
         renderIntoDocument(createComponent({ tableRenderer, height: 255 }));
-        expect(tableRenderer).to.be.calledOnce();
-        expect(tableRenderer.getCall(0).args[0].containerHeight).to.equal(255);
+        expect(tableRenderer.mock.calls[0][0].containerHeight).toEqual(255);
     });
 });

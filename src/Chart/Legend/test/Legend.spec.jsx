@@ -47,7 +47,7 @@ describe('Legend', () => {
             },
             position: 'right'
         });
-        expect(legend.find('.viz-static-legend-wrap')).to.have.length(1);
+        expect(legend.find('.viz-static-legend-wrap')).toHaveLength(1);
     });
 
     it('should render fluid legend on mobile', () => {
@@ -60,6 +60,6 @@ describe('Legend', () => {
                 }
             }
         });
-        expect(legend.find('.viz-fluid-legend-wrap')).to.have.length(1);
+        expect(legend.find('.viz-fluid-legend-wrap')).toHaveLength(1);
     });
 });
