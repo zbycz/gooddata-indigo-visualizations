@@ -1,6 +1,6 @@
 {
   "name": "@gooddata/indigo-visualizations",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Indigo Visualizations library",
   "main": "example/index.jsx",
   "scripts": {
