@@ -239,7 +239,7 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
 }
 
 .gd-table-header-bubble.bubble {
-    max-width: 300px;
+    max-width: 325px;
 
     @media #{$insight-small-only} {
         max-width: none;
