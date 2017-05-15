@@ -309,6 +309,18 @@ function getSeries(series, colorPalette = []) {
         // which is understood by highcharts correctly
         item.name = item.name && escapeAngleBrackets(item.name);
 
+        // Escape data items for pie chart
+        item.data = item.data.map((dataItem) => {
+            if (!dataItem) {
+                return dataItem;
+            }
+
+            return {
+                ...dataItem,
+                name: escapeAngleBrackets(dataItem.name)
+            };
+        });
+
         return item;
     });
 }

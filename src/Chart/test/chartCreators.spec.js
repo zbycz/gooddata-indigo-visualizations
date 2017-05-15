@@ -10,11 +10,12 @@ import {
     generatePieTooltipFn,
     getLineFamilyChartData,
     getPieFamilyChartData,
-    DEFAULT_COLOR_PALETTE
+    getPieChartOptions
 } from '../chartCreators';
 
 import {
-    _transformMetrics
+    _transformMetrics,
+    DEFAULT_COLOR_PALETTE
 } from '../transformation';
 
 describe('chartCreators', () => {
@@ -227,48 +228,71 @@ describe('chartCreators', () => {
         });
     });
 
-    describe('PieFamilyChartData', () => {
-        it('should prepare data correctly when provided with one metric and one attribute', () => {
+    describe('getPieFamilyChartData', () => {
+        const oneMetricOneAttributeData = {
+            isLoaded: true,
+            headers: [
+                {
+                    type: 'attrLabel',
+                    id: 'date.aag81lMifn6q',
+                    uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
+                    title: 'Year (Date)'
+                }, {
+                    type: 'metric',
+                    id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                    uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                    title: 'Email Click Rate - previous year',
+                    format: '#,##0.0%'
+                }
+            ],
+            rawData: [
+                ['2013', '124'],
+                ['2014', '284'],
+                ['2015', '123'],
+                ['2016', '155'],
+                ['2017', null]
+            ],
+            isEmpty: false,
+            isLoading: false
+        };
+
+        it('should be able to rotate color palette', () => {
             const pieConfig = {
                 metricsOnly: false,
-                colorPalette: DEFAULT_COLOR_PALETTE
+                colorPalette: DEFAULT_COLOR_PALETTE.slice(0, 2)
             };
 
-            const pieData = {
-                isLoaded: true,
-                headers: [
-                    {
-                        type: 'attrLabel',
-                        id: 'date.aag81lMifn6q',
-                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
-                        title: 'Year (Date)'
-                    }, {
-                        type: 'metric',
-                        id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
-                        uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
-                        title: 'Email Click Rate - previous year',
-                        format: '#,##0.0%'
-                    }
-                ],
-                rawData: [
-                    ['2013', '124'],
-                    ['2014', '284'],
-                    ['2015', '123'],
-                    ['2016', '155']
-                ],
-                isEmpty: false,
-                isLoading: false
-            };
-
-            const data = getPieFamilyChartData(pieConfig, pieData);
+            const data = getPieFamilyChartData(pieConfig, oneMetricOneAttributeData);
 
             expect(data).toEqual({
                 series: [{
                     data: [
                         { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
                         { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
-                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[2], legendIndex: 2, format: '#,##0.0%' },
-                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[3], legendIndex: 3, format: '#,##0.0%' }
+                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 2, format: '#,##0.0%' },
+                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 3, format: '#,##0.0%' },
+                        { name: '2017', y: null, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 4, format: '#,##0.0%' }
+                    ]
+                }]
+            });
+        });
+
+        it('should prepare data correctly when provided with one metric and one attribute', () => {
+            const pieConfig = {
+                metricsOnly: false,
+                colorPalette: DEFAULT_COLOR_PALETTE.slice(0, 2)
+            };
+
+            const data = getPieFamilyChartData(pieConfig, oneMetricOneAttributeData);
+
+            expect(data).toEqual({
+                series: [{
+                    data: [
+                        { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
+                        { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
+                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 2, format: '#,##0.0%' },
+                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 3, format: '#,##0.0%' },
+                        { name: '2017', y: null, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 4, format: '#,##0.0%' }
                     ]
                 }]
             });
@@ -382,6 +406,73 @@ describe('chartCreators', () => {
 
             expect(chartData.series[0].name).toEqual('Email Click Rate - previous year');
             expect(chartData.series[1].name).toEqual('Email Click Rate');
+        });
+    });
+
+    describe('getPieChartOptions', () => {
+        describe('metricOnly', () => {
+            it('should be true for multiple metrics', () => {
+                const data = {
+                    headers: [
+                        {
+                            title: 'm1',
+                            type: 'metric'
+                        },
+                        {
+                            title: 'm2',
+                            type: 'metric'
+                        }
+                    ]
+                };
+                expect(getPieChartOptions({}, data).metricsOnly).toEqual(true);
+            });
+
+            it('should be true for single metric', () => {
+                const data = {
+                    headers: [
+                        {
+                            title: 'm1',
+                            type: 'metric'
+                        }
+                    ]
+                };
+                expect(getPieChartOptions({}, data).metricsOnly).toEqual(true);
+            });
+
+            it('should be false for one metric and one attribute', () => {
+                const data = {
+                    headers: [
+                        {
+                            title: 'm1',
+                            type: 'metric'
+                        }, {
+                            title: 'att1',
+                            type: 'attrLabel'
+                        }
+                    ]
+                };
+                expect(getPieChartOptions({}, data).metricsOnly).toEqual(false);
+            });
+        });
+
+        describe('tooltip', () => {
+            it('should handle tooltip generation if no metric present', () => {
+                const data = {
+                    headers: [
+                        {
+                            title: 'att1',
+                            type: 'attrLabel'
+                        }
+                    ]
+                };
+
+                const tooltip = getPieChartOptions({}, data).actions.tooltip({
+                    y: 1234,
+                    format: '##'
+                });
+
+                expect(tooltip).toMatchSnapshot();
+            });
         });
     });
 });

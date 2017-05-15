@@ -7,72 +7,55 @@ import * as TestConfig from './test_data/test_config';
 import * as TestData from './test_data/test_data';
 import IntlWrapper from './utils/IntlWrapper';
 import wrap from './utils/wrap';
+import { createMock } from './utils/mockGenerator';
 
 import barChartWithPagedLegend from './test_data/bar_chart_with_paged_legend';
 
 import '../src/styles/charts.scss';
 
+function createLineChart(legendPosition) {
+    const mock = createMock('line', [
+        {
+            title: 'x',
+            fn: x => x
+        }, {
+            title: '2x',
+            fn: x => 2 * x
+        }, {
+            title: 'x^2',
+            fn: x => x * x
+        }, {
+            title: 'log(x)',
+            fn: x => Math.log(x)
+        }
+    ], 20);
+
+    return (
+        <LineFamilyChartTransformation
+            config={{
+                ...mock.config,
+                legend: {
+                    enabled: true,
+                    position: legendPosition,
+                    responsive: false
+                }
+            }}
+            data={mock.data}
+        />
+    );
+}
+
 storiesOf('Chart')
-    .add('Legend top', () => (
-        wrap(
-            <LineFamilyChartTransformation
-                config={{
-                    ...TestConfig.barChart2Series,
-                    legend: {
-                        enabled: true,
-                        position: 'top',
-                        responsive: false
-                    }
-                }}
-                data={TestData.barChart2Series}
-            />
-        )
-    ))
-    .add('Legend bottom', () => (
-        wrap(
-            <LineFamilyChartTransformation
-                config={{
-                    ...TestConfig.barChart2Series,
-                    legend: {
-                        enabled: true,
-                        position: 'bottom',
-                        responsive: false
-                    }
-                }}
-                data={TestData.barChart2Series}
-            />
-        )
-    ))
-    .add('Legend left', () => (
-        wrap(
-            <LineFamilyChartTransformation
-                config={{
-                    ...TestConfig.barChart2Series,
-                    legend: {
-                        enabled: true,
-                        position: 'left',
-                        responsive: false
-                    }
-                }}
-                data={TestData.barChart2Series}
-            />
-        )
-    ))
-    .add('Legend right', () => (
-        wrap(
-            <LineFamilyChartTransformation
-                config={{
-                    ...TestConfig.barChart2Series,
-                    legend: {
-                        enabled: true,
-                        position: 'right',
-                        responsive: false
-                    }
-                }}
-                data={TestData.barChart2Series}
-            />
-        )
-    ))
+    .add('Legend positions', () => {
+        return (
+            <div>
+                {wrap(createLineChart('top'))}
+                {wrap(createLineChart('bottom'))}
+                {wrap(createLineChart('left'))}
+                {wrap(createLineChart('right'))}
+            </div>
+        );
+    })
     .add('Legend right with paging', () => (
         wrap(
             <LineFamilyChartTransformation
@@ -129,20 +112,21 @@ storiesOf('Chart')
             />
         )
     ))
-    .add('Fill parent', () => (
+    .add('Responsive width', () => (
         <IntlWrapper>
-            <div style={{ height: 500, width: '100%' }}>
-                <LineFamilyChartTransformation
-                    config={{
-                        ...TestConfig.barChart2Series,
-                        legend: {
-                            enabled: true,
-                            position: 'right',
-                            responsive: false
-                        }
-                    }}
-                    data={TestData.barChart2Series}
-                />
+            <div>
+                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                    {createLineChart('top')}
+                </div>
+                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                    {createLineChart('bottom')}
+                </div>
+                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                    {createLineChart('left')}
+                </div>
+                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                    {createLineChart('right')}
+                </div>
             </div>
         </IntlWrapper>
     ))
@@ -153,7 +137,7 @@ storiesOf('Chart')
                     config={{
                         ...TestConfig.stackedBar,
                         legend: {
-                            enabled: true
+                            enabled: false
                         }
                     }}
                     data={TestData.stackedBar}

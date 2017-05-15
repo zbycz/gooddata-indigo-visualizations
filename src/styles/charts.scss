@@ -21,6 +21,12 @@ $paging-button-small-size: 22px;
     &.flex-direction-column {
         flex-direction: column;
     }
+
+    &.non-responsive-legend {
+        .viz-react-highchart-wrap { // Hack for Safari, so highchart won't overflow
+            min-height: 0;
+        }
+    }
 }
 
 .viz-react-highchart-wrap {
