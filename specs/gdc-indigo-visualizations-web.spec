@@ -13,11 +13,7 @@ BuildArch: noarch
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if "%{?dist}" == ".el6"
-BuildRequires:  nodejs < 5.0, npm < 4, git, yarn = 0.22.0
-%else
 BuildRequires:  nodejs > 1:6.0, nodejs < 1:7.0, npm > 3.10, git, yarn = 0.22.0
-%endif
 
 %description
 %{summary}
