@@ -10,4 +10,4 @@ PATH=$PATH:/opt/npm/node_modules/.bin:./node_modules/.bin
 
 mkdir -p $DIR/results
 
-JEST_SUITE_NAME="Indigo Visualizations Unit Tests" JEST_JUNIT_OUTPUT="$DIR/results/test-results.xml" jest --config=$DIR/../jest.ci.json --setupTestFrameworkScriptFile=$DIR/../el6-intl-polyfill.js
+JEST_SUITE_NAME="Indigo Visualizations Unit Tests" JEST_JUNIT_OUTPUT="$DIR/results/test-results.xml" jest --config=$DIR/../jest.ci.json
