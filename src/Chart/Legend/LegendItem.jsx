@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import { LINE_CHART } from '../../VisualizationTypes';
+import { unEscapeAngleBrackets } from '../chartCreators';
 
 const VISIBLE_COLOR = '#6D7680';
 const DISABLED_COLOR = '#CCCCCC';
@@ -48,6 +49,7 @@ export default class LegendItem extends Component {
                 <div
                     className="series-name"
                     style={nameStyle}
+                    title={unEscapeAngleBrackets(item.name)}
                     dangerouslySetInnerHTML={{ __html: item.name }} // eslint-disable-line react/no-danger
                 />
             </div>
