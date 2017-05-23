@@ -35,9 +35,7 @@ function createLineChart(legendPosition) {
             config={{
                 ...mock.config,
                 legend: {
-                    enabled: true,
-                    position: legendPosition,
-                    responsive: false
+                    position: legendPosition
                 }
             }}
             data={mock.data}

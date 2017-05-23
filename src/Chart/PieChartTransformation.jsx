@@ -4,6 +4,8 @@ import { get, pick } from 'lodash';
 import { getPieChartOptions, getPieFamilyChartData } from './chartCreators';
 import { getPieChartConfiguration } from './highChartsCreators';
 import { PIE_CHART } from '../VisualizationTypes';
+import { getLegendConfig } from './Legend/helpers';
+
 import HighChartRenderer from './HighChartRenderer';
 
 function renderPieChartTransformation(props) {
@@ -90,8 +92,8 @@ export default class PieChartTransformation extends Component {
         });
     }
 
-    hasLegend(chartOptions, legend = {}) {
-        return legend.enabled && chartOptions.data.series[0].data.length > 1;
+    shouldBeLegendEnabled(chartOptions) {
+        return chartOptions.data.series[0].data.length > 1;
     }
 
     checkDataPointsLimit({ data, onDataTooLarge }) {
@@ -123,12 +125,10 @@ export default class PieChartTransformation extends Component {
 
         const {
             data,
-            config: {
-                legend
-            },
             height,
             width,
-            afterRender
+            afterRender,
+            config
         } = this.props;
 
         const chartOptions = getPieChartOptions({
@@ -140,15 +140,15 @@ export default class PieChartTransformation extends Component {
 
         const hcOptions = getPieChartConfiguration(chartOptions);
 
+        const legendItems = this.getLegendItems(hcOptions);
+        const legendConfig = getLegendConfig(
+            config.legend, this.shouldBeLegendEnabled(chartOptions), legendItems, this.onLegendItemClick
+        );
+
         return this.props.pieChartRenderer({
             chartOptions,
             hcOptions,
-            legend: {
-                ...legend,
-                enabled: this.hasLegend(chartOptions, legend),
-                items: this.getLegendItems(hcOptions),
-                onItemClick: this.onLegendItemClick
-            },
+            legend: legendConfig,
             height,
             width,
             afterRender
