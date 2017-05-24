@@ -20,6 +20,8 @@ import {
 import { hideDataLabels } from './highcharts/helpers';
 
 import { LINE_CHART, BAR_CHART, COLUMN_CHART } from '../VisualizationTypes';
+import { getLegendConfig } from './Legend/helpers';
+
 import HighChartRenderer from './HighChartRenderer';
 
 export function renderLineFamilyChart(props) {
@@ -87,12 +89,28 @@ export default class LineFamilyChartTransformation extends Component {
         });
     }
 
-    hasLegend(chartOptions, legend = {}) {
-        const seriesLength = get(chartOptions, 'data.series', []).length;
+    getHcOptions() {
+        const { type } = this.props.config;
+        const chartOptions = this.chartOptions;
+        switch (type) {
+            case COLUMN_CHART:
+                return getColumnChartConfiguration(chartOptions);
+            case BAR_CHART:
+                return getBarChartConfiguration(chartOptions);
+            case LINE_CHART:
+                return getLineChartConfiguration(chartOptions);
+            default:
+                return invariant(`Unknown visualization type: ${type}`);
+        }
+    }
 
-        return legend.enabled && (
-            seriesLength > 1 || !!chartOptions.stacking
-        );
+    shouldBeLegendEnabled() {
+        const seriesLength = get(this.chartOptions, 'data.series', []).length;
+
+        const hasManySeries = seriesLength > 1;
+        const isStackedChart = !!this.chartOptions.stacking;
+
+        return hasManySeries || isStackedChart;
     }
 
     createChartOptions(props) {
@@ -118,37 +136,22 @@ export default class LineFamilyChartTransformation extends Component {
             return null;
         }
 
-        const { height, width, config } = this.props;
-        const { type, legend } = config;
+        const { height, width, afterRender, config } = this.props;
         const chartOptions = this.chartOptions;
 
-        let hcOptions;
-        if (type === COLUMN_CHART) {
-            hcOptions = getColumnChartConfiguration(chartOptions);
-        }
-        if (type === BAR_CHART) {
-            hcOptions = getBarChartConfiguration(chartOptions);
-        }
-        if (type === LINE_CHART) {
-            hcOptions = getLineChartConfiguration(chartOptions);
-        }
-
-        if (!type) {
-            invariant(`Unknown visualization type: ${type}`);
-        }
+        const hcOptions = this.getHcOptions();
+        const legendItems = this.getLegendItems(hcOptions);
+        const legendConfig = getLegendConfig(
+            config.legend, this.shouldBeLegendEnabled(), legendItems, this.onLegendItemClick
+        );
 
         return this.props.lineFamilyChartRenderer({
             chartOptions,
             hcOptions,
             height,
             width,
-            afterRender: this.props.afterRender,
-            legend: {
-                ...legend,
-                enabled: this.hasLegend(chartOptions, legend),
-                items: this.getLegendItems(hcOptions),
-                onItemClick: this.onLegendItemClick
-            }
+            afterRender,
+            legend: legendConfig
         });
     }
 }

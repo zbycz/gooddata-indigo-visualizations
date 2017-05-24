@@ -3,7 +3,7 @@ import { renderIntoDocument } from 'react-addons-test-utils';
 import { shallow } from 'enzyme';
 import LineFamilyChartTransformation from '../LineFamilyChartTransformation';
 import { data, config } from '../../test/fixtures';
-import { TOP } from '../Legend/PositionTypes';
+import { RIGHT } from '../Legend/PositionTypes';
 import HighChartRenderer from '../HighChartRenderer';
 
 const SINGLE_SERIES_DATA = {
@@ -81,21 +81,41 @@ describe('LineFamilyChartTransformation', () => {
         expect(lineFamilyChartRenderer).toHaveBeenCalled();
     });
 
-    it('should always disable legend for single series', () => {
-        const lineFamilyChartRenderer = jest.fn().mockReturnValue(<div />);
-        renderIntoDocument(createComponent({
-            lineFamilyChartRenderer,
-            data: SINGLE_SERIES_DATA,
-            config: {
-                ...SINGLE_SERIES_CONFIG,
-                legend: {
-                    enabled: true,
-                    position: TOP
+    describe('Legend config', () => {
+        function createFamilyChartRendererProps(defaultData, defaultConfig, legendProps = {}) {
+            const lineFamilyChartRenderer = jest.fn().mockReturnValue(<div />);
+            renderIntoDocument(createComponent({
+                lineFamilyChartRenderer,
+                data: { ...defaultData },
+                config: {
+                    ...defaultConfig,
+                    legend: {
+                        ...legendProps
+                    }
                 }
-            }
-        }));
-        const passedProps = lineFamilyChartRenderer.mock.calls[0][0];
-        expect(passedProps.legend.enabled).toEqual(false);
+            }));
+            return lineFamilyChartRenderer.mock.calls[0][0];
+        }
+
+        it('should be always disabled for single series', () => {
+            const passedProps = createFamilyChartRendererProps(SINGLE_SERIES_DATA, SINGLE_SERIES_CONFIG, {
+                enabled: true
+            });
+            expect(passedProps.legend.enabled).toEqual(false);
+        });
+
+        it('should be enabled & on the right by default', () => {
+            const passedProps = createFamilyChartRendererProps(data, config);
+            expect(passedProps.legend.enabled).toEqual(true);
+            expect(passedProps.legend.position).toEqual(RIGHT);
+        });
+
+        it('should be able to override defaults', () => {
+            const passedProps = createFamilyChartRendererProps(data, config, {
+                enabled: false
+            });
+            expect(passedProps.legend.enabled).toEqual(false);
+        });
     });
 
     describe('onDataTooLarge', () => {

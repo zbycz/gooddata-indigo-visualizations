@@ -3,8 +3,10 @@ import {
     calculateStaticLegend,
     ITEM_HEIGHT,
     RESPONSIVE_ITEM_MIN_WIDTH,
-    LEGEND_PADDING
+    LEGEND_PADDING,
+    getLegendConfig
 } from '../helpers';
+import { RIGHT, TOP } from '../PositionTypes';
 
 describe('helpers', () => {
     describe('calculateFluidLegend', () => {
@@ -90,6 +92,23 @@ describe('helpers', () => {
 
             expect(legendObj.hasPaging).toEqual(true);
             expect(legendObj.visibleItemsCount).toEqual(6);
+        });
+    });
+
+    describe('getLegendConfig', () => {
+        it('should enable position on right by default', () => {
+            const config = getLegendConfig({}, true, [], () => {});
+            expect(config.position).toEqual(RIGHT);
+            expect(config.enabled).toEqual(true);
+        });
+
+        it('should be able to override defaults', () => {
+            const config = getLegendConfig({
+                position: TOP,
+                enabled: false
+            }, true, [], () => {});
+            expect(config.position).toEqual(TOP);
+            expect(config.enabled).toEqual(false);
         });
     });
 });

@@ -1,3 +1,5 @@
+import { RIGHT } from './PositionTypes';
+
 export const RESPONSIVE_ITEM_MIN_WIDTH = 200;
 export const RESPONSIVE_VISIBLE_ROWS = 2;
 export const FLUID_PAGING_WIDTH = 30;
@@ -60,5 +62,23 @@ export function calculateStaticLegend(seriesCount, containerHeight) {
     return {
         hasPaging: true,
         visibleItemsCount: getStaticVisibleItemsCount(containerHeight, true)
+    };
+}
+
+const DEFAULT_LEGEND_CONFIG = {
+    enabled: true,
+    position: RIGHT
+};
+
+export function getLegendConfig(userConfig, shouldBeEnabled, items, onItemClick) {
+    const baseConfig = {
+        ...DEFAULT_LEGEND_CONFIG,
+        ...userConfig
+    };
+    return {
+        ...baseConfig,
+        enabled: baseConfig.enabled && shouldBeEnabled,
+        onItemClick,
+        items
     };
 }
