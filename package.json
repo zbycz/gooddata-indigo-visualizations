@@ -2,7 +2,8 @@
   "name": "@gooddata/indigo-visualizations",
   "version": "0.2.4",
   "description": "Indigo Visualizations library",
-  "main": "example/index.jsx",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
   "scripts": {
     "test": "jest --watch",
     "debugTest": "node debug ./node_modules/.bin/jest --runInBand",
@@ -22,6 +23,7 @@
     ]
   },
   "files": [
+    "es",
     "lib"
   ],
   "repository": {

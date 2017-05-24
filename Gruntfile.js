@@ -1,6 +1,19 @@
 // Copyright (C) 2007-2017, GoodData(R) Corporation. All rights reserved.
 const checkstyleFormatter = require('stylelint-checkstyle-formatter');
 
+const copyConfig = {
+    expand: true,
+    cwd: './src',
+    src: ['**/*.{scss,eot,woff,ttf,svg}']
+};
+
+const babelConfig = {
+    expand: true,
+    cwd: './src',
+    src: ['**/*.{jsx,js}', '!**/test/*'],
+    ext: '.js'
+};
+
 module.exports = (grunt) => {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('gruntify-eslint');
@@ -10,31 +23,39 @@ module.exports = (grunt) => {
 
     grunt.initConfig({
         clean: {
-            prepublish: './lib'
+            prepublish: ['./lib', './es']
         },
 
         babel: {
             prepublish: {
-                files: [{
-                    expand: true,
-                    cwd: './src',
-                    src: ['**/*.{jsx,js}', '!**/test/*'],
-                    dest: './lib',
-                    ext: '.js'
-                }]
+                options: {
+                    babelrc: false,
+                    presets: [
+                        'es2015',
+                        'react',
+                        'stage-0'
+                    ],
+                    plugins: [
+                        'lodash'
+                    ]
+                },
+                files: [
+                    Object.assign({}, babelConfig, { dest: './lib' })
+                ]
+            },
+            prepublishEs: {
+                files: [
+                    Object.assign({}, babelConfig, { dest: './es' })
+                ]
             }
         },
 
         copy: {
             prepublish: {
-                files: [{
-                    expand: true,
-                    cwd: './src',
-                    src: [
-                        '**/*.{scss,eot,woff,ttf,svg}'
-                    ],
-                    dest: './lib'
-                }]
+                files: [
+                    Object.assign({}, copyConfig, { dest: './lib' }),
+                    Object.assign({}, copyConfig, { dest: './es' })
+                ]
             }
         },
 
@@ -45,7 +66,7 @@ module.exports = (grunt) => {
             all: {
                 src: [
                     '**/*.{js,jsx}',
-                    '!{gdc-ci,ci,lib,node_modules,coverage,dist-storybook}/**/*'
+                    '!{ci,es,gdc-ci,lib,node_modules,coverage,dist-storybook}/**/*'
                 ]
             }
         },
@@ -65,8 +86,8 @@ module.exports = (grunt) => {
 
     grunt.registerTask('prepublish', [
         'clean:prepublish',
-        'babel:prepublish',
-        'copy:prepublish'
+        'babel',
+        'copy'
     ]);
 
     grunt.registerTask('validate', ['eslint', 'stylelint']);
