@@ -239,7 +239,7 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
 }
 
 .gd-table-header-bubble.bubble {
-    max-width: 325px;
+    max-width: 500px;
 
     @media #{$insight-small-only} {
         max-width: none;
@@ -316,10 +316,22 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
         }
     }
 
-    .buttons {
-        margin: 10px -20px 0;
-        padding: 20px 20px 6px;
+    .buttons-wrap {
+        margin: 10px -20px 0 -20px;
+        padding: 10px 20px 5px;
         border-top: 1px solid $border-color;
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: -20px;
+
+            .button {
+                flex: 1 1 auto;
+                margin-left: 20px;
+                margin-top: 10px;
+            }
+        }
 
         .button-sort-asc,
         .button-sort-desc {
@@ -340,9 +352,5 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
                 }
             }
         }
-    }
-
-    .button + .button {
-        margin-left: 20px;
     }
 }
