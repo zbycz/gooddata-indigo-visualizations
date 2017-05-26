@@ -25,8 +25,14 @@ BuildRequires:  nodejs > 1:6.0, nodejs < 1:7.0, npm > 3.10, git, yarn = 0.22.0
 export PATH="$PATH:$PWD/node_modules/.bin/"
 node --version
 npm --version
-. ci/lib.sh
-npm run build-storybook
+git clone -b develop --single-branch --depth 1 ssh://git@github.com/gooddata/gdc-ci.git gdc-ci
+export WORKSPACE=`pwd`
+export CLIENT_PATH=$WORKSPACE
+pushd gdc-ci/components/client/cl-builder/
+npm i
+popd
+
+node gdc-ci/components/client/cl-builder/cl-builder.js -p rpm-build
 
 %install
 rm -rf $RPM_BUILD_ROOT
