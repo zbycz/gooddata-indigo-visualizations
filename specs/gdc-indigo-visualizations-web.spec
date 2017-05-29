@@ -29,7 +29,7 @@ git clone -b develop --single-branch --depth 1 ssh://git@github.com/gooddata/gdc
 export WORKSPACE=`pwd`
 export CLIENT_PATH=$WORKSPACE
 pushd gdc-ci/components/client/cl-builder/
-npm i
+yarn install --pure-lockfile
 popd
 
 node gdc-ci/components/client/cl-builder/cl-builder.js -p rpm-build
