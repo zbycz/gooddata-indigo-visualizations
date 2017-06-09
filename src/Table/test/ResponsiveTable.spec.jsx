@@ -1,5 +1,10 @@
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import {
+    renderIntoDocument,
+    findRenderedComponentWithType,
+    findRenderedDOMComponentWithClass,
+    Simulate
+} from 'react-addons-test-utils';
 import { range } from 'lodash';
 
 import { withIntl } from '../../test/utils';
@@ -7,15 +12,6 @@ import { withIntl } from '../../test/utils';
 import ResponsiveTable from '../ResponsiveTable';
 import Table from '../Table';
 import { TableControls } from '../TableControls';
-
-const {
-    renderIntoDocument,
-    findRenderedComponentWithType,
-    findRenderedDOMComponentWithClass,
-    Simulate: {
-        click
-    }
-} = ReactTestUtils;
 
 const HEADERS = [
     {
@@ -118,7 +114,7 @@ describe('Responsive Table', () => {
             });
 
             it('should call onMore callback with number of rows and page when user clicks "More"', () => {
-                click(getMore());
+                Simulate.click(getMore());
 
                 expect(onMore).toBeCalledWith({
                     rows: ROWS_PER_PAGE * 2,
@@ -129,7 +125,7 @@ describe('Responsive Table', () => {
 
         describe('and table is showing some page', () => {
             beforeEach(() => {
-                click(getMore());
+                Simulate.click(getMore());
             });
 
             it('should show "Less" button', () => {
@@ -141,13 +137,13 @@ describe('Responsive Table', () => {
             });
 
             it('should return to first page when user clicks "Less"', () => {
-                click(getLess());
+                Simulate.click(getLess());
 
                 expect(visualization.props.rows.length).toEqual(ROWS_PER_PAGE);
             });
 
             it('should call onLess callback with number of rows when user clicks "Less"', () => {
-                click(getLess());
+                Simulate.click(getLess());
 
                 expect(onLess).toBeCalledWith({ rows: ROWS_PER_PAGE });
             });
@@ -158,8 +154,8 @@ describe('Responsive Table', () => {
 
             beforeEach(() => {
                 more = getMore();
-                click(more);
-                click(more);
+                Simulate.click(more);
+                Simulate.click(more);
             });
 
             it('should hide "More" button', () => {
@@ -175,7 +171,7 @@ describe('Responsive Table', () => {
             });
 
             it('should return to first page when user clicks "Less"', () => {
-                click(getLess());
+                Simulate.click(getLess());
 
                 expect(visualization.props.rows.length).toEqual(ROWS_PER_PAGE);
             });

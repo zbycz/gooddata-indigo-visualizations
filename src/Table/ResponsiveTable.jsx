@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindAll, noop } from 'lodash';
 import { DEFAULT_HEADER_HEIGHT, DEFAULT_ROW_HEIGHT } from './TableVisualization';
 import Table from './Table';

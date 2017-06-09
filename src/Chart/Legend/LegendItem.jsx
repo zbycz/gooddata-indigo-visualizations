@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { LINE_CHART } from '../../VisualizationTypes';
 import { unEscapeAngleBrackets } from '../chartCreators';

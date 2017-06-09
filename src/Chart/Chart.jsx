@@ -1,6 +1,7 @@
 import Highcharts from 'highcharts';
 import { noop } from 'lodash';
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Chart extends Component {
     static propTypes = {

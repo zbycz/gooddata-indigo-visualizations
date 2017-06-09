@@ -1,17 +1,15 @@
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import {
+    renderIntoDocument,
+    findRenderedComponentWithType,
+    scryRenderedDOMComponentsWithClass,
+    Simulate
+} from 'react-addons-test-utils';
 import { Table } from 'fixed-data-table-2';
 
 import TableVisualization from '../TableVisualization';
 import { ASC, DESC } from '../Sort';
 import { withIntl } from '../../test/utils';
-
-const {
-    renderIntoDocument,
-    findRenderedComponentWithType,
-    scryRenderedDOMComponentsWithClass,
-    Simulate
-} = ReactTestUtils;
 
 const FIXTURE = {
     headers: [
