@@ -3,6 +3,7 @@
   "version": "0.2.6",
   "description": "Indigo Visualizations library",
   "module": "es/index.js",
+  "main": "lib/index.js",
   "jsnext:main": "es/index.js",
   "scripts": {
     "test": "jest --watch",
