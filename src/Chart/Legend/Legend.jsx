@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { throttle } from 'lodash';
 import Measure from 'react-measure';
 import cx from 'classnames';

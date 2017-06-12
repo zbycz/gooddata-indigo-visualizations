@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 
 import PieChartTransformation from '../src/Chart/PieChartTransformation';
 import * as TestData from './test_data/test_data';

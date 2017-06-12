@@ -1,12 +1,7 @@
 import React from 'react';
-import ReactTestUtils from 'react-addons-test-utils';
+import { renderIntoDocument } from 'react-addons-test-utils';
 import TableTransformation from '../TableTransformation';
 import { data, config } from '../../test/fixtures';
-
-const {
-    renderIntoDocument
-} = ReactTestUtils;
-
 
 describe('TableTransformation', () => {
     function createComponent(customProps = {}) {
