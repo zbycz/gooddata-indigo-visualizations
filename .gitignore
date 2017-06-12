@@ -6,6 +6,7 @@ es/
 # Logs
 npm-debug.log*
 yarn-error.log
+grizzly.log
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -29,3 +30,7 @@ ci/results/coverage
 coverage
 
 junit.xml
+
+nohup.out
+
+gemini/reports

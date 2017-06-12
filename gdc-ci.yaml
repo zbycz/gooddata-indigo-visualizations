@@ -1,5 +1,8 @@
+before:
+  - echo chromedriver_version=2.24 >> .npmrc
+  - ci-yarn-install
 pull-request:
   - ci-run-validation
   - mkdir -p ./ci/results ; JEST_SUITE_NAME="Indigo Visualizations Unit Tests" JEST_JUNIT_OUTPUT="./ci/results/test-results.xml" jest --config=./jest.ci.json
-rpm-build:
-  - npm run build-storybook
+dist:
+  - yarn build-storybook

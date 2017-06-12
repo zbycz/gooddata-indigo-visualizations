@@ -6,7 +6,7 @@ import { FLUID_LEGEND_THRESHOLD } from '../src/Chart/Legend/Legend';
 import * as TestConfig from './test_data/test_config';
 import * as TestData from './test_data/test_data';
 import IntlWrapper from './utils/IntlWrapper';
-import wrap from './utils/wrap';
+import { wrap, screenshotWrap } from './utils/wrap';
 import { createMock } from './utils/mockGenerator';
 
 import barChartWithPagedLegend from './test_data/bar_chart_with_paged_legend';
@@ -45,7 +45,7 @@ function createLineChart(legendPosition) {
 
 storiesOf('Chart')
     .add('Legend positions', () => {
-        return (
+        return screenshotWrap(
             <div>
                 {wrap(createLineChart('top'))}
                 {wrap(createLineChart('bottom'))}
@@ -55,91 +55,101 @@ storiesOf('Chart')
         );
     })
     .add('Legend right with paging', () => (
-        wrap(
-            <LineFamilyChartTransformation
-                config={{
-                    ...barChartWithPagedLegend.config,
-                    legend: {
-                        enabled: true,
-                        position: 'right',
-                        responsive: false
-                    }
-                }}
-                data={barChartWithPagedLegend.data}
-            />
+        screenshotWrap(
+            wrap(
+                <LineFamilyChartTransformation
+                    config={{
+                        ...barChartWithPagedLegend.config,
+                        legend: {
+                            enabled: true,
+                            position: 'right',
+                            responsive: false
+                        }
+                    }}
+                    data={barChartWithPagedLegend.data}
+                />
+            )
         )
     ))
     .add('Legend with mobile paging', () => (
         <IntlWrapper>
             <div>
                 Resize window to {FLUID_LEGEND_THRESHOLD}px or less
-                <div style={{ minHeight: '300px', width: '100%', border: '1px solid pink' }}>
-                    <LineFamilyChartTransformation
-                        config={{
-                            ...barChartWithPagedLegend.config,
-                            legend: {
-                                enabled: true,
-                                position: 'right',
-                                responsive: true
-                            }
-                        }}
-                        height={300}
-                        data={barChartWithPagedLegend.data}
-                    />
-                </div>
+                {screenshotWrap(
+                    <div style={{ minHeight: '300px', width: '100%', border: '1px solid pink' }}>
+                        <LineFamilyChartTransformation
+                            config={{
+                                ...barChartWithPagedLegend.config,
+                                legend: {
+                                    enabled: true,
+                                    position: 'right',
+                                    responsive: true
+                                }
+                            }}
+                            height={300}
+                            data={barChartWithPagedLegend.data}
+                        />
+                    </div>
+                )}
             </div>
         </IntlWrapper>
     ))
     .add('Custom color pallete', () => (
-        wrap(
-            <LineFamilyChartTransformation
-                config={{
-                    ...TestConfig.barChart2Series,
-                    legend: {
-                        enabled: false
-                    },
-                    colors: [
-                        '#980F5F',
-                        '#872D62',
-                        '#69525F',
-                        '#764361',
-                        '#A50061'
-                    ]
-                }}
-                data={TestData.barChart2Series}
-            />
+        screenshotWrap(
+            wrap(
+                <LineFamilyChartTransformation
+                    config={{
+                        ...TestConfig.barChart2Series,
+                        legend: {
+                            enabled: false
+                        },
+                        colors: [
+                            '#980F5F',
+                            '#872D62',
+                            '#69525F',
+                            '#764361',
+                            '#A50061'
+                        ]
+                    }}
+                    data={TestData.barChart2Series}
+                />
+            )
         )
     ))
     .add('Responsive width', () => (
-        <IntlWrapper>
-            <div>
-                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
-                    {createLineChart('top')}
+        screenshotWrap(
+            <IntlWrapper>
+                <div>
+                    <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                        {createLineChart('top')}
+                    </div>
+                    <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                        {createLineChart('bottom')}
+                    </div>
+                    <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                        {createLineChart('left')}
+                    </div>
+                    <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
+                        {createLineChart('right')}
+                    </div>
                 </div>
-                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
-                    {createLineChart('bottom')}
-                </div>
-                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
-                    {createLineChart('left')}
-                </div>
-                <div style={{ height: 500, width: '100%', marginBottom: 30, border: '1px solid pink' }}>
-                    {createLineChart('right')}
-                </div>
-            </div>
-        </IntlWrapper>
+            </IntlWrapper>
+        )
     ))
     .add('Fill parent without legend', () => (
-        <IntlWrapper>
-            <div style={{ height: 500, width: '100%' }}>
-                <LineFamilyChartTransformation
-                    config={{
-                        ...TestConfig.stackedBar,
-                        legend: {
-                            enabled: false
-                        }
-                    }}
-                    data={TestData.stackedBar}
-                />
-            </div>
-        </IntlWrapper>
+        screenshotWrap(
+            <IntlWrapper>
+                <div style={{ height: 500, width: '100%' }}>
+                    <LineFamilyChartTransformation
+                        config={{
+                            ...TestConfig.stackedBar,
+                            legend: {
+                                enabled: false
+                            }
+                        }}
+                        data={TestData.stackedBar}
+                    />
+                </div>
+            </IntlWrapper>
+        )
     ));
