@@ -108,6 +108,10 @@ export default class PieChartTransformation extends Component {
     }
 
     checkNegativeValues({ data, onNegativeValues }) {
+        if (isLimitExceeded(data)) {
+            return;
+        }
+
         const hasNegativeValue = isNegativeValueIncluded(data);
 
         this.setState({ hasNegativeValue });

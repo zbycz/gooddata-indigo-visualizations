@@ -58,6 +58,12 @@ const NEGATIVE_DATAPOINTS = {
     ]
 };
 
+const TOO_MANY_DATAPOINTS_WITH_NEGATIVE_VALUES = {
+    ...SINGLE_DATA_METRIC_DATA,
+    rawData: range(PIE_CHART_LIMIT + 1)
+        .map(i => [`${2010 + i}`, `${-1 * i}`])
+};
+
 const SINGLE_DATA_METRIC_CONFIG = {
     type: 'pie',
     buckets: {
@@ -231,6 +237,42 @@ describe('PieChartTransformation', () => {
             }));
 
             expect(callback).toBeCalled();
+        });
+    });
+
+    describe('exceeding data point limit with negative values', () => {
+        it('should call the "onDataTooLarge" callback', () => {
+            const callback = jest.fn();
+
+            shallow(createComponent({
+                data: TOO_MANY_DATAPOINTS_WITH_NEGATIVE_VALUES,
+                config: {
+                    ...SINGLE_DATA_METRIC_CONFIG,
+                    legend: {
+                        enabled: false
+                    }
+                },
+                onDataTooLarge: callback
+            }));
+
+            expect(callback).toBeCalled();
+        });
+
+        it('should NOT call callback "onNegativeValues" callback', () => {
+            const callback = jest.fn();
+
+            shallow(createComponent({
+                data: TOO_MANY_DATAPOINTS_WITH_NEGATIVE_VALUES,
+                config: {
+                    ...SINGLE_DATA_METRIC_CONFIG,
+                    legend: {
+                        enabled: false
+                    }
+                },
+                onNegativeValues: callback
+            }));
+
+            expect(callback).not.toBeCalled();
         });
     });
 });
