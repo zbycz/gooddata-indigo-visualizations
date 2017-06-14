@@ -7,7 +7,7 @@ import TableTransformation from './Table/TableTransformation';
 import ResponsiveTable from './Table/ResponsiveTable';
 import Table from './Table/Table';
 
-export default {
+export {
     Visualization,
 
     LineFamilyChartTransformation,
