@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
 import Bubble from '@gooddata/goodstrap/lib/Bubble/ReactBubble';
+import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/ReactBubbleHoverTrigger';
 import TableSortBubbleContent from './TableSortBubbleContent';
 
 import {
@@ -16,6 +17,7 @@ import {
     getHeaderClassNames,
     getHeaderSortClassName,
     getTooltipSortAlignPoints,
+    getTooltipAlignPoints,
     calculateArrowPositions
 } from './utils';
 
@@ -24,6 +26,7 @@ export const DEFAULT_ROW_HEIGHT = 30;
 export const DEFAULT_HEADER_HEIGHT = 26;
 
 const DEBOUNCE_SCROLL_STOP = 500;
+const TOOLTIP_DISPLAY_DELAY = 1000;
 
 const scrollEvents = ['scroll', 'goodstrap.scrolled', 'goodstrap.drag'];
 
@@ -110,6 +113,7 @@ export default class TableVisualization extends Component {
             this.scrollHeader(true);
             this.checkTableDimensions();
         }
+
         this.props.afterRender();
     }
 
@@ -245,7 +249,7 @@ export default class TableVisualization extends Component {
         const sort = this.getSortObj(column, index);
 
         const columnAlign = getColumnAlign(column);
-        const alignPoints = getTooltipSortAlignPoints(columnAlign);
+        const sortingModalAlignPoints = getTooltipSortAlignPoints(columnAlign);
 
         const getArrowPositions = () => {
             return calculateArrowPositions({
@@ -282,7 +286,7 @@ export default class TableVisualization extends Component {
                         alignTo={`.${bubbleClass}`}
                         className="gd-table-header-bubble bubble-light"
                         overlayClassName="gd-table-header-bubble-overlay"
-                        alignPoints={alignPoints}
+                        alignPoints={sortingModalAlignPoints}
                         arrowDirections={{
                             'bl tr': 'top',
                             'br tl': 'top',
@@ -320,6 +324,9 @@ export default class TableVisualization extends Component {
         const onMouseEnter = this.getMouseOverFunc(index);
         const onMouseLeave = this.getMouseOverFunc(null);
 
+        const columnAlign = getColumnAlign(column);
+        const tooltipAlignPoints = getTooltipAlignPoints(columnAlign);
+
         return props => (
             <Cell
                 {...props}
@@ -328,7 +335,21 @@ export default class TableVisualization extends Component {
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <span className="gd-table-header-title" title={column.title}>{column.title}</span>
+                <BubbleHoverTrigger
+                    className="gd-table-header-title"
+                    showDelay={TOOLTIP_DISPLAY_DELAY}
+                >
+                    {column.title}
+                    <Bubble
+                        closeOnOutsideClick
+                        className="bubble-light"
+                        overlayClassName="gd-table-header-bubble-overlay"
+                        alignPoints={tooltipAlignPoints}
+                    >
+                        {column.title}
+                    </Bubble>
+                </BubbleHoverTrigger>
+
                 <span className={sort.sortDirClass} />
             </Cell>
         );

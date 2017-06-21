@@ -169,6 +169,11 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
+            .gd-table-header-title::before { // disable system tooltip in Safari
+                content: '';
+                display: block;
+            }
         }
 
         .fixedDataTableCellLayout_main {
@@ -307,19 +312,17 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
         }
 
         .gd-dialog-header {
-            margin: 0 0 10px;
+            overflow: auto;
+            max-height: 105px;
+            margin: 0 -20px 10px -20px;
+            padding: 0 50px 10px 20px;
+            border-bottom: 1px solid $border-color;
             white-space: normal;
-        }
-
-        .close-button ~ .gd-dialog-header {
-            margin-right: 30px;
         }
     }
 
     .buttons-wrap {
-        margin: 10px -20px 0 -20px;
-        padding: 10px 20px 5px;
-        border-top: 1px solid $border-color;
+        margin-bottom: 5px;
 
         .buttons {
             display: flex;
