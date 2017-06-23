@@ -1,12 +1,28 @@
-# gdc-indigo-visualizations
-
-Indigo Visualizations in React
+# Indigo Visualizations in React
 
 ## Development
-This repository uses react-storybook, run `yarn run storybook` & see the examples
+
+This repository uses [Storybook for React](https://github.com/storybooks/storybook/tree/master/app/react)
+
+* Run `yarn storybook` and see the examples
 
 ## Testing
-Run `yarn test` in console
+
+### Unit tests
+
+* Run `yarn test`
+
+### Screenshots tests
+
+This repository uses [Gemini](https://github.com/gemini-testing/gemini)
+
+* Run screenshots tests only on CI to ensure the same environment (platform, browser, display pixel density, etc.)
+* To run screenshots tests you should type `extended test - gemini` into GitHub PR comment
+* The link to CI html report appears in GitHub PR comment
+* If you want to change some reference screenshot:
+    * download new reference screenshot from CI html report
+    * replace old reference screenshot in `./gemini/screens/` repository folder with new one
+    * commit changes
 
 ## Release
 

@@ -3,11 +3,11 @@ import { storiesOf } from '@storybook/react';
 
 import PieChartTransformation from '../src/Chart/PieChartTransformation';
 import * as TestData from './test_data/test_data';
-import wrap from './utils/wrap';
+import { wrap, screenshotWrap } from './utils/wrap';
 
 storiesOf('Pie Chart')
     .add('Basic', () => (
-        wrap(
+        screenshotWrap(wrap(
             <PieChartTransformation
                 config={{
                     legend: {
@@ -18,10 +18,10 @@ storiesOf('Pie Chart')
                 }}
                 data={TestData.pieChart}
             />
-        )
+        ))
     ))
     .add('Basic with empty', () => (
-        wrap(
+        screenshotWrap(wrap(
             <PieChartTransformation
                 config={{
                     legend: {
@@ -32,10 +32,10 @@ storiesOf('Pie Chart')
                 }}
                 data={TestData.pieChartWithEmpty}
             />
-        )
+        ))
     ))
     .add('Single metric', () => (
-        wrap(
+        screenshotWrap(wrap(
             <PieChartTransformation
                 config={{
                     legend: {
@@ -46,10 +46,10 @@ storiesOf('Pie Chart')
                 }}
                 data={TestData.singleMetricPieCart}
             />
-        )
+        ))
     ))
     .add('Metrics only', () => (
-        wrap(
+        screenshotWrap(wrap(
             <PieChartTransformation
                 config={{
                     legend: {
@@ -60,5 +60,5 @@ storiesOf('Pie Chart')
                 }}
                 data={TestData.metricsOnlyPieChart}
             />
-        )
+        ))
     ));
