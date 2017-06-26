@@ -17,13 +17,11 @@ import {
     numberFormat
 } from '@gooddata/numberjs';
 
-import {
-    transformData,
-    enrichHeaders,
-    getChartData,
-    getColorPalette,
-    parseMetricValue
-} from './transformation';
+import { getColorPalette } from './transformation';
+
+import { enrichHeaders } from './transformation/EnrichHeaders';
+import { getChartData } from './transformation/SeriesTransformation';
+import { transposeMetrics, parseMetricValue } from './transformation/MetricTransposition';
 
 
 export function propertiesToHeaders(config, _headers) { // TODO export for test only
@@ -49,7 +47,7 @@ export function isMetricNamesInSeries(config, headers) { // TODO export only for
 }
 
 export function getLineFamilyChartData(config, rawData) {
-    const data = transformData(rawData);
+    const data = transposeMetrics(rawData);
 
     // prepare series, categories and data
     const indices = getIndices(config, data.headers);
@@ -70,7 +68,7 @@ export function getPieFamilyChartData(config, data) {
     function getMetricsOnlyData(executionData) {
         const { headers, rawData } = executionData;
         return zip(
-            headers.map(header => header.title),
+            headers.map(header => ({ name: header.title })),
             rawData[0],
             headers.map(header => (header.format || ''))
         );
@@ -89,9 +87,9 @@ export function getPieFamilyChartData(config, data) {
 
     return {
         series: [{
-            data: sortedData.map(([name, y, format], i) => {
+            data: sortedData.map(([attr, y, format], i) => {
                 return {
-                    name,
+                    name: attr.name,
                     y: parseMetricValue(y),
                     color: config.colorPalette[i % config.colorPalette.length],
                     legendIndex: i,

@@ -28,7 +28,10 @@ const SINGLE_DATA_METRIC_DATA = {
     ],
     rawData: [
         [
-            '2010',
+            {
+                id: '2010',
+                name: '2010'
+            },
             '1324'
         ]
     ]
@@ -37,7 +40,11 @@ const SINGLE_DATA_METRIC_DATA = {
 const TOO_MANY_DATAPOINTS = {
     ...SINGLE_DATA_METRIC_DATA,
     rawData: range(PIE_CHART_LIMIT + 1)
-        .map(i => [`${2010 + i}`, '12345'])
+        .map((i) => {
+            const year = `${2010 + i}`;
+
+            return [{ id: year, name: year }, '12345'];
+        })
 };
 
 const NEGATIVE_DATAPOINTS = {
