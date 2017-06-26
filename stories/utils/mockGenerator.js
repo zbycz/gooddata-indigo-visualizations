@@ -1,14 +1,15 @@
-import { range, unzip } from 'lodash';
+import { range, unzip, isNumber } from 'lodash';
 
 function generateRawData(fns, length) {
-    const data = [x => x, ...fns].map((fn) => {
+    const data = [x => ({ id: x, name: x.toString() }), ...fns].map((fn) => {
         return range(1, length + 1).map((n) => {
-            return `${fn(n)}`;
+            const res = fn(n);
+
+            return isNumber(res) ? `${res}` : res;
         });
     });
 
-    const rawData = unzip(data);
-    return rawData;
+    return unzip(data);
 }
 
 export function createMock(type, fnsConfig, length) {

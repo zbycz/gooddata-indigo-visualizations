@@ -22,7 +22,7 @@ function generateData(columns, rows) {
         });
     const rawData = range(rows)
         .map(() => {
-            return range(columns);
+            return range(columns).map(i => ({ id: i, name: i }));
         });
 
     return {

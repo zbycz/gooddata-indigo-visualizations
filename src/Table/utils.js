@@ -154,7 +154,7 @@ export function getHeaderClassNames(column) {
 
 export function getStyledLabel(column, content) {
     if (column.type !== 'metric') {
-        return { style: {}, label: content };
+        return { style: {}, label: content.name };
     }
 
     const { label, color } = colors2Object(
