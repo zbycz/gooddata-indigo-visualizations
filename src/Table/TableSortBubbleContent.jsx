@@ -5,10 +5,6 @@ import cx from 'classnames';
 
 import { ASC, DESC } from './Sort';
 
-const MAX_TITLE_LINES = 5;
-const LINE_HEIGHT = 24;
-const MAX_HEADER_HEIGHT = MAX_TITLE_LINES * LINE_HEIGHT;
-
 export class TableSortBubbleContent extends Component {
 
     static propTypes = {
@@ -29,71 +25,8 @@ export class TableSortBubbleContent extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
-        this.setInitialStep(props);
-
         this.sortAsc = this.handleSort.bind(this, ASC);
         this.sortDesc = this.handleSort.bind(this, DESC);
-        this.setTitleRef = this.setTitleRef.bind(this);
-    }
-
-    componentDidMount() {
-        // initially check and potentially adjust the title length
-        this.setTitleLength();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.title !== this.props.title) {
-            // trigger a readjust for the new title
-            this.setInitialStep(nextProps);
-        }
-    }
-
-    componentDidUpdate() {
-        // after each update, we need to re-check and potentially
-        // adjust the title length
-        this.setTitleLength();
-    }
-
-    setTitleRef(title) {
-        this.title = title;
-    }
-
-    // adjust title length using divide and conquer algorithm
-    setTitleLength() {
-        const headerHeight = this.title.getBoundingClientRect().height;
-
-        // if the title is so long that the header div is higher
-        // than MAX_HEADER_HEIGHT, we need to crop it
-        if (headerHeight > MAX_HEADER_HEIGHT) {
-            this.setNextStep(true);
-            return;
-        }
-
-        const { title } = this.props;
-        const { titleLength, step } = this.state;
-
-        // if the title has been cropped and we haven't reached the last step
-        // we should try extending the title
-        if (titleLength < title.length && step > 1) {
-            this.setNextStep(false);
-        }
-    }
-
-    setInitialStep(props) {
-        this.state = {
-            titleLength: props.title.length,
-            step: props.title.length / 2
-        };
-    }
-
-    setNextStep(down) {
-        const { titleLength, step } = this.state;
-
-        this.setState({
-            titleLength: Math.floor(titleLength + (down ? -step : step)),
-            step: step / 2
-        });
     }
 
     handleSort(dir, e) {
@@ -131,11 +64,6 @@ export class TableSortBubbleContent extends Component {
 
     render() {
         const { title, onClose } = this.props;
-        const { titleLength } = this.state;
-
-        // display a cropped title if it's too long
-        const displayTitle = titleLength < title.length ?
-            `${title.substring(0, titleLength)}…` : title;
 
         return (
             <div>
@@ -143,8 +71,8 @@ export class TableSortBubbleContent extends Component {
                     className="close-button button-link button-icon-only icon-cross"
                     onClick={onClose}
                 />
-                <div className="gd-dialog-header gd-heading-3" ref={this.setTitleRef}>
-                    {displayTitle}
+                <div className="gd-dialog-header gd-heading-3">
+                    {title}
                 </div>
                 <FormattedMessage id="visualizations.sorting" />
                 <div className="buttons-wrap">

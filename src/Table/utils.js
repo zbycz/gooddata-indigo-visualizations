@@ -97,11 +97,11 @@ export function calculateArrowPositions(column, tableScrollX, tableWrapRef) {
     };
 }
 
+// y has always offset
+const getPoints = (x, y = -HEADER_PADDING) => ({ x, y });
+
 export function getTooltipSortAlignPoints(columnAlign) {
     const isLeftAligned = columnAlign === ALIGN_LEFT;
-    // y has always offset
-    const getPoints = (x, y = -HEADER_PADDING) => ({ x, y });
-
     // last align point is used when header cell is not fully visible (scroll)
 
     // TODO Known issue - wrong tooltip alignment when
@@ -128,6 +128,19 @@ export function getTooltipSortAlignPoints(columnAlign) {
     ];
     return alignPoints;
 }
+
+export const getTooltipAlignPoints = (columnAlign) => {
+    return columnAlign === ALIGN_LEFT ? [
+        { align: 'bl tl', offset: getPoints(HEADER_PADDING, 0) },
+        { align: 'bl tc', offset: getPoints(HEADER_PADDING, 0) },
+        { align: 'bl tr', offset: getPoints(HEADER_PADDING, 0) }
+    ] : [
+        { align: 'br tr', offset: getPoints(-HEADER_PADDING, 0) },
+        { align: 'br tc', offset: getPoints(-HEADER_PADDING, 0) },
+        { align: 'br tl', offset: getPoints(-HEADER_PADDING, 0) }
+
+    ];
+};
 
 export function getCellClassNames(rowIndex, columnKey, isSorted) {
     return cx({
