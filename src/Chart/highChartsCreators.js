@@ -12,26 +12,34 @@ import { getColumnConfiguration } from './highcharts/columnConfiguration';
 import { getCustomizedConfiguration } from './highcharts/customConfiguration';
 import { getPieConfiguration } from './highcharts/pieConfiguration';
 
-export function getLineChartConfiguration(chartOptions) {
+export function getLineChartConfiguration(chartOptions, afm) {
     return merge({},
-        getCommonConfiguration(),
+        getCommonConfiguration(chartOptions, afm),
         getLineConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );
 }
 
-export function getColumnChartConfiguration(chartOptions) {
+export function getColumnChartConfiguration(chartOptions, afm) {
     return merge({},
-        getCommonConfiguration(),
+        getCommonConfiguration(chartOptions, afm),
         getColumnConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );
 }
 
-export function getBarChartConfiguration(chartOptions) {
+export function getBarChartConfiguration(chartOptions, afm) {
     return merge({},
-        getCommonConfiguration(),
+        getCommonConfiguration(chartOptions, afm),
         getBarConfiguration(),
+        getCustomizedConfiguration(chartOptions)
+    );
+}
+
+export function getPieChartConfiguration(chartOptions, afm) {
+    return merge({},
+        getCommonConfiguration(chartOptions, afm),
+        getPieConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );
 }
@@ -42,12 +50,4 @@ export function isDataOfReasonableSize(chartData, limits) {
 
     return chartData.series.length <= seriesLimit &&
         chartData.categories.length <= categoriesLimit;
-}
-
-export function getPieChartConfiguration(chartOptions) {
-    return merge({},
-        getCommonConfiguration(),
-        getPieConfiguration(),
-        getCustomizedConfiguration(chartOptions)
-    );
 }

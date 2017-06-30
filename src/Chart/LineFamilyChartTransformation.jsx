@@ -31,6 +31,7 @@ export function renderLineFamilyChart(props) {
 
 export default class LineFamilyChartTransformation extends Component {
     static propTypes = {
+        afm: PropTypes.object,
         config: PropTypes.shape({
             buckets: PropTypes.object.isRequired,
             type: PropTypes.string.isRequired,
@@ -47,6 +48,7 @@ export default class LineFamilyChartTransformation extends Component {
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
+        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
         height: PropTypes.number,
         width: PropTypes.number,
 
@@ -56,6 +58,8 @@ export default class LineFamilyChartTransformation extends Component {
     };
 
     static defaultProps = {
+        afm: null,
+        drillableItems: false, // TODO will be array, see BB-96
         lineFamilyChartRenderer: renderLineFamilyChart,
         afterRender: () => {}
     };
@@ -91,15 +95,16 @@ export default class LineFamilyChartTransformation extends Component {
     }
 
     getHcOptions() {
-        const { type } = this.props.config;
         const chartOptions = this.chartOptions;
+        const { config: { type }, afm } = this.props;
+
         switch (type) {
             case COLUMN_CHART:
-                return getColumnChartConfiguration(chartOptions);
+                return getColumnChartConfiguration(chartOptions, afm);
             case BAR_CHART:
-                return getBarChartConfiguration(chartOptions);
+                return getBarChartConfiguration(chartOptions, afm);
             case LINE_CHART:
-                return getLineChartConfiguration(chartOptions);
+                return getLineChartConfiguration(chartOptions, afm);
             default:
                 return invariant(`Unknown visualization type: ${type}`);
         }
@@ -115,10 +120,10 @@ export default class LineFamilyChartTransformation extends Component {
     }
 
     createChartOptions(props) {
-        const { config, data, onDataTooLarge, limits } = props;
+        const { config, data, onDataTooLarge, limits, drillableItems } = props;
         const lineConfig = transformConfigToLine(config);
         this.chartOptions = getLineFamilyChartOptions(lineConfig, data);
-        this.chartOptions.data = getLineFamilyChartData(lineConfig, data);
+        this.chartOptions.data = getLineFamilyChartData(lineConfig, data, drillableItems);
 
         if (!isDataOfReasonableSize(this.chartOptions.data, limits)) {
             if (!onDataTooLarge) {

@@ -142,9 +142,9 @@ export const getTooltipAlignPoints = (columnAlign) => {
     ];
 };
 
-export function getCellClassNames(rowIndex, columnKey, isSorted) {
+export function getCellClassNames(rowIndex, columnKey, isDrillable) {
     return cx({
-        'gd-cell-ordered': isSorted
+        'gd-cell-drillable': isDrillable
     }, `s-cell-${rowIndex}-${columnKey}`);
 }
 

@@ -41,6 +41,7 @@ function isNegativeValueIncluded(rawData) {
 
 export default class PieChartTransformation extends Component {
     static propTypes = {
+        afm: PropTypes.object,
         config: PropTypes.shape({
             legend: PropTypes.shape({
                 enabled: PropTypes.bool
@@ -49,6 +50,7 @@ export default class PieChartTransformation extends Component {
         data: PropTypes.shape({
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
+        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
         height: PropTypes.number,
         width: PropTypes.number,
         onDataTooLarge: PropTypes.func,
@@ -58,6 +60,8 @@ export default class PieChartTransformation extends Component {
     };
 
     static defaultProps = {
+        afm: null,
+        drillableItems: false, // TODO will be array, see BB-96
         afterRender: () => {},
         onDataTooLarge: () => {},
         onNegativeValues: () => {},
@@ -129,7 +133,9 @@ export default class PieChartTransformation extends Component {
         }
 
         const {
+            afm,
             data,
+            drillableItems,
             height,
             width,
             afterRender,
@@ -141,9 +147,9 @@ export default class PieChartTransformation extends Component {
             height
         }, data);
 
-        chartOptions.data = getPieFamilyChartData(chartOptions, data);
+        chartOptions.data = getPieFamilyChartData(chartOptions, data, drillableItems);
 
-        const hcOptions = getPieChartConfiguration(chartOptions);
+        const hcOptions = getPieChartConfiguration(chartOptions, afm);
 
         const legendItems = this.getLegendItems(hcOptions);
         const legendConfig = getLegendConfig(

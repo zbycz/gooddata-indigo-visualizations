@@ -82,27 +82,27 @@ describe('Getting chart data', () => {
                 {
                     name: 'M1',
                     data: [
-                        { y: 1, format: '#.## M1', drillEvent: { drillContext: [{ id: 'a', value: 'a' }, { id: 'M1', value: 'M1' }] } },
-                        { y: 2, format: '#.## M1', drillEvent: { drillContext: [{ id: 'b', value: 'b' }, { id: 'M1', value: 'M1' }] } },
-                        { y: 3, format: '#.## M1', drillEvent: { drillContext: [{ id: 'c', value: 'c' }, { id: 'M1', value: 'M1' }] } }
+                        { y: 1, format: '#.## M1', drillContext: [{ id: 'a', value: 'a' }, { id: 'M1', value: 'M1' }], drilldown: false },
+                        { y: 2, format: '#.## M1', drillContext: [{ id: 'b', value: 'b' }, { id: 'M1', value: 'M1' }], drilldown: false },
+                        { y: 3, format: '#.## M1', drillContext: [{ id: 'c', value: 'c' }, { id: 'M1', value: 'M1' }], drilldown: false }
                     ],
                     legendIndex: 0
                 },
                 {
                     name: 'M2',
                     data: [
-                        { y: 4, format: '#.## M2', drillEvent: { drillContext: [{ id: 'a', value: 'a' }, { id: 'M2', value: 'M2' }] } },
-                        { y: 5, format: '#.## M2', drillEvent: { drillContext: [{ id: 'b', value: 'b' }, { id: 'M2', value: 'M2' }] } },
-                        { y: 6, format: '#.## M2', drillEvent: { drillContext: [{ id: 'c', value: 'c' }, { id: 'M2', value: 'M2' }] } }
+                        { y: 4, format: '#.## M2', drillContext: [{ id: 'a', value: 'a' }, { id: 'M2', value: 'M2' }], drilldown: false },
+                        { y: 5, format: '#.## M2', drillContext: [{ id: 'b', value: 'b' }, { id: 'M2', value: 'M2' }], drilldown: false },
+                        { y: 6, format: '#.## M2', drillContext: [{ id: 'c', value: 'c' }, { id: 'M2', value: 'M2' }], drilldown: false }
                     ],
                     legendIndex: 1
                 },
                 {
                     name: 'M3',
                     data: [
-                        { y: 7, format: DEFAULT_FORMAT, drillEvent: { drillContext: [{ id: 'a', value: 'a' }, { id: 'M3', value: 'M3' }] } },
-                        { y: 8, format: DEFAULT_FORMAT, drillEvent: { drillContext: [{ id: 'b', value: 'b' }, { id: 'M3', value: 'M3' }] } },
-                        { y: 9, format: DEFAULT_FORMAT, drillEvent: { drillContext: [{ id: 'c', value: 'c' }, { id: 'M3', value: 'M3' }] } }
+                        { y: 7, format: DEFAULT_FORMAT, drillContext: [{ id: 'a', value: 'a' }, { id: 'M3', value: 'M3' }], drilldown: false },
+                        { y: 8, format: DEFAULT_FORMAT, drillContext: [{ id: 'b', value: 'b' }, { id: 'M3', value: 'M3' }], drilldown: false },
+                        { y: 9, format: DEFAULT_FORMAT, drillContext: [{ id: 'c', value: 'c' }, { id: 'M3', value: 'M3' }], drilldown: false }
                     ],
                     legendIndex: 2
                 }
@@ -154,18 +154,18 @@ describe('Getting chart data', () => {
                 {
                     name: 'x',
                     data: [
-                        { y: 1, format: '#.## M1', drillEvent: { drillContext: [{ id: 'a', value: 'a' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }] } },
-                        { y: 3, format: '#.## M1', drillEvent: { drillContext: [{ id: 'b', value: 'b' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }] } },
-                        { y: 5, format: '#.## M1', drillEvent: { drillContext: [{ id: 'c', value: 'c' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }] } }
+                        { y: 1, format: '#.## M1', drillContext: [{ id: 'a', value: 'a' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }], drilldown: false },
+                        { y: 3, format: '#.## M1', drillContext: [{ id: 'b', value: 'b' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }], drilldown: false },
+                        { y: 5, format: '#.## M1', drillContext: [{ id: 'c', value: 'c' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }], drilldown: false }
                     ],
                     legendIndex: 0
                 },
                 {
                     name: 'y',
                     data: [
-                        { y: 2, format: '#.## M1', drillEvent: { drillContext: [{ id: 'a', value: 'a' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }] } },
-                        { y: 4, format: '#.## M1', drillEvent: { drillContext: [{ id: 'b', value: 'b' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }] } },
-                        { y: 6, format: '#.## M1', drillEvent: { drillContext: [{ id: 'c', value: 'c' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }] } }
+                        { y: 2, format: '#.## M1', drillContext: [{ id: 'a', value: 'a' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }], drilldown: false },
+                        { y: 4, format: '#.## M1', drillContext: [{ id: 'b', value: 'b' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }], drilldown: false },
+                        { y: 6, format: '#.## M1', drillContext: [{ id: 'c', value: 'c' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }], drilldown: false }
                     ],
                     legendIndex: 1
                 }

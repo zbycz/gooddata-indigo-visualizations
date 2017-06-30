@@ -12,11 +12,13 @@ export function renderTable(props) {
 export default class TableTransformation extends Component {
 
     static propTypes = {
+        afm: PropTypes.object,
         config: PropTypes.object,
         data: PropTypes.shape({
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
+        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
         tableRenderer: PropTypes.func.isRequired,
         height: PropTypes.number,
         width: PropTypes.number,
@@ -25,17 +27,21 @@ export default class TableTransformation extends Component {
     };
 
     static defaultProps = {
+        afm: null,
         config: {},
+        drillableItems: false, // TODO will be array, see BB-96
         tableRenderer: renderTable,
         afterRender: () => {}
     };
 
     render() {
-        const { data: { headers, rawData }, config, height, width, onSortChange } = this.props;
+        const { data: { headers, rawData }, config, height, width, onSortChange, afm, drillableItems } = this.props;
         const { sortBy, sortDir } = getSortInfo(config);
 
         const tableProps = {
+            afm,
             rows: rawData,
+            drillableItems,
             headers,
             sortBy,
             sortDir,

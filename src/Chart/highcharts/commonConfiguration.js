@@ -1,6 +1,5 @@
-import cloneDeep from 'lodash/cloneDeep';
-import invoke from 'lodash/invoke';
-import get from 'lodash/get';
+import { cloneDeep, invoke, get, set } from 'lodash';
+import { chartClick } from '../../utils/drilldownEventing';
 
 const isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 
@@ -104,9 +103,29 @@ const BASE_TEMPLATE = {
         style: {
             fontFamily: 'Avenir, "Helvetica Neue", Arial, sans-serif'
         }
+    },
+    drilldown: {
+        drillUpButton: {
+            theme: {
+                style: {
+                    // https://forum.highcharts.com/highcharts-usage/empty-checkbox-after-drilldown-with-x-axis-label-t33414/
+                    display: 'none'
+                }
+            }
+        }
     }
 };
 
-export function getCommonConfiguration() {
-    return cloneDeep(BASE_TEMPLATE);
-}
+const registerDrilldownHandler = (configuration, chartOptions, afm) => {
+    set(configuration, 'chart.events.drilldown', function chartDrilldownHandler(event) {
+        chartClick(afm, event, this.container, chartOptions.type);
+    });
+
+    return configuration;
+};
+
+export const getCommonConfiguration = (chartOptions, afm) => {
+    const commonConfiguration = cloneDeep(BASE_TEMPLATE);
+
+    return registerDrilldownHandler(commonConfiguration, chartOptions, afm);
+};

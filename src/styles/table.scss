@@ -217,8 +217,9 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
     }
 }
 
-.gd-cell-ordered {
+.gd-cell-drillable {
     font-weight: bold;
+    cursor: pointer;
 }
 
 .gd-table-header-bubble-overlay {
