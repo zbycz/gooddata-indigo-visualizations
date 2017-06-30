@@ -14,9 +14,10 @@ import {
 } from '../chartCreators';
 
 import {
-    _transformMetrics,
     DEFAULT_COLOR_PALETTE
 } from '../transformation';
+
+import { transposeMetrics } from '../transformation/MetricTransposition';
 
 describe('chartCreators', () => {
     let config;
@@ -37,7 +38,7 @@ describe('chartCreators', () => {
             orderBy: [],
             where: {}
         };
-        mockData = _transformMetrics({
+        mockData = transposeMetrics({
             headers: [
                 {
                     type: 'attrLabel',
@@ -246,11 +247,11 @@ describe('chartCreators', () => {
                 }
             ],
             rawData: [
-                ['2013', '124'],
-                ['2014', '284'],
-                ['2015', '123'],
-                ['2016', '155'],
-                ['2017', null]
+                [{ id: '2013', name: '2013' }, '124'],
+                [{ id: '2014', name: '2014' }, '284'],
+                [{ id: '2015', name: '2015' }, '123'],
+                [{ id: '2016', name: '2016' }, '155'],
+                [{ id: '2017', name: '2017' }, null]
             ],
             isEmpty: false,
             isLoading: false
@@ -385,10 +386,10 @@ describe('chartCreators', () => {
                     }
                 ],
                 rawData: [
-                    ['2013', null, '0.0126946885814334'],
-                    ['2014', '0.0126946885814334', '0.0261557203220383'],
-                    ['2015', '0.0261557203220383', '0.0348732552824948'],
-                    ['2016', '0.0348732552824948', null]
+                    [{ id: '2013', name: '2013' }, null, '0.0126946885814334'],
+                    [{ id: '2014', name: '2014' }, '0.0126946885814334', '0.0261557203220383'],
+                    [{ id: '2015', name: '2015' }, '0.0261557203220383', '0.0348732552824948'],
+                    [{ id: '2016', name: '2016' }, '0.0348732552824948', null]
                 ],
                 isEmpty: false,
                 isLoading: false

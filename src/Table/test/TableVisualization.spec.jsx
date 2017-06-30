@@ -27,7 +27,7 @@ const FIXTURE = {
         }
     ],
     rawData: [
-        ['Wile E. Coyote', '30', '1324']
+        [{ id: '1', name: 'Wile E. Coyote' }, '30', '1324']
     ]
 };
 

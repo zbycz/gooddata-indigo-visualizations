@@ -11,22 +11,24 @@ const SINGLE_SERIES_DATA = {
     isLoading: false,
     headers: [
         {
-            id: 'm1',
-            title: 'Metric',
-            type: 'metric',
-            uri: '/gdc/m1',
-            format: '#,##0'
+            type: 'attrLabel',
+            id: 'date.aag81lMifn6q',
+            uri: '/gdc/md/budtwmhq7k94ve7rqj49j3620rzsm3u1/obj/915',
+            title: 'Year (Date)'
         },
         {
-            id: 'date',
-            title: 'Date',
-            type: 'attrLabel',
-            uri: '/gdc/date'
+            type: 'metric',
+            id: 'a8908b3c92b6743b1fc71c8b113533bc',
+            title: '# of Accounts',
+            format: '#,##0'
         }
     ],
     rawData: [
         [
-            '2010',
+            {
+                id: '2010',
+                name: '2010'
+            },
             '1324'
         ]
     ]
