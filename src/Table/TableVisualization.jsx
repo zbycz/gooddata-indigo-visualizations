@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import classNames from 'classnames';
-import { noop, partial, uniqueId, debounce, pick } from 'lodash';
+import { noop, partial, uniqueId, debounce, pick, assign } from 'lodash';
 
 import Bubble from '@gooddata/goodstrap/lib/Bubble/ReactBubble';
 import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/ReactBubbleHoverTrigger';
 import TableSortBubbleContent from './TableSortBubbleContent';
-import { cellClick } from '../utils/drilldownEventing';
+import { cellClick, isDrillable } from '../utils/drilldownEventing';
+import DrillableItem from '../utils/DrillableItem';
 
 import {
     getNextSortDir,
@@ -34,7 +35,7 @@ const scrollEvents = ['scroll', 'goodstrap.scrolled', 'goodstrap.drag'];
 export default class TableVisualization extends Component {
     static propTypes = {
         afm: PropTypes.object,
-        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
+        drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
         containerWidth: PropTypes.number.isRequired,
         containerHeight: PropTypes.number,
         containerMaxHeight: PropTypes.number,
@@ -50,8 +51,8 @@ export default class TableVisualization extends Component {
     };
 
     static defaultProps = {
-        afm: null,
-        drillableItems: false, // TODO will be array, see BB-96
+        afm: {},
+        drillableItems: [],
         rows: [],
         headers: [],
         onSortChange: noop,
@@ -361,20 +362,19 @@ export default class TableVisualization extends Component {
     }
 
     renderCell(column) {
-        const { rows, afm } = this.props;
-        const { isDrillable } = column;
+        const { rows, afm, drillableItems } = this.props;
+        const drillable = isDrillable(drillableItems, column);
 
         return (cellProps) => {
             const { rowIndex, columnKey } = cellProps;
 
             const row = rows[rowIndex];
             const content = row[columnKey];
-            const classes = getCellClassNames(rowIndex, columnKey, isDrillable);
+            const classes = getCellClassNames(rowIndex, columnKey, drillable);
 
             const { style, label } = getStyledLabel(column, content);
 
-            const cellPropsDrill = !isDrillable ? cellProps : {
-                ...cellProps,
+            const cellPropsDrill = drillable ? assign({}, cellProps, {
                 onClick(e) {
                     cellClick(
                         afm,
@@ -386,7 +386,8 @@ export default class TableVisualization extends Component {
                         e.target
                     );
                 }
-            };
+            }) : cellProps;
+
 
             return (
                 <Cell {...cellPropsDrill}>
@@ -420,8 +421,7 @@ export default class TableVisualization extends Component {
             containerHeight,
             containerMaxHeight,
             stickyHeader,
-            hasHiddenRows,
-            drillableItems
+            hasHiddenRows
         } = this.props;
 
         const columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
@@ -432,9 +432,6 @@ export default class TableVisualization extends Component {
             classNames('indigo-table-component', { 'has-hidden-rows': hasHiddenRows });
         const componentContentClasses =
             classNames('indigo-table-component-content', { 'has-sticky-header': isSticky });
-
-        const columns = headers.map(column =>
-            ({ ...column, isDrillable: drillableItems })); // TODO will decide if drillable or not, see BB-96
 
         return (
             <div className={componentClasses}>
@@ -450,7 +447,7 @@ export default class TableVisualization extends Component {
                         height={height}
                         onScrollStart={this.closeBubble}
                     >
-                        {this.renderColumns(columns, columnWidth)}
+                        {this.renderColumns(headers, columnWidth)}
                     </Table>
                 </div>
                 {isSticky ? (

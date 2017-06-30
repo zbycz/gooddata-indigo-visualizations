@@ -21,15 +21,24 @@ function transposeData(headers, metrics, rawData) {
 
                     row.push({
                         id: element.id,
-                        value: element.name
+                        value: element.name,
+                        header: {
+                            id: headers[ci].id,
+                            uri: headers[ci].uri
+                        }
                     });
                 }
             }
 
             const metric = metrics[mi];
+
             row.push({
                 id: `metric-${mi}`, // let each metric have unique id
-                value: metric.header.title
+                value: metric.header.title,
+                header: {
+                    id: metric.header.id ? metric.header.id : null,
+                    uri: metric.header.uri ? metric.header.uri : null
+                }
             });
 
             const metricValue = rawData[ri][metric.index];

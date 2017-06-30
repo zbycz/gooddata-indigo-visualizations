@@ -152,6 +152,16 @@ export const metricsOnlyPieChart = {
     isLoading: false
 };
 
+export const metricsOnlyPieChartDrillableItems = [
+    {
+        uri: metricsOnlyPieChart.headers[0].uri,
+        identifier: metricsOnlyPieChart.headers[0].id
+    }, {
+        uri: metricsOnlyPieChart.headers[2].uri,
+        identifier: metricsOnlyPieChart.headers[2].id
+    }
+];
+
 export const barChart2Series = {
     isLoaded: true,
     headers: [{
@@ -232,6 +242,13 @@ export const barChart2Series = {
     ],
     isLoading: false
 };
+
+export const barChart2SeriesDrillableItems = [
+    {
+        uri: barChart2Series.headers[1].uri,
+        identifier: barChart2Series.headers[1].id
+    }
+];
 
 export const stackedBar = {
     isLoaded: true,
@@ -1093,3 +1110,13 @@ export const stackedBar = {
     ],
     isLoading: false
 };
+
+export const stackedBarDrillableItems = [
+    {
+        uri: stackedBar.headers[2].uri,
+        identifier: stackedBar.headers[2].id
+    }, {
+        uri: stackedBar.headers[0].uri,
+        identifier: stackedBar.headers[0].id
+    }
+];

@@ -63,7 +63,7 @@ export function getLineFamilyChartData(config, rawData, drillableItems) {
     return getChartData(data, configuration, drillableItems);
 }
 
-export function getPieFamilyChartData(config, data, drillableItems) {
+export function getPieFamilyChartData(config, data, drillableItems = []) {
     const { metricsOnly } = config;
     const sortDesc = ([, value]) => -value;
 
@@ -84,8 +84,6 @@ export function getPieFamilyChartData(config, data, drillableItems) {
         return rawData.map(dataPoint => [...dataPoint, format]);
     }
 
-    const isDrillable = items => items; // TODO will decide if drillable or not, see BB-96
-
     const unsortedData = metricsOnly ? getMetricsOnlyData(data) : getMetricAttrData(data);
     const unsortedDataWithExtendedInfo = unsortedData.map((row, index) => {
         row.push(values(data.headers)[index]); // push data.headers into values, so that it is sorted
@@ -102,7 +100,7 @@ export function getPieFamilyChartData(config, data, drillableItems) {
         series: [{
             data: sortedData.map(([attr, y, format], i) => {
                 return enableDrillablePoints(
-                    isDrillable(drillableItems),
+                    drillableItems,
                     {
                         name: attr.name,
                         y: parseValue(y),
