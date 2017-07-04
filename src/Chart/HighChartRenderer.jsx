@@ -1,4 +1,5 @@
 import Highcharts from 'highcharts';
+import drillmodule from 'highcharts/modules/drilldown';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { cloneDeep } from 'lodash';
@@ -11,6 +12,7 @@ import { TOP, LEFT, BOTTOM, RIGHT } from './Legend/PositionTypes';
 
 const CHART_TEXT_PADDING = 50;
 
+drillmodule(Highcharts);
 initChartPlugins(Highcharts, CHART_TEXT_PADDING);
 
 export default class HighChartRenderer extends PureComponent {
