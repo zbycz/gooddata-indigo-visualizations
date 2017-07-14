@@ -90,6 +90,9 @@ export function getPieFamilyChartData(config, data) {
             data: sortedData.map(([attr, y, format], i) => {
                 return {
                     name: attr.name,
+                    drillEvent: {
+                        drillContext: sortedData[i]
+                    },
                     y: parseMetricValue(y),
                     color: config.colorPalette[i % config.colorPalette.length],
                     legendIndex: i,

@@ -268,11 +268,11 @@ describe('chartCreators', () => {
             expect(data).toEqual({
                 series: [{
                     data: [
-                        { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
-                        { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
-                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 2, format: '#,##0.0%' },
-                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 3, format: '#,##0.0%' },
-                        { name: '2017', y: null, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 4, format: '#,##0.0%' }
+                        { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ id: '2014', name: '2014' }, '284', '#,##0.0%'] }, legendIndex: 0, format: '#,##0.0%' },
+                        { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], drillEvent: { drillContext: [{ id: '2016', name: '2016' }, '155', '#,##0.0%'] }, legendIndex: 1, format: '#,##0.0%' },
+                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ id: '2013', name: '2013' }, '124', '#,##0.0%'] }, legendIndex: 2, format: '#,##0.0%' },
+                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[1], drillEvent: { drillContext: [{ id: '2015', name: '2015' }, '123', '#,##0.0%'] }, legendIndex: 3, format: '#,##0.0%' },
+                        { name: '2017', y: null, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ id: '2017', name: '2017' }, null, '#,##0.0%'] }, legendIndex: 4, format: '#,##0.0%' }
                     ]
                 }]
             });
@@ -289,11 +289,11 @@ describe('chartCreators', () => {
             expect(data).toEqual({
                 series: [{
                     data: [
-                        { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
-                        { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
-                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 2, format: '#,##0.0%' },
-                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 3, format: '#,##0.0%' },
-                        { name: '2017', y: null, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 4, format: '#,##0.0%' }
+                        { name: '2014', y: 284, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ id: '2014', name: '2014' }, '284', '#,##0.0%'] }, legendIndex: 0, format: '#,##0.0%' },
+                        { name: '2016', y: 155, color: DEFAULT_COLOR_PALETTE[1], drillEvent: { drillContext: [{ id: '2016', name: '2016' }, '155', '#,##0.0%'] }, legendIndex: 1, format: '#,##0.0%' },
+                        { name: '2013', y: 124, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ id: '2013', name: '2013' }, '124', '#,##0.0%'] }, legendIndex: 2, format: '#,##0.0%' },
+                        { name: '2015', y: 123, color: DEFAULT_COLOR_PALETTE[1], drillEvent: { drillContext: [{ id: '2015', name: '2015' }, '123', '#,##0.0%'] }, legendIndex: 3, format: '#,##0.0%' },
+                        { name: '2017', y: null, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ id: '2017', name: '2017' }, null, '#,##0.0%'] }, legendIndex: 4, format: '#,##0.0%' }
                     ]
                 }]
             });
@@ -342,9 +342,9 @@ describe('chartCreators', () => {
             expect(data).toEqual({
                 series: [{
                     data: [
-                        { name: 'Next two', y: 789, color: DEFAULT_COLOR_PALETTE[0], legendIndex: 0, format: '#,##0.0%' },
-                        { name: 'Next one', y: 456, color: DEFAULT_COLOR_PALETTE[1], legendIndex: 1, format: '#,##0.0%' },
-                        { name: 'First', y: 123, color: DEFAULT_COLOR_PALETTE[2], legendIndex: 2, format: '#,##0.0%' }
+                        { name: 'Next two', y: 789, color: DEFAULT_COLOR_PALETTE[0], drillEvent: { drillContext: [{ name: 'Next two' }, '789', '#,##0.0%'] }, legendIndex: 0, format: '#,##0.0%' },
+                        { name: 'Next one', y: 456, color: DEFAULT_COLOR_PALETTE[1], drillEvent: { drillContext: [{ name: 'Next one' }, '456', '#,##0.0%'] }, legendIndex: 1, format: '#,##0.0%' },
+                        { name: 'First', y: 123, color: DEFAULT_COLOR_PALETTE[2], drillEvent: { drillContext: [{ name: 'First' }, '123', '#,##0.0%'] }, legendIndex: 2, format: '#,##0.0%' }
                     ]
                 }]
             });

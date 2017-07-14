@@ -20,11 +20,17 @@ function getSeries(data, seriesNames, categories, indices) {
 
             data.rawData.forEach((dataRow) => {
                 const categoryItemIndex = categoriesIndex[dataRow[indices.category].id];
-                seriesData[dataRow[indices.series].id][categoryItemIndex] = dataRow[indices.metric];
+                set(seriesData, [dataRow[indices.series].id, categoryItemIndex], dataRow[indices.metric]);
+                set(seriesData, [dataRow[indices.series].id, categoryItemIndex, 'drillEvent'], {
+                    drillContext: dataRow.slice(0, -1)
+                });
             });
         } else {
             data.rawData.forEach((dataRow) => {
-                seriesData[dataRow[indices.series].id][0] = dataRow[indices.metric];
+                set(seriesData, [dataRow[indices.series].id, 0], dataRow[indices.metric]);
+                set(seriesData, [dataRow[indices.series].id, 0, 'drillEvent'], {
+                    drillContext: dataRow.slice(0, -1)
+                });
             });
         }
     }

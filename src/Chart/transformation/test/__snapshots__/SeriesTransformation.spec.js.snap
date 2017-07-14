@@ -9,6 +9,14 @@ Object {
     Object {
       "data": Array [
         Object {
+          "drillEvent": Object {
+            "drillContext": Array [
+              Object {
+                "id": "metric-0",
+                "value": "# of Accounts",
+              },
+            ],
+          },
           "format": "#,##0",
           "marker": Object {
             "enabled": true,
@@ -36,6 +44,18 @@ Object {
     Object {
       "data": Array [
         Object {
+          "drillEvent": Object {
+            "drillContext": Array [
+              Object {
+                "id": "1",
+                "value": "",
+              },
+              Object {
+                "id": "metric-0",
+                "value": "# of Accounts",
+              },
+            ],
+          },
           "format": "#,##0",
           "marker": Object {
             "enabled": true,
@@ -43,6 +63,18 @@ Object {
           "y": 1,
         },
         Object {
+          "drillEvent": Object {
+            "drillContext": Array [
+              Object {
+                "id": "321199",
+                "value": "Churned",
+              },
+              Object {
+                "id": "metric-0",
+                "value": "# of Accounts",
+              },
+            ],
+          },
           "format": "#,##0",
           "marker": Object {
             "enabled": true,
@@ -50,6 +82,18 @@ Object {
           "y": 25,
         },
         Object {
+          "drillEvent": Object {
+            "drillContext": Array [
+              Object {
+                "id": "2288",
+                "value": "N/A",
+              },
+              Object {
+                "id": "metric-0",
+                "value": "# of Accounts",
+              },
+            ],
+          },
           "format": "#,##0",
           "marker": Object {
             "enabled": true,
@@ -57,6 +101,18 @@ Object {
           "y": 1,
         },
         Object {
+          "drillEvent": Object {
+            "drillContext": Array [
+              Object {
+                "id": "321198",
+                "value": "OK",
+              },
+              Object {
+                "id": "metric-0",
+                "value": "# of Accounts",
+              },
+            ],
+          },
           "format": "#,##0",
           "marker": Object {
             "enabled": true,
@@ -64,6 +120,18 @@ Object {
           "y": 153,
         },
         Object {
+          "drillEvent": Object {
+            "drillContext": Array [
+              Object {
+                "id": "321216",
+                "value": "Potentially Churned / Salesforce Issues",
+              },
+              Object {
+                "id": "metric-0",
+                "value": "# of Accounts",
+              },
+            ],
+          },
           "format": "#,##0",
           "marker": Object {
             "enabled": true,
