@@ -219,7 +219,12 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
 
 .gd-cell-drillable {
     font-weight: bold;
+    color: $gd-color-text;
     cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .gd-table-header-bubble-overlay {

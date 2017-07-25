@@ -6,6 +6,8 @@ const isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 export const DEFAULT_SERIES_LIMIT = 1000;
 export const DEFAULT_CATEGORIES_LIMIT = 365;
 export const MAX_POINT_WIDTH = 100;
+export const HOVER_BRIGHTNESS = 0.1;
+export const MINIMUM_HC_SAFE_BRIGHTNESS = Number.MIN_VALUE;
 
 let previousChart = null;
 
@@ -62,6 +64,23 @@ const BASE_TEMPLATE = {
             }
         }
     },
+    drilldown: {
+        activeDataLabelStyle: {
+            textDecoration: 'none'
+        },
+        activeAxisLabelStyle: {
+            color: '#464e56',
+            textDecoration: 'none'
+        },
+        drillUpButton: {
+            theme: {
+                style: {
+                    // https://forum.highcharts.com/highcharts-usage/empty-checkbox-after-drilldown-with-x-axis-label-t33414/
+                    display: 'none'
+                }
+            }
+        }
+    },
     plotOptions: {
         series: {
             animation: false,
@@ -102,16 +121,6 @@ const BASE_TEMPLATE = {
         animation: false,
         style: {
             fontFamily: 'Avenir, "Helvetica Neue", Arial, sans-serif'
-        }
-    },
-    drilldown: {
-        drillUpButton: {
-            theme: {
-                style: {
-                    // https://forum.highcharts.com/highcharts-usage/empty-checkbox-after-drilldown-with-x-axis-label-t33414/
-                    display: 'none'
-                }
-            }
         }
     }
 };

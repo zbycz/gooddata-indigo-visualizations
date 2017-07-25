@@ -37,9 +37,21 @@ g.highcharts-tooltip {
 
 .hc-tooltip {
     position: relative;
+    border-radius: 3px;
     font-family: $font-stack-roman;
     color: $gd-color-dark;
     background-color: transparentize($gd-color-white, 0.05);
+
+    .stroke {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        height: 0;
+        border-top: 3px solid #848484;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
 
     .content {
         max-width: 320px;

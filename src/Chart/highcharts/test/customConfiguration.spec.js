@@ -1,6 +1,8 @@
 import { getCustomizedConfiguration } from '../customConfiguration';
+import { LINE_CHART } from '../../../VisualizationTypes';
 
 const chartOptions = {
+    type: LINE_CHART,
     data: {
         series: [
             {

@@ -13,7 +13,7 @@ const LINE_TEMPLATE = {
             fillOpacity: 0.3,
             states: {
                 hover: {
-                    lineWidth: LINE_WIDTH
+                    lineWidth: LINE_WIDTH + 1
                 }
             },
             dataLabels: {
@@ -24,17 +24,6 @@ const LINE_TEMPLATE = {
         },
         column: {
             dataLabels: {}
-        },
-        line: {
-            point: {
-                events: {
-                    mouseOver() {
-                        if (this.drilldown) {
-                            this.graphic.element.style.cursor = 'pointer';
-                        }
-                    }
-                }
-            }
         }
     },
     xAxis: {
