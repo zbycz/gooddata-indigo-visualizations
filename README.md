@@ -24,6 +24,24 @@ This repository uses [Gemini](https://github.com/gemini-testing/gemini)
     * replace old reference screenshot in `./gemini/screens/` repository folder with new one
     * commit changes
 
+#### Local screenshot tests
+
+_Runnning gemini locally is optional. Both commands `yarn storybook` and `yarn build-storybook` work with gemini installed in node_modules folder thanks to `package.json`._
+
+Build storybook
+
+    yarn build-storybook
+
+Run tests
+
+    ./test-gemini.sh
+
+_Be aware that local screenshots look differently than CI screenshots. See above for more info._
+
+To cleanup files after finishing tests run
+
+    rm -rf gemini/reports dist-storybook
+
 ## Release
 
   1. Switch to master branch `git checkout master`

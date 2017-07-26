@@ -9,7 +9,8 @@ import {
     isNumber,
     escape,
     sortBy,
-    zip
+    zip,
+    values
 } from 'lodash';
 
 import {
@@ -22,6 +23,7 @@ import { getColorPalette } from './transformation';
 import { enrichHeaders } from './transformation/EnrichHeaders';
 import { getChartData } from './transformation/SeriesTransformation';
 import { transposeMetrics, parseMetricValue } from './transformation/MetricTransposition';
+import { enableDrillablePoints } from '../utils/drilldownEventing';
 
 
 export function propertiesToHeaders(config, _headers) { // TODO export for test only
@@ -46,7 +48,7 @@ export function isMetricNamesInSeries(config, headers) { // TODO export only for
     return get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames';
 }
 
-export function getLineFamilyChartData(config, rawData) {
+export function getLineFamilyChartData(config, rawData, drillableItems) {
     const data = transposeMetrics(rawData);
 
     // prepare series, categories and data
@@ -58,10 +60,10 @@ export function getLineFamilyChartData(config, rawData) {
         sortSeries: !isMetricNamesInSeries(config, data.headers)
     };
 
-    return getChartData(data, configuration);
+    return getChartData(data, configuration, drillableItems);
 }
 
-export function getPieFamilyChartData(config, data) {
+export function getPieFamilyChartData(config, data, drillableItems) {
     const { metricsOnly } = config;
     const sortDesc = ([, value]) => -value;
 
@@ -82,22 +84,34 @@ export function getPieFamilyChartData(config, data) {
         return rawData.map(dataPoint => [...dataPoint, format]);
     }
 
+    const isDrillable = items => items; // TODO will decide if drillable or not, see BB-96
+
     const unsortedData = metricsOnly ? getMetricsOnlyData(data) : getMetricAttrData(data);
-    const sortedData = sortBy(unsortedData, sortDesc);
+    const unsortedDataWithExtendedInfo = unsortedData.map((row, index) => {
+        row.push(values(data.headers)[index]); // push data.headers into values, so that it is sorted
+        return row;
+    });
+    const sortedDataWithExtendedInfo = sortBy(unsortedDataWithExtendedInfo, sortDesc);
+    const sortedExtendedInfo = [];
+    const sortedData = sortedDataWithExtendedInfo.map((row) => {
+        sortedExtendedInfo.push(row.pop()); // pop sorted data.headers back out
+        return row;
+    });
 
     return {
         series: [{
             data: sortedData.map(([attr, y, format], i) => {
-                return {
-                    name: attr.name,
-                    drillEvent: {
-                        drillContext: sortedData[i]
+                return enableDrillablePoints(
+                    isDrillable(drillableItems),
+                    {
+                        name: attr.name,
+                        y: parseMetricValue(y),
+                        color: config.colorPalette[i % config.colorPalette.length],
+                        legendIndex: i,
+                        format
                     },
-                    y: parseMetricValue(y),
-                    color: config.colorPalette[i % config.colorPalette.length],
-                    legendIndex: i,
-                    format
-                };
+                    metricsOnly ? [sortedExtendedInfo[i]] : [sortedData[i][0]]
+                );
             })
         }]
     };

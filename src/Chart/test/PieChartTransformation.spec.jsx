@@ -108,6 +108,7 @@ const SINGLE_DATA_METRIC_CONFIG = {
 describe('PieChartTransformation', () => {
     function createComponent(customProps = {}) {
         const defaultProps = {
+            afm: {},
             config: {
                 ...config,
                 legend: {

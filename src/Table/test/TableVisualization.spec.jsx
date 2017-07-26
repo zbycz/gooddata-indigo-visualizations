@@ -101,6 +101,22 @@ describe('Table', () => {
             const titles = scryRenderedDOMComponentsWithClass(table, 'gd-table-header-title');
             expect(titles[0].textContent).toEqual('Name');
         });
+
+        it('should bind onclick when cell drillable', () => {
+            table = renderTable({ drillableItems: true });
+            const columns = table.props.children;
+            const cell = columns[0].props.cell({ rowIndex: 0, columnKey: 0 });
+
+            expect(cell.props).toHaveProperty('onClick', expect.any(Function));
+        });
+
+        it('should not bind onclick when cell not drillable', () => {
+            table = renderTable({ drillableItems: false });
+            const columns = table.props.children;
+            const cell = columns[0].props.cell({ rowIndex: 0, columnKey: 0 });
+
+            expect(cell.props).not.toHaveProperty('onClick', expect.any(Function));
+        });
     });
 
     describe('sort', () => {

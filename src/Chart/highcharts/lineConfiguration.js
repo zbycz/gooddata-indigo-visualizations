@@ -24,6 +24,17 @@ const LINE_TEMPLATE = {
         },
         column: {
             dataLabels: {}
+        },
+        line: {
+            point: {
+                events: {
+                    mouseOver() {
+                        if (this.drilldown) {
+                            this.graphic.element.style.cursor = 'pointer';
+                        }
+                    }
+                }
+            }
         }
     },
     xAxis: {

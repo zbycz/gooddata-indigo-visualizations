@@ -1,12 +1,15 @@
 import { compact, uniqBy, map, times, constant, set, sortBy } from 'lodash';
+import { enableDrillablePoints } from '../../utils/drilldownEventing';
 
 // get unique elements for given index regarding their interal id
 function getElements(data, index) {
     return uniqBy(map(data.rawData, index), 'id');
 }
 
+const isDrillable = items => items; // TODO will decide if drillable or not, see BB-96
+
 // get series data
-function getSeries(data, seriesNames, categories, indices) {
+function getSeries(data, seriesNames, categories, indices, drillableItems) {
     const seriesData = seriesNames.reduce((acc, series) => {
         return set(acc, series.id, times(categories.length, constant(null)));
     }, {});
@@ -20,17 +23,21 @@ function getSeries(data, seriesNames, categories, indices) {
 
             data.rawData.forEach((dataRow) => {
                 const categoryItemIndex = categoriesIndex[dataRow[indices.category].id];
-                set(seriesData, [dataRow[indices.series].id, categoryItemIndex], dataRow[indices.metric]);
-                set(seriesData, [dataRow[indices.series].id, categoryItemIndex, 'drillEvent'], {
-                    drillContext: dataRow.slice(0, -1)
-                });
+                const pointDrill = enableDrillablePoints(
+                    isDrillable(drillableItems, 'uri'), // TODO will decide if drillable or not, see BB-96
+                    dataRow[indices.metric],
+                    dataRow.slice(0, -1)
+                );
+                set(seriesData, [dataRow[indices.series].id, categoryItemIndex], pointDrill);
             });
         } else {
             data.rawData.forEach((dataRow) => {
-                set(seriesData, [dataRow[indices.series].id, 0], dataRow[indices.metric]);
-                set(seriesData, [dataRow[indices.series].id, 0, 'drillEvent'], {
-                    drillContext: dataRow.slice(0, -1)
-                });
+                const pointDrill = enableDrillablePoints(
+                    isDrillable(drillableItems, 'uri'), // TODO will decide if drillable or not, see BB-96
+                    dataRow[indices.metric],
+                    dataRow.slice(0, -1)
+                );
+                set(seriesData, [dataRow[indices.series].id, 0], pointDrill);
             });
         }
     }
@@ -94,7 +101,7 @@ function getSeries(data, seriesNames, categories, indices) {
  *
  * </pre>
  **/
-export function getChartData(data, configuration) {
+export function getChartData(data, configuration, drillableItems) {
     const indices = configuration.indices;
 
     const categories = getElements(data, indices.category);
@@ -103,10 +110,10 @@ export function getChartData(data, configuration) {
     const seriesNamesSorted = configuration.sortSeries ? sortBy(seriesNames, 'value') : seriesNames;
     const seriesNamesCompact = compact(seriesNamesSorted);
 
-    const seriesData = getSeries(data, seriesNamesCompact, categories, indices);
+    const series = getSeries(data, seriesNamesCompact, categories, indices, drillableItems);
 
     return {
         categories: map(categories, 'value'),
-        series: seriesData
+        series
     };
 }
