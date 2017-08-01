@@ -1,4 +1,4 @@
-import { compact, uniqBy, map, times, constant, set, sortBy } from 'lodash';
+import { compact, uniqBy, map, times, constant, set, sortBy, get } from 'lodash';
 import { enableDrillablePoints } from '../../utils/drilldownEventing';
 
 // get unique elements for given index regarding their interal id
@@ -48,6 +48,15 @@ function getSeries(data, seriesNames, categories, indices, drillableItems) {
             name: name.value,
             legendIndex: index,
             data: seriesData[name.id]
+        };
+    });
+}
+
+function setDrillableFlag(series) {
+    return series.map((s) => {
+        return {
+            ...s,
+            isDrillable: get(s, 'data.0.drilldown')
         };
     });
 }
@@ -114,6 +123,6 @@ export function getChartData(data, configuration, drillableItems) {
 
     return {
         categories: map(categories, 'value'),
-        series
+        series: setDrillableFlag(series)
     };
 }

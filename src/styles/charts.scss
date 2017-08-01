@@ -44,5 +44,12 @@ $paging-button-small-size: 22px;
     }
 }
 
+.highcharts-drilldown-axis-label {
+    &:hover {
+        // stylelint-disable-next-line declaration-no-important
+        text-decoration: underline !important; // Override Higharts inline style
+    }
+}
+
 @import './legend.scss';
 @import './tooltip.scss';

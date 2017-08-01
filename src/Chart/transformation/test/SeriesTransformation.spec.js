@@ -86,6 +86,7 @@ describe('Getting chart data', () => {
                         { y: 2, format: '#.## M1', drillContext: [{ id: 'b', value: 'b' }, { id: 'M1', value: 'M1' }], drilldown: false },
                         { y: 3, format: '#.## M1', drillContext: [{ id: 'c', value: 'c' }, { id: 'M1', value: 'M1' }], drilldown: false }
                     ],
+                    isDrillable: false,
                     legendIndex: 0
                 },
                 {
@@ -95,6 +96,7 @@ describe('Getting chart data', () => {
                         { y: 5, format: '#.## M2', drillContext: [{ id: 'b', value: 'b' }, { id: 'M2', value: 'M2' }], drilldown: false },
                         { y: 6, format: '#.## M2', drillContext: [{ id: 'c', value: 'c' }, { id: 'M2', value: 'M2' }], drilldown: false }
                     ],
+                    isDrillable: false,
                     legendIndex: 1
                 },
                 {
@@ -104,6 +106,7 @@ describe('Getting chart data', () => {
                         { y: 8, format: DEFAULT_FORMAT, drillContext: [{ id: 'b', value: 'b' }, { id: 'M3', value: 'M3' }], drilldown: false },
                         { y: 9, format: DEFAULT_FORMAT, drillContext: [{ id: 'c', value: 'c' }, { id: 'M3', value: 'M3' }], drilldown: false }
                     ],
+                    isDrillable: false,
                     legendIndex: 2
                 }
 
@@ -158,6 +161,7 @@ describe('Getting chart data', () => {
                         { y: 3, format: '#.## M1', drillContext: [{ id: 'b', value: 'b' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }], drilldown: false },
                         { y: 5, format: '#.## M1', drillContext: [{ id: 'c', value: 'c' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }], drilldown: false }
                     ],
+                    isDrillable: false,
                     legendIndex: 0
                 },
                 {
@@ -167,6 +171,7 @@ describe('Getting chart data', () => {
                         { y: 4, format: '#.## M1', drillContext: [{ id: 'b', value: 'b' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }], drilldown: false },
                         { y: 6, format: '#.## M1', drillContext: [{ id: 'c', value: 'c' }, { id: 'y', value: 'y' }, { id: 'M1', value: 'M1' }], drilldown: false }
                     ],
+                    isDrillable: false,
                     legendIndex: 1
                 }
             ]
@@ -213,5 +218,29 @@ describe('Getting chart data', () => {
         const series = map(getChartData(data, configuration).series, 'name');
 
         expect(series).toEqual(expectedSeries);
+    });
+
+    it('should add isDrilldown flag to series', () => {
+        const data = {
+            headers: [
+                { id: 'a1', type: 'attrLabel' }
+            ],
+            /* eslint-disable max-len */
+            rawData: [
+                [{ id: 'a', value: 'a' }, { id: 'x', value: 'x' }, { id: 'M1', value: 'M1' }, { y: 1, format: '#.## M1' }]
+            ]
+            /* eslint-enable max-len */
+        };
+
+        const configuration = {
+            indices: {
+                category: 0,
+                series: 1,
+                metric: 1
+            },
+            sortSeries: true
+        };
+
+        expect(getChartData(data, configuration)).toHaveProperty('series.0.isDrillable', false);
     });
 });

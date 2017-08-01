@@ -1,11 +1,4 @@
-import merge from 'lodash/merge';
-import get from 'lodash/get';
-import map from 'lodash/map';
-import partial from 'lodash/partial';
-import isEmpty from 'lodash/isEmpty';
-import compact from 'lodash/compact';
-import cloneDeep from 'lodash/cloneDeep';
-import every from 'lodash/every';
+import { set, get, merge, map, partial, isEmpty, compact, cloneDeep, every } from 'lodash';
 import cx from 'classnames';
 
 import {
@@ -13,7 +6,9 @@ import {
     numberFormat
 } from '@gooddata/numberjs';
 
-import { BAR_CHART, COLUMN_CHART, LINE_CHART } from '../../VisualizationTypes';
+import { BAR_CHART, COLUMN_CHART, LINE_CHART, PIE_CHART } from '../../VisualizationTypes';
+import { HOVER_BRIGHTNESS, MINIMUM_HC_SAFE_BRIGHTNESS } from './commonConfiguration';
+import { _getLighterColor } from '../transformation';
 
 const EMPTY_DATA = { categories: [], series: [] };
 
@@ -154,6 +149,7 @@ const showFullscreenTooltip = () => {
 
 function formatTooltip(chartType, stacking, tooltipCallback) {
     const { chart } = this.series;
+    const { color: pointColor } = this.point;
 
     // when brushing, do not show tooltip
     if (chart.mouseIsDown) {
@@ -182,6 +178,8 @@ function formatTooltip(chartType, stacking, tooltipCallback) {
     const chartWidth = chart.plotWidth;
     const align = getArrowAlignment(arrowPosition, chartWidth);
 
+    const strokeStyle = pointColor ? `border-top-color: ${pointColor};` : '';
+
     const tailStyle = showFullscreenTooltip() ?
         `style="left: ${arrowPosition + chart.plotLeft}px;"` : '';
 
@@ -193,6 +191,7 @@ function formatTooltip(chartType, stacking, tooltipCallback) {
 
     return (
         `<div class="hc-tooltip">
+            <span class="stroke" style="${strokeStyle}"></span>
             <div class="content">
                 ${tooltipCallback(this.point)}
             </div>
@@ -232,6 +231,7 @@ function stackLabelFormatter() {
     return showStackLabel ?
         formatLabel(this.total, get(this, 'axis.userOptions.defaultFormat')) : null;
 }
+
 function getTooltipConfiguration(chartOptions) {
     const tooltipAction = get(chartOptions, 'actions.tooltip');
     const chartType = chartOptions.type;
@@ -258,7 +258,14 @@ function getLabelsConfiguration(chartOptions) {
         textShadow: 'none'
     };
 
+    const drilldown = chartOptions.stacking ? {
+        activeDataLabelStyle: {
+            color: '#ffffff'
+        }
+    } : {};
+
     return {
+        drilldown,
         plotOptions: {
             bar: {
                 dataLabels: {
@@ -341,6 +348,68 @@ function getDataConfiguration(chartOptions) {
     };
 }
 
+function getHoverStyles(chartOptions, config) {
+    let seriesMapFn = () => { };
+
+    switch (chartOptions.type) {
+        default:
+            throw new Error(`Undefined chart type "${chartOptions.type}".`);
+
+        case LINE_CHART:
+            seriesMapFn = (seriesOrig) => {
+                const series = cloneDeep(seriesOrig);
+
+                if (series.isDrillable) {
+                    set(series, 'marker.states.hover.fillColor', _getLighterColor(series.color, HOVER_BRIGHTNESS));
+                    set(series, 'cursor', 'pointer');
+                } else {
+                    set(series, 'states.hover.halo.size', 0);
+                }
+
+                return series;
+            };
+            break;
+
+        case BAR_CHART:
+        case COLUMN_CHART:
+            seriesMapFn = (seriesOrig) => {
+                const series = cloneDeep(seriesOrig);
+
+                set(series, 'states.hover.brightness', HOVER_BRIGHTNESS);
+                set(series, 'states.hover.enabled', series.isDrillable);
+
+                return series;
+            };
+            break;
+
+        case PIE_CHART:
+            seriesMapFn = (seriesOrig) => {
+                const series = cloneDeep(seriesOrig);
+
+                return {
+                    ...series,
+                    data: series.data.map((dataItemOrig) => {
+                        const dataItem = cloneDeep(dataItemOrig);
+
+                        set(dataItem, 'states.hover.brightness', dataItem.drilldown ?
+                            HOVER_BRIGHTNESS : MINIMUM_HC_SAFE_BRIGHTNESS);
+
+                        if (!dataItem.drilldown) {
+                            set(dataItem, 'halo.size', 0); // see plugins/pointHalo.js
+                        }
+
+                        return dataItem;
+                    })
+                };
+            };
+            break;
+    }
+
+    return {
+        series: config.series.map(seriesMapFn)
+    };
+}
+
 export function getCustomizedConfiguration(chartOptions) {
     const configurators = [
         getTitleConfiguration,
@@ -348,11 +417,12 @@ export function getCustomizedConfiguration(chartOptions) {
         getShowInPercentConfiguration,
         getLabelsConfiguration,
         getDataConfiguration,
-        getTooltipConfiguration
+        getTooltipConfiguration,
+        getHoverStyles
     ];
 
     const commonData = configurators.reduce((config, configurator) => {
-        return merge(config, configurator(chartOptions));
+        return merge(config, configurator(chartOptions, config));
     }, {});
 
     return merge({}, commonData);

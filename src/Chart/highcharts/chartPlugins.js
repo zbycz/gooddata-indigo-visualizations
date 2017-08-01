@@ -1,5 +1,6 @@
 import autohideLabels from './plugins/autohideLabels/autohideLabels';
 import { extendDataLabelColors } from './plugins/dataLabelsColors';
+import { applyPointHaloOptions } from './plugins/pointHalo';
 
 const extendRenderStackTotals = (Highcharts) => {
     Highcharts.wrap(Highcharts.Axis.prototype, 'renderStackTotals', function(proceed) { // eslint-disable-line
@@ -30,4 +31,5 @@ export function initChartPlugins(Highcharts) {
     extendRenderStackTotals(Highcharts);
     autohideLabels(Highcharts);
     extendDataLabelColors(Highcharts);
+    applyPointHaloOptions(Highcharts);
 }

@@ -1,11 +1,9 @@
-import merge from 'lodash/merge';
-import get from 'lodash/get';
+import { merge, get } from 'lodash';
 import {
     DEFAULT_SERIES_LIMIT,
     DEFAULT_CATEGORIES_LIMIT,
     getCommonConfiguration
 } from './highcharts/commonConfiguration';
-
 import { getLineConfiguration } from './highcharts/lineConfiguration';
 import { getBarConfiguration } from './highcharts/barConfiguration';
 import { getColumnConfiguration } from './highcharts/columnConfiguration';
