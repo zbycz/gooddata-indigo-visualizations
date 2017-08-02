@@ -19,11 +19,11 @@ import {
 } from '@gooddata/numberjs';
 
 import { getColorPalette } from './transformation';
-
 import { enrichHeaders } from './transformation/EnrichHeaders';
 import { getChartData } from './transformation/SeriesTransformation';
-import { transposeMetrics, parseMetricValue } from './transformation/MetricTransposition';
+import { transposeMetrics } from './transformation/MetricTransposition';
 import { enableDrillablePoints } from '../utils/drilldownEventing';
+import { parseValue } from '../utils/common';
 
 
 export function propertiesToHeaders(config, _headers) { // TODO export for test only
@@ -105,7 +105,7 @@ export function getPieFamilyChartData(config, data, drillableItems) {
                     isDrillable(drillableItems),
                     {
                         name: attr.name,
-                        y: parseMetricValue(y),
+                        y: parseValue(y),
                         color: config.colorPalette[i % config.colorPalette.length],
                         legendIndex: i,
                         format
