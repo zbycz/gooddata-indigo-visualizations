@@ -1,4 +1,4 @@
-import { cloneDeep, invoke, get, set } from 'lodash';
+import { cloneDeep, invoke, get, set, isEmpty } from 'lodash';
 import { chartClick } from '../../utils/drilldownEventing';
 
 const isTouchDevice = 'ontouchstart' in window || navigator.msMaxTouchPoints;
@@ -102,7 +102,8 @@ const BASE_TEMPLATE = {
                             const currentChart = this.series.chart;
                             const currentId = get(currentChart, 'container.id');
                             const prevId = get(previousChart, 'container.id');
-                            if (previousChart && prevId !== currentId) {
+                            const previousChartDisconnected = isEmpty(previousChart);
+                            if (previousChart && !previousChartDisconnected && prevId !== currentId) {
                                 // Remove line chart point bubble
                                 invoke(previousChart, 'hoverSeries.onMouseOut');
                                 previousChart.tooltip.hide();
