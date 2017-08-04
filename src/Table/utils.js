@@ -1,11 +1,13 @@
 import { string } from '@gooddata/js-utils';
-import { findIndex, isArray, isObject, clamp } from 'lodash';
+import { findIndex, isArray, isObject, clamp, cloneDeep } from 'lodash';
 import cx from 'classnames';
 
 import {
     colors2Object,
     numberFormat
 } from '@gooddata/numberjs';
+
+import { parseValue } from '../utils/common';
 
 import { ASC, DESC } from './Sort';
 
@@ -21,6 +23,33 @@ const simplifyText = string.simplifyText;
 
 function getCssClass(value, prefix = '') {
     return prefix + simplifyText(value);
+}
+
+export function getMetricsFromHeaders(headers) {
+    const metrics = [];
+
+    headers.forEach((header, i) => {
+        if (header.type === 'metric') {
+            metrics.push({
+                index: i,
+                header
+            });
+        }
+    });
+
+    return metrics;
+}
+
+export function parseMetricValues(headers, rawData) {
+    const metrics = getMetricsFromHeaders(headers);
+
+    return rawData.map((row) => {
+        const rowWithParsedValues = cloneDeep(row);
+        metrics.forEach((metric) => {
+            rowWithParsedValues[metric.index] = parseValue(rowWithParsedValues[metric.index]);
+        });
+        return rowWithParsedValues;
+    });
 }
 
 function findFirstSort(items, typeName) {

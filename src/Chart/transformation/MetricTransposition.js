@@ -1,15 +1,11 @@
 import { cloneDeep } from 'lodash';
 import { enrichHeaders } from './EnrichHeaders';
+import { parseValue } from '../../utils/common';
 
 import { DEFAULT_FORMAT } from '../constants/metrics';
 
 function invalidInput(data) {
     return !data || data.isLoading;
-}
-
-export function parseMetricValue(metricValue) {
-    const parsedValue = parseFloat(metricValue);
-    return isNaN(parsedValue) ? null : parsedValue;
 }
 
 function transposeData(headers, metrics, rawData) {
@@ -37,7 +33,7 @@ function transposeData(headers, metrics, rawData) {
             });
 
             const metricValue = rawData[ri][metric.index];
-            const y = parseMetricValue(metricValue);
+            const y = parseValue(metricValue);
             row.push({
                 format: metric.header.format || DEFAULT_FORMAT,
                 y,

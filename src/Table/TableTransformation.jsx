@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { pick } from 'lodash';
 
 import Table from './Table';
-import { getSortInfo } from './utils';
+import { getSortInfo, parseMetricValues } from './utils';
 
 export function renderTable(props) {
     return <Table {...props} />;
@@ -34,13 +34,16 @@ export default class TableTransformation extends Component {
         afterRender: () => {}
     };
 
+
     render() {
         const { data: { headers, rawData }, config, height, width, onSortChange, afm, drillableItems } = this.props;
         const { sortBy, sortDir } = getSortInfo(config);
 
+        const rows = parseMetricValues(headers, rawData);
+
         const tableProps = {
             afm,
-            rows: rawData,
+            rows,
             drillableItems,
             headers,
             sortBy,
