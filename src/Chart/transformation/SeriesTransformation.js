@@ -6,10 +6,8 @@ function getElements(data, index) {
     return uniqBy(map(data.rawData, index), 'id');
 }
 
-const isDrillable = items => items; // TODO will decide if drillable or not, see BB-96
-
 // get series data
-function getSeries(data, seriesNames, categories, indices, drillableItems) {
+function getSeries(data, seriesNames, categories, indices, drillableItems = []) {
     const seriesData = seriesNames.reduce((acc, series) => {
         return set(acc, series.id, times(categories.length, constant(null)));
     }, {});
@@ -24,7 +22,7 @@ function getSeries(data, seriesNames, categories, indices, drillableItems) {
             data.rawData.forEach((dataRow) => {
                 const categoryItemIndex = categoriesIndex[dataRow[indices.category].id];
                 const pointDrill = enableDrillablePoints(
-                    isDrillable(drillableItems, 'uri'), // TODO will decide if drillable or not, see BB-96
+                    drillableItems,
                     dataRow[indices.metric],
                     dataRow.slice(0, -1)
                 );
@@ -33,7 +31,7 @@ function getSeries(data, seriesNames, categories, indices, drillableItems) {
         } else {
             data.rawData.forEach((dataRow) => {
                 const pointDrill = enableDrillablePoints(
-                    isDrillable(drillableItems, 'uri'), // TODO will decide if drillable or not, see BB-96
+                    drillableItems,
                     dataRow[indices.metric],
                     dataRow.slice(0, -1)
                 );

@@ -24,7 +24,7 @@ storiesOf('Drilldown')
         screenshotWrap(
             wrap(
                 <LineFamilyChartTransformation
-                    drillableItems
+                    drillableItems={TestData.barChart2SeriesDrillableItems}
                     config={{
                         ...TestConfig.barChart2Series,
                         legend: {
@@ -36,12 +36,30 @@ storiesOf('Drilldown')
             )
         )
     ))
+    .add('Bar chart', () => (
+        screenshotWrap(
+            <IntlWrapper>
+                <div style={{ height: 500, width: '100%' }}>
+                    <LineFamilyChartTransformation
+                        drillableItems={TestData.metricsOnlyPieChartDrillableItems}
+                        config={{
+                            ...TestConfig.column,
+                            legend: {
+                                enabled: false
+                            }
+                        }}
+                        data={TestData.metricsOnlyPieChart}
+                    />
+                </div>
+            </IntlWrapper>
+        )
+    ))
     .add('Stacked bar chart', () => (
         screenshotWrap(
             <IntlWrapper>
                 <div style={{ height: 500, width: '100%' }}>
                     <LineFamilyChartTransformation
-                        drillableItems
+                        drillableItems={TestData.stackedBarDrillableItems}
                         config={{
                             ...TestConfig.stackedBar,
                             legend: {
@@ -58,7 +76,7 @@ storiesOf('Drilldown')
         screenshotWrap(
             <div>
                 <TableTransformation
-                    drillableItems
+                    drillableItems={TestData.stackedBarDrillableItems}
                     config={TestConfig.table}
                     data={TestData.stackedBar}
                     width={600}
