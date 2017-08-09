@@ -20,6 +20,7 @@ function isLineFamily(visType) {
 
 export default class Visualization extends Component {
     static propTypes = {
+        afm: PropTypes.object,
         config: PropTypes.shape({
             type: PropTypes.string.isRequired
         }).isRequired,
@@ -28,6 +29,7 @@ export default class Visualization extends Component {
     };
 
     static defaultProps = {
+        afm: null,
         numericSymbols: [],
         afterRender: () => {}
     };

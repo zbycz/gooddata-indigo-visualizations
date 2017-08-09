@@ -4,7 +4,6 @@ import { pick } from 'lodash';
 
 import Table from './Table';
 import { getSortInfo, parseMetricValues } from './utils';
-import DrillableItem from '../utils/DrillableItem';
 
 export function renderTable(props) {
     return <Table {...props} />;
@@ -19,7 +18,7 @@ export default class TableTransformation extends Component {
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
-        drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
+        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
         tableRenderer: PropTypes.func.isRequired,
         height: PropTypes.number,
         width: PropTypes.number,
@@ -28,9 +27,9 @@ export default class TableTransformation extends Component {
     };
 
     static defaultProps = {
-        afm: {},
+        afm: null,
         config: {},
-        drillableItems: [],
+        drillableItems: false, // TODO will be array, see BB-96
         tableRenderer: renderTable,
         afterRender: () => {}
     };

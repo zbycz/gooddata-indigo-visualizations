@@ -25,8 +25,6 @@ import { getLegendConfig } from './Legend/helpers';
 
 import HighChartRenderer from './HighChartRenderer';
 
-import DrillableItem from '../utils/DrillableItem';
-
 export function renderLineFamilyChart(props) {
     return <HighChartRenderer {...props} />;
 }
@@ -50,7 +48,7 @@ export default class LineFamilyChartTransformation extends Component {
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
-        drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
+        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
         height: PropTypes.number,
         width: PropTypes.number,
 
@@ -60,8 +58,8 @@ export default class LineFamilyChartTransformation extends Component {
     };
 
     static defaultProps = {
-        afm: {},
-        drillableItems: [],
+        afm: null,
+        drillableItems: false, // TODO will be array, see BB-96
         lineFamilyChartRenderer: renderLineFamilyChart,
         afterRender: () => {}
     };
