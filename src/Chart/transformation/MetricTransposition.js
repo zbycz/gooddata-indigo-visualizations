@@ -33,7 +33,7 @@ function transposeData(headers, metrics, rawData) {
             const metric = metrics[mi];
 
             row.push({
-                id: `metric-${mi}`, // let each metric have unique id
+                id: metric.header.id, // each metric must have unique id
                 value: metric.header.title,
                 header: {
                     id: metric.header.id ? metric.header.id : null,
