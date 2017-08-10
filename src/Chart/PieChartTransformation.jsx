@@ -144,6 +144,7 @@ export default class PieChartTransformation extends Component {
         } = this.props;
 
         const chartOptions = getPieChartOptions({
+            ...config,
             type: PIE_CHART,
             height
         }, data);

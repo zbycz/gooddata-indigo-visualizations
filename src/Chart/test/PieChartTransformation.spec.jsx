@@ -150,6 +150,25 @@ describe('PieChartTransformation', () => {
         expect(wrapper.find(HighChartRenderer)).toHaveLength(1);
     });
 
+    it('should pass custom colors', () => {
+        const pieChartRenderer = jest.fn().mockReturnValue(<div />);
+        const customColors = [
+            '#980F5F',
+            '#872D62',
+            '#69525F',
+            '#764361',
+            '#A50061'
+        ];
+        renderIntoDocument(createComponent({
+            pieChartRenderer,
+            config: {
+                colors: customColors
+            }
+        }));
+        const passedProps = pieChartRenderer.mock.calls[0][0];
+        expect(passedProps.chartOptions.colorPalette).toEqual(customColors);
+    });
+
     describe('exceeding data point limit', () => {
         it('should not render if data point limit is exceeded', () => {
             const wrapper = shallow(createComponent({
