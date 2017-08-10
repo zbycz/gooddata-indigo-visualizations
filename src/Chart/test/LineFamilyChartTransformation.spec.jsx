@@ -67,7 +67,7 @@ const SINGLE_SERIES_CONFIG = {
 
 describe('LineFamilyChartTransformation', () => {
     const defaultProps = {
-        afm: {},
+        afm: null,
         config,
         data,
         onDataTooLarge: () => {}

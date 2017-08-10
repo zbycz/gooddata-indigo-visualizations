@@ -17,12 +17,10 @@ const FIXTURE = {
             type: 'attrLabel',
             title: 'Name'
         }, {
-            id: 'metric-1',
             type: 'metric',
             title: '# of Open Opps.',
             format: '#,##0'
         }, {
-            id: 'metric-2',
             type: 'metric',
             title: '# of Opportunities',
             format: '[red]#,##0'
@@ -105,17 +103,17 @@ describe('Table', () => {
         });
 
         it('should bind onclick when cell drillable', () => {
-            table = renderTable({ drillableItems: [{ identifier: 'metric-1' }] });
+            table = renderTable({ drillableItems: true });
             const columns = table.props.children;
-            const cell = columns[1].props.cell({ rowIndex: 0, columnKey: 1 });
+            const cell = columns[0].props.cell({ rowIndex: 0, columnKey: 0 });
 
             expect(cell.props).toHaveProperty('onClick', expect.any(Function));
         });
 
         it('should not bind onclick when cell not drillable', () => {
-            table = renderTable({ drillableItems: [{ identifier: 'metric-x' }] });
+            table = renderTable({ drillableItems: false });
             const columns = table.props.children;
-            const cell = columns[1].props.cell({ rowIndex: 0, columnKey: 1 });
+            const cell = columns[0].props.cell({ rowIndex: 0, columnKey: 0 });
 
             expect(cell.props).not.toHaveProperty('onClick', expect.any(Function));
         });

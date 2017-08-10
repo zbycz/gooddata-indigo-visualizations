@@ -171,9 +171,9 @@ export const getTooltipAlignPoints = (columnAlign) => {
     ];
 };
 
-export function getCellClassNames(rowIndex, columnKey, drillable) {
+export function getCellClassNames(rowIndex, columnKey, isDrillable) {
     return cx({
-        'gd-cell-drillable': drillable
+        'gd-cell-drillable': isDrillable
     }, `s-cell-${rowIndex}-${columnKey}`);
 }
 

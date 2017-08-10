@@ -1,22 +1,12 @@
-import { cloneDeep, set, debounce, includes } from 'lodash';
+import { cloneDeep, set, debounce } from 'lodash';
 import invariant from 'invariant';
 import CustomEvent from 'custom-event';
 import { BAR_CHART, COLUMN_CHART, LINE_CHART, PIE_CHART, TABLE } from '../VisualizationTypes';
 
-export const isDrillable = (drillableItems, header) =>
-    drillableItems.some(drillableItem =>
-        includes(drillableItem.identifier, header.id ? header.id : false) ||
-        includes(drillableItem.uri, header.uri ? header.uri : false)
-    );
-
-export function enableDrillablePoints(drillableItems, data, context) {
+export function enableDrillablePoints(isDrillable, data, context) {
     const point = cloneDeep(data);
 
-    const pointIsDrillable = context.some(item =>
-        isDrillable(drillableItems, item.header)
-    );
-
-    set(point, 'drilldown', pointIsDrillable);
+    set(point, 'drilldown', !!isDrillable);
     set(point, 'drillContext', context);
 
     return point;

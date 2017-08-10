@@ -11,13 +11,12 @@ describe('Drilldown Eventing', () => {
 
     it('should enable drilldown to point', () => {
         const point = {};
-        const context = [{ header: { id: 'foo' } }];
-        const drillableItems = [{ identifier: 'foo' }];
-        const res = enableDrillablePoints(drillableItems, point, context);
+        const context = { foo: 'bar' };
+        const res = enableDrillablePoints(true, point, context);
 
         expect(res).toMatchObject({
             drilldown: true,
-            drillContext: context
+            drillContext: { foo: 'bar' }
         });
     });
 
