@@ -238,7 +238,7 @@ export function getPieChartOptions(config, data) {
         chart: {
             height: config.height
         },
-        colorPalette: getColorPalette(data, config.colorPalette),
+        colorPalette: getColorPalette(data, config.colors),
         actions: {
             tooltip: generatePieTooltipFn({
                 categoryLabel,

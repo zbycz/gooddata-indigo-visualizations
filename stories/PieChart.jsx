@@ -61,4 +61,25 @@ storiesOf('Pie Chart')
                 data={TestData.metricsOnlyPieChart}
             />
         ))
+    ))
+    .add('Custom color pallete', () => (
+        screenshotWrap(
+            wrap(
+                <PieChartTransformation
+                    config={{
+                        legend: {
+                            enabled: false
+                        },
+                        colors: [
+                            '#980F5F',
+                            '#872D62',
+                            '#69525F',
+                            '#764361',
+                            '#A50061'
+                        ]
+                    }}
+                    data={TestData.barChart2Series}
+                />
+            )
+        )
     ));
