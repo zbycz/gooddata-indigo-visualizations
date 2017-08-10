@@ -1,5 +1,5 @@
 import { string } from '@gooddata/js-utils';
-import { findIndex, isArray, isObject, clamp, cloneDeep } from 'lodash';
+import { findIndex, isArray, isObject, clamp, cloneDeep, assign } from 'lodash';
 import cx from 'classnames';
 
 import {
@@ -7,7 +7,7 @@ import {
     numberFormat
 } from '@gooddata/numberjs';
 
-import { parseValue } from '../utils/common';
+import { parseValue, getMeasureHeader, getAttributeHeader } from '../utils/common';
 
 import { ASC, DESC } from './Sort';
 
@@ -171,9 +171,9 @@ export const getTooltipAlignPoints = (columnAlign) => {
     ];
 };
 
-export function getCellClassNames(rowIndex, columnKey, isDrillable) {
+export function getCellClassNames(rowIndex, columnKey, drillable) {
     return cx({
-        'gd-cell-drillable': isDrillable
+        'gd-cell-drillable': drillable
     }, `s-cell-${rowIndex}-${columnKey}`);
 }
 
@@ -208,3 +208,13 @@ export function getNextSortDir(column, currentSortDir) {
     }
     return currentSortDir === ASC ? DESC : ASC;
 }
+
+export const enrichTableDataHeaders = (columns, afm) =>
+    columns.map((column) => {
+        if (column.type === 'metric') {
+            return assign(column, getMeasureHeader(column, afm));
+        } else if (column.type === 'attrLabel') {
+            return assign(column, getAttributeHeader(column));
+        }
+        return column;
+    });

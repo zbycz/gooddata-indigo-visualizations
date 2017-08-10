@@ -6,6 +6,7 @@ import { getPieChartOptions, getPieFamilyChartData } from './chartCreators';
 import { getPieChartConfiguration } from './highChartsCreators';
 import { PIE_CHART } from '../VisualizationTypes';
 import { getLegendConfig } from './Legend/helpers';
+import DrillableItem from '../proptypes/DrillableItem';
 
 import HighChartRenderer from './HighChartRenderer';
 
@@ -50,7 +51,7 @@ export default class PieChartTransformation extends Component {
         data: PropTypes.shape({
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
-        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
+        drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
         height: PropTypes.number,
         width: PropTypes.number,
         onDataTooLarge: PropTypes.func,
@@ -60,8 +61,8 @@ export default class PieChartTransformation extends Component {
     };
 
     static defaultProps = {
-        afm: null,
-        drillableItems: false, // TODO will be array, see BB-96
+        afm: {},
+        drillableItems: [],
         afterRender: () => {},
         onDataTooLarge: () => {},
         onNegativeValues: () => {},
@@ -148,7 +149,7 @@ export default class PieChartTransformation extends Component {
             height
         }, data);
 
-        chartOptions.data = getPieFamilyChartData(chartOptions, data, drillableItems);
+        chartOptions.data = getPieFamilyChartData(chartOptions, data, drillableItems, afm);
 
         const hcOptions = getPieChartConfiguration(chartOptions, afm);
 

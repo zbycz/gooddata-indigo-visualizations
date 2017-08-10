@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import classNames from 'classnames';
-import { noop, partial, uniqueId, debounce, pick } from 'lodash';
+import { noop, partial, uniqueId, debounce, pick, assign } from 'lodash';
 
 import Bubble from '@gooddata/goodstrap/lib/Bubble/Bubble';
 import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/BubbleHoverTrigger';
 import TableSortBubbleContent from './TableSortBubbleContent';
-import { cellClick } from '../utils/drilldownEventing';
+import { cellClick, isDrillable } from '../utils/drilldownEventing';
+import DrillableItem from '../proptypes/DrillableItem';
 
 import {
     getNextSortDir,
@@ -19,7 +20,8 @@ import {
     getHeaderSortClassName,
     getTooltipSortAlignPoints,
     getTooltipAlignPoints,
-    calculateArrowPositions
+    calculateArrowPositions,
+    enrichTableDataHeaders
 } from './utils';
 
 const MIN_COLUMN_WIDTH = 100;
@@ -34,7 +36,7 @@ const scrollEvents = ['scroll', 'goodstrap.scrolled', 'goodstrap.drag'];
 export default class TableVisualization extends Component {
     static propTypes = {
         afm: PropTypes.object,
-        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
+        drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
         containerWidth: PropTypes.number.isRequired,
         containerHeight: PropTypes.number,
         containerMaxHeight: PropTypes.number,
@@ -50,8 +52,8 @@ export default class TableVisualization extends Component {
     };
 
     static defaultProps = {
-        afm: null,
-        drillableItems: false, // TODO will be array, see BB-96
+        afm: {},
+        drillableItems: [],
         rows: [],
         headers: [],
         onSortChange: noop,
@@ -360,33 +362,37 @@ export default class TableVisualization extends Component {
         );
     }
 
-    renderCell(column) {
-        const { rows, afm } = this.props;
-        const { isDrillable } = column;
+    renderCell(columns, index) {
+        const { rows, afm, drillableItems } = this.props;
+
+        const column = columns[index];
+
+        const drillable = isDrillable(drillableItems, column);
 
         return (cellProps) => {
             const { rowIndex, columnKey } = cellProps;
 
             const row = rows[rowIndex];
             const content = row[columnKey];
-            const classes = getCellClassNames(rowIndex, columnKey, isDrillable);
+            const classes = getCellClassNames(rowIndex, columnKey, drillable);
 
             const { style, label } = getStyledLabel(column, content);
 
-            const cellPropsDrill = !isDrillable ? cellProps : {
-                ...cellProps,
+            const cellPropsDrill = drillable ? assign({}, cellProps, {
                 onClick(e) {
                     cellClick(
                         afm,
                         {
                             columnIndex: columnKey,
                             rowIndex,
-                            row
+                            row,
+                            intersection: [column]
                         },
                         e.target
                     );
                 }
-            };
+            }) : cellProps;
+
 
             return (
                 <Cell {...cellPropsDrill}>
@@ -407,7 +413,7 @@ export default class TableVisualization extends Component {
                 align={getColumnAlign(column)}
                 columnKey={index}
                 header={renderHeader(column, index, columnWidth)}
-                cell={this.renderCell(column)}
+                cell={this.renderCell(columns, index)}
                 allowCellsRecycling
             />
         );
@@ -421,10 +427,12 @@ export default class TableVisualization extends Component {
             containerMaxHeight,
             stickyHeader,
             hasHiddenRows,
-            drillableItems
+            afm
         } = this.props;
 
-        const columnWidth = Math.max(containerWidth / headers.length, MIN_COLUMN_WIDTH);
+        const enrichedHeaders = enrichTableDataHeaders(headers, afm);
+
+        const columnWidth = Math.max(containerWidth / enrichedHeaders.length, MIN_COLUMN_WIDTH);
         const isSticky = this.isSticky(stickyHeader);
 
         const height = containerMaxHeight ? undefined : containerHeight;
@@ -432,9 +440,6 @@ export default class TableVisualization extends Component {
             classNames('indigo-table-component', { 'has-hidden-rows': hasHiddenRows });
         const componentContentClasses =
             classNames('indigo-table-component-content', { 'has-sticky-header': isSticky });
-
-        const columns = headers.map(column =>
-            ({ ...column, isDrillable: drillableItems })); // TODO will decide if drillable or not, see BB-96
 
         return (
             <div className={componentClasses}>
@@ -450,7 +455,7 @@ export default class TableVisualization extends Component {
                         height={height}
                         onScrollStart={this.closeBubble}
                     >
-                        {this.renderColumns(columns, columnWidth)}
+                        {this.renderColumns(enrichedHeaders, columnWidth)}
                     </Table>
                 </div>
                 {isSticky ? (

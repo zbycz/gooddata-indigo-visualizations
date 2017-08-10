@@ -1,5 +1,5 @@
 import {
-    enableDrillablePoints,
+    enableDrillablePoint,
     getClickableElementNameByChartType,
     chartClick,
     cellClick
@@ -11,12 +11,13 @@ describe('Drilldown Eventing', () => {
 
     it('should enable drilldown to point', () => {
         const point = {};
-        const context = { foo: 'bar' };
-        const res = enableDrillablePoints(true, point, context);
+        const context = [{ header: { id: 'foo' } }];
+        const drillableItems = [{ identifier: 'foo' }];
+        const res = enableDrillablePoint(drillableItems, point, context);
 
         expect(res).toMatchObject({
             drilldown: true,
-            drillContext: { foo: 'bar' }
+            drillContext: context
         });
     });
 
@@ -43,15 +44,21 @@ describe('Drilldown Eventing', () => {
                     {
                         id: 'id',
                         title: 'title',
+                        identifier: 'identifier1',
+                        uri: 'uri1',
                         some: 'nonrelevant data'
                     },
                     {
                         id: 'id',
-                        value: 'value'
+                        value: 'value',
+                        identifier: 'identifier2',
+                        uri: 'uri2'
                     },
                     {
                         id: 'id',
-                        name: 'name'
+                        name: 'name',
+                        identifier: 'identifier3',
+                        uri: 'uri3'
                     }
                 ],
                 some: 'nonrelevant data'
@@ -74,15 +81,27 @@ describe('Drilldown Eventing', () => {
                 intersection: [
                     {
                         id: 'id',
-                        title: 'title'
+                        title: 'title',
+                        header: {
+                            identifier: 'identifier1',
+                            uri: 'uri1'
+                        }
                     },
                     {
                         id: 'id',
-                        title: 'value'
+                        title: 'value',
+                        header: {
+                            identifier: 'identifier2',
+                            uri: 'uri2'
+                        }
                     },
                     {
                         id: 'id',
-                        title: 'name'
+                        title: 'name',
+                        header: {
+                            identifier: 'identifier3',
+                            uri: 'uri3'
+                        }
                     }
                 ]
             }
@@ -100,6 +119,8 @@ describe('Drilldown Eventing', () => {
                     {
                         id: 'id',
                         title: 'title',
+                        identifier: 'identifier1',
+                        uri: 'uri1',
                         some: 'nonrelevant data'
                     }
                 ],
@@ -124,7 +145,11 @@ describe('Drilldown Eventing', () => {
                     intersection: [
                         {
                             id: 'id',
-                            title: 'title'
+                            title: 'title',
+                            header: {
+                                identifier: 'identifier1',
+                                uri: 'uri1'
+                            }
                         }
                     ]
 
@@ -140,6 +165,13 @@ describe('Drilldown Eventing', () => {
             columnIndex: 1,
             rowIndex: 2,
             row: ['3'],
+            intersection: [{
+                title: 'title1',
+                id: 'id1',
+                identifier: 'identifier1',
+                uri: 'uri1',
+                some: 'irrelevant data'
+            }],
             some: 'nonrelevant data'
         };
 
@@ -154,7 +186,15 @@ describe('Drilldown Eventing', () => {
                 element: 'cell',
                 columnIndex: 1,
                 rowIndex: 2,
-                row: ['3']
+                row: ['3'],
+                intersection: [{
+                    id: 'id1',
+                    title: 'title1',
+                    header: {
+                        identifier: 'identifier1',
+                        uri: 'uri1'
+                    }
+                }]
             }
         });
     });

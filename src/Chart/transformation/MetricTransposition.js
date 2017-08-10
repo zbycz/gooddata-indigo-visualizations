@@ -1,6 +1,6 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, assign } from 'lodash';
 import { enrichHeaders } from './EnrichHeaders';
-import { parseValue } from '../../utils/common';
+import { parseValue, getMeasureHeader, getAttributeHeader } from '../../utils/common';
 
 import { DEFAULT_FORMAT } from '../constants/metrics';
 
@@ -8,7 +8,7 @@ function invalidInput(data) {
     return !data || data.isLoading;
 }
 
-function transposeData(headers, metrics, rawData) {
+function transposeData(headers, metrics, rawData, afm) {
     const data = [];
 
     for (let mi = 0; mi < metrics.length; mi++) {
@@ -19,18 +19,19 @@ function transposeData(headers, metrics, rawData) {
                 if (headers[ci].type === 'attrLabel') {
                     const element = rawData[ri][ci];
 
-                    row.push({
+                    row.push(assign({
                         id: element.id,
                         value: element.name
-                    });
+                    }, getAttributeHeader(headers[ci])));
                 }
             }
 
             const metric = metrics[mi];
-            row.push({
+
+            row.push(assign({
                 id: metric.header.id, // each metric must have unique id
                 value: metric.header.title
-            });
+            }, getMeasureHeader(metric.header, afm)));
 
             const metricValue = rawData[ri][metric.index];
             const y = parseValue(metricValue);
@@ -47,7 +48,7 @@ function transposeData(headers, metrics, rawData) {
     return data;
 }
 
-export function transposeMetrics(data) {
+export function transposeMetrics(data, afm = {}) {
     if (invalidInput(data)) {
         return data;
     }
@@ -61,6 +62,6 @@ export function transposeMetrics(data) {
     return {
         ...dataCopy,
         headers,
-        rawData: transposeData(dataCopy.headers, metrics, dataCopy.rawData)
+        rawData: transposeData(dataCopy.headers, metrics, dataCopy.rawData, afm)
     };
 }

@@ -285,7 +285,16 @@ describe('chartCreators', () => {
                             y: 284,
                             color: DEFAULT_COLOR_PALETTE[0],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2014',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2014'
                             }],
                             drilldown: false,
@@ -297,7 +306,16 @@ describe('chartCreators', () => {
                             y: 155,
                             color: DEFAULT_COLOR_PALETTE[1],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2016',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2016'
                             }],
                             drilldown: false,
@@ -309,7 +327,16 @@ describe('chartCreators', () => {
                             y: 124,
                             color: DEFAULT_COLOR_PALETTE[0],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2013',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2013'
                             }],
                             drilldown: false,
@@ -321,7 +348,16 @@ describe('chartCreators', () => {
                             y: 123,
                             color: DEFAULT_COLOR_PALETTE[1],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2015',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2015'
                             }],
                             drilldown: false,
@@ -333,7 +369,16 @@ describe('chartCreators', () => {
                             y: null,
                             color: DEFAULT_COLOR_PALETTE[0],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2017',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2017'
                             }],
                             drilldown: false,
@@ -361,7 +406,16 @@ describe('chartCreators', () => {
                             y: 284,
                             color: DEFAULT_COLOR_PALETTE[0],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2014',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2014'
                             }],
                             drilldown: false,
@@ -373,7 +427,16 @@ describe('chartCreators', () => {
                             y: 155,
                             color: DEFAULT_COLOR_PALETTE[1],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2016',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2016'
                             }],
                             drilldown: false,
@@ -385,7 +448,16 @@ describe('chartCreators', () => {
                             y: 124,
                             color: DEFAULT_COLOR_PALETTE[0],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2013',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2013'
                             }],
                             drilldown: false,
@@ -397,7 +469,16 @@ describe('chartCreators', () => {
                             y: 123,
                             color: DEFAULT_COLOR_PALETTE[1],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2015',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2015'
                             }],
                             drilldown: false,
@@ -409,7 +490,16 @@ describe('chartCreators', () => {
                             y: null,
                             color: DEFAULT_COLOR_PALETTE[0],
                             drillContext: [{
+                                type: 'metric',
+                                id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
+                                title: 'Email Click Rate - previous year',
+                                format: '#,##0.0%'
+                            }, {
                                 id: '2017',
+                                identifier: 'date.aag81lMifn6q',
+                                uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/15331',
                                 name: '2017'
                             }],
                             drilldown: false,
@@ -471,6 +561,7 @@ describe('chartCreators', () => {
                             drillContext: [{
                                 type: 'metric',
                                 id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
                                 uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
                                 title: 'Next two',
                                 format: '#,##0.0%'
@@ -486,6 +577,7 @@ describe('chartCreators', () => {
                             drillContext: [{
                                 type: 'metric',
                                 id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
                                 uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
                                 title: 'Next one',
                                 format: '#,##0.0%'
@@ -501,6 +593,7 @@ describe('chartCreators', () => {
                             drillContext: [{
                                 type: 'metric',
                                 id: 'metric_yowwuctu6c5lkxql3itj3nz4ec54ax89_16206.generated.pop.5b24b8',
+                                identifier: '',
                                 uri: '/gdc/md/yowwuctu6c5lkxql3itj3nz4ec54ax89/obj/808882',
                                 title: 'First',
                                 format: '#,##0.0%'

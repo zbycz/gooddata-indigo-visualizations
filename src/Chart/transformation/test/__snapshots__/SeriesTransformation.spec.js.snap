@@ -12,6 +12,8 @@ Object {
           "drillContext": Array [
             Object {
               "id": "a8908b3c92b6743b1fc71c8b113533bc",
+              "identifier": "",
+              "uri": "",
               "value": "# of Accounts",
             },
           ],
@@ -47,10 +49,14 @@ Object {
           "drillContext": Array [
             Object {
               "id": "1",
+              "identifier": "label.projectgroup.stage",
+              "uri": "/gdc/md/budtwmhq7k94ve7rqj49j3620rzsm3u1/obj/2135",
               "value": "",
             },
             Object {
               "id": "a8908b3c92b6743b1fc71c8b113533bc",
+              "identifier": "",
+              "uri": "",
               "value": "# of Accounts",
             },
           ],
@@ -65,10 +71,14 @@ Object {
           "drillContext": Array [
             Object {
               "id": "321199",
+              "identifier": "label.projectgroup.stage",
+              "uri": "/gdc/md/budtwmhq7k94ve7rqj49j3620rzsm3u1/obj/2135",
               "value": "Churned",
             },
             Object {
               "id": "a8908b3c92b6743b1fc71c8b113533bc",
+              "identifier": "",
+              "uri": "",
               "value": "# of Accounts",
             },
           ],
@@ -83,10 +93,14 @@ Object {
           "drillContext": Array [
             Object {
               "id": "2288",
+              "identifier": "label.projectgroup.stage",
+              "uri": "/gdc/md/budtwmhq7k94ve7rqj49j3620rzsm3u1/obj/2135",
               "value": "N/A",
             },
             Object {
               "id": "a8908b3c92b6743b1fc71c8b113533bc",
+              "identifier": "",
+              "uri": "",
               "value": "# of Accounts",
             },
           ],
@@ -101,10 +115,14 @@ Object {
           "drillContext": Array [
             Object {
               "id": "321198",
+              "identifier": "label.projectgroup.stage",
+              "uri": "/gdc/md/budtwmhq7k94ve7rqj49j3620rzsm3u1/obj/2135",
               "value": "OK",
             },
             Object {
               "id": "a8908b3c92b6743b1fc71c8b113533bc",
+              "identifier": "",
+              "uri": "",
               "value": "# of Accounts",
             },
           ],
@@ -119,10 +137,14 @@ Object {
           "drillContext": Array [
             Object {
               "id": "321216",
+              "identifier": "label.projectgroup.stage",
+              "uri": "/gdc/md/budtwmhq7k94ve7rqj49j3620rzsm3u1/obj/2135",
               "value": "Potentially Churned / Salesforce Issues",
             },
             Object {
               "id": "a8908b3c92b6743b1fc71c8b113533bc",
+              "identifier": "",
+              "uri": "",
               "value": "# of Accounts",
             },
           ],
