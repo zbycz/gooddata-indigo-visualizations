@@ -8,6 +8,8 @@ stories.forEach((item) => {
     gemini.suite(item.name, (suite) => { // eslint-disable-line no-undef
         suite.setUrl(item.url)
             .setCaptureElements('.gemini-screenshot')
-            .capture('test');
+            .capture('test', null, (actions) => {
+                actions.wait(1000); // wait for hw rendering to be finished
+            });
     });
 });
