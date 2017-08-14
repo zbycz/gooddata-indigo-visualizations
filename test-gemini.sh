@@ -12,6 +12,22 @@ PORT=$(sed -e 's#.*Running server on https://localhost:\(.*\).*#\1#' <<< `grep h
 nohup ./node_modules/.bin/chromedriver --port=4444 --url-base=wd/hub &
 CHROME_DRIVER_PID=$!
 
+ATTEMPTS=5
+i=0
+while [ $i -le $ATTEMPTS ]; do
+  curl http://localhost:4444/wd/hub
+  if [ $? -eq 0 ]; then
+    break
+  else
+    i=$[$i+1]
+    sleep 1
+  fi
+  if [ $i -eq $ATTEMPTS ]; then
+    echo "Unable to connect to the browser in $ATTEMPTS seconds." &>2
+    exit 1
+  fi
+done
+
 SCRIPT_RESULT=0
 
 if [ $? -eq 0 ]; then
