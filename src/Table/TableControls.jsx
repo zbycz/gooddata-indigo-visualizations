@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 
-import Button from '@gooddata/goodstrap/lib/Button/ReactButton';
+import Button from '@gooddata/goodstrap/lib/Button/Button';
 
 export class TableControls extends Component {
     static propTypes = {

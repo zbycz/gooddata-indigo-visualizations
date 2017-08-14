@@ -5,8 +5,8 @@ import { Table, Column, Cell } from 'fixed-data-table-2';
 import classNames from 'classnames';
 import { noop, partial, uniqueId, debounce, pick } from 'lodash';
 
-import Bubble from '@gooddata/goodstrap/lib/Bubble/ReactBubble';
-import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/ReactBubbleHoverTrigger';
+import Bubble from '@gooddata/goodstrap/lib/Bubble/Bubble';
+import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/BubbleHoverTrigger';
 import TableSortBubbleContent from './TableSortBubbleContent';
 import { cellClick } from '../utils/drilldownEventing';
 
