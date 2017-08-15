@@ -25,6 +25,8 @@ import { getLegendConfig } from './Legend/helpers';
 
 import HighChartRenderer from './HighChartRenderer';
 
+import DrillableItem from '../proptypes/DrillableItem';
+
 export function renderLineFamilyChart(props) {
     return <HighChartRenderer {...props} />;
 }
@@ -48,7 +50,7 @@ export default class LineFamilyChartTransformation extends Component {
             headers: PropTypes.arrayOf(PropTypes.object),
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
-        drillableItems: PropTypes.bool, // TODO will be array, see BB-96
+        drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
         height: PropTypes.number,
         width: PropTypes.number,
 
@@ -58,8 +60,8 @@ export default class LineFamilyChartTransformation extends Component {
     };
 
     static defaultProps = {
-        afm: null,
-        drillableItems: false, // TODO will be array, see BB-96
+        afm: {},
+        drillableItems: [],
         lineFamilyChartRenderer: renderLineFamilyChart,
         afterRender: () => {}
     };
@@ -120,10 +122,10 @@ export default class LineFamilyChartTransformation extends Component {
     }
 
     createChartOptions(props) {
-        const { config, data, onDataTooLarge, limits, drillableItems } = props;
+        const { config, data, onDataTooLarge, limits, drillableItems, afm } = props;
         const lineConfig = transformConfigToLine(config);
         this.chartOptions = getLineFamilyChartOptions(lineConfig, data);
-        this.chartOptions.data = getLineFamilyChartData(lineConfig, data, drillableItems);
+        this.chartOptions.data = getLineFamilyChartData(lineConfig, data, drillableItems, afm);
 
         if (!isDataOfReasonableSize(this.chartOptions.data, limits)) {
             if (!onDataTooLarge) {

@@ -10,7 +10,9 @@ import {
     escape,
     sortBy,
     zip,
-    values
+    values,
+    assign,
+    compact
 } from 'lodash';
 
 import {
@@ -22,9 +24,8 @@ import { getColorPalette } from './transformation';
 import { enrichHeaders } from './transformation/EnrichHeaders';
 import { getChartData } from './transformation/SeriesTransformation';
 import { transposeMetrics } from './transformation/MetricTransposition';
-import { enableDrillablePoints } from '../utils/drilldownEventing';
-import { parseValue } from '../utils/common';
-
+import { enableDrillablePoint } from '../utils/drilldownEventing';
+import { parseValue, getMeasureHeader, getAttributeHeader } from '../utils/common';
 
 export function propertiesToHeaders(config, _headers) { // TODO export for test only
     const { headers } = enrichHeaders(_headers);
@@ -48,8 +49,8 @@ export function isMetricNamesInSeries(config, headers) { // TODO export only for
     return get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames';
 }
 
-export function getLineFamilyChartData(config, rawData, drillableItems) {
-    const data = transposeMetrics(rawData);
+export function getLineFamilyChartData(config, rawData, drillableItems = [], afm = {}) {
+    const data = transposeMetrics(rawData, afm);
 
     // prepare series, categories and data
     const indices = getIndices(config, data.headers);
@@ -63,9 +64,43 @@ export function getLineFamilyChartData(config, rawData, drillableItems) {
     return getChartData(data, configuration, drillableItems);
 }
 
-export function getPieFamilyChartData(config, data, drillableItems) {
+const enrichPieDataHeaders = (data, afm) =>
+    set(data, ['headers'], data.headers.map((header) => {
+        if (header.type === 'metric') {
+            return assign(header, getMeasureHeader(header, afm));
+        } else if (header.type === 'attrLabel') {
+            return assign(header, getAttributeHeader(header));
+        }
+        return header;
+    }));
+
+function getPieChartContext(metricsOnly, index, extendedInfo, data) {
+    if (metricsOnly) {
+        return [extendedInfo[index]];
+    }
+
+    const context = compact(extendedInfo);
+    const { id, name } = data[index][0];
+
+    return context.map((item) => {
+        if (item.type === 'attrLabel') {
+            return {
+                id,
+                name,
+                identifier: item.identifier,
+                uri: item.uri
+            };
+        }
+
+        return item;
+    });
+}
+
+export function getPieFamilyChartData(config, data, drillableItems = [], afm = {}) {
     const { metricsOnly } = config;
     const sortDesc = ([, value]) => -value;
+
+    const enrichedData = enrichPieDataHeaders(data, afm);
 
     function getMetricsOnlyData(executionData) {
         const { headers, rawData } = executionData;
@@ -78,17 +113,16 @@ export function getPieFamilyChartData(config, data, drillableItems) {
 
     function getMetricAttrData(executionData) {
         const { headers, rawData } = executionData;
+
         const metricHeader = find(headers, header => header.type === 'metric');
         const format = get(metricHeader, 'format', '');
 
         return rawData.map(dataPoint => [...dataPoint, format]);
     }
 
-    const isDrillable = items => items; // TODO will decide if drillable or not, see BB-96
-
-    const unsortedData = metricsOnly ? getMetricsOnlyData(data) : getMetricAttrData(data);
+    const unsortedData = metricsOnly ? getMetricsOnlyData(enrichedData) : getMetricAttrData(enrichedData);
     const unsortedDataWithExtendedInfo = unsortedData.map((row, index) => {
-        row.push(values(data.headers)[index]); // push data.headers into values, so that it is sorted
+        row.push(values(enrichedData.headers)[index]); // push data.headers into values, so that it is sorted
         return row;
     });
     const sortedDataWithExtendedInfo = sortBy(unsortedDataWithExtendedInfo, sortDesc);
@@ -101,8 +135,8 @@ export function getPieFamilyChartData(config, data, drillableItems) {
     return {
         series: [{
             data: sortedData.map(([attr, y, format], i) => {
-                return enableDrillablePoints(
-                    isDrillable(drillableItems),
+                return enableDrillablePoint(
+                    drillableItems,
                     {
                         name: attr.name,
                         y: parseValue(y),
@@ -110,7 +144,7 @@ export function getPieFamilyChartData(config, data, drillableItems) {
                         legendIndex: i,
                         format
                     },
-                    metricsOnly ? [sortedExtendedInfo[i]] : [sortedData[i][0]]
+                    getPieChartContext(metricsOnly, i, sortedExtendedInfo, sortedData)
                 );
             })
         }]

@@ -17,10 +17,12 @@ const FIXTURE = {
             type: 'attrLabel',
             title: 'Name'
         }, {
+            id: 'metric-1',
             type: 'metric',
             title: '# of Open Opps.',
             format: '#,##0'
         }, {
+            id: 'metric-2',
             type: 'metric',
             title: '# of Opportunities',
             format: '[red]#,##0'
@@ -28,7 +30,17 @@ const FIXTURE = {
     ],
     rawData: [
         [{ id: '1', name: 'Wile E. Coyote' }, '30', '1324']
-    ]
+    ],
+    afm: {
+        measures: [
+            {
+                definition: {
+                    baseObject: { id: 'metric-1-uri' }
+                },
+                id: 'metric-1'
+            }
+        ]
+    }
 };
 
 describe('Table', () => {
@@ -40,6 +52,7 @@ describe('Table', () => {
             containerHeight: 400,
             rows: FIXTURE.rawData,
             headers: FIXTURE.headers,
+            afm: FIXTURE.afm,
             ...customProps
         };
 
@@ -103,17 +116,17 @@ describe('Table', () => {
         });
 
         it('should bind onclick when cell drillable', () => {
-            table = renderTable({ drillableItems: true });
+            table = renderTable({ drillableItems: [{ uri: 'metric-1-uri' }] });
             const columns = table.props.children;
-            const cell = columns[0].props.cell({ rowIndex: 0, columnKey: 0 });
+            const cell = columns[1].props.cell({ rowIndex: 0, columnKey: 1 });
 
             expect(cell.props).toHaveProperty('onClick', expect.any(Function));
         });
 
         it('should not bind onclick when cell not drillable', () => {
-            table = renderTable({ drillableItems: false });
+            table = renderTable({ drillableItems: [{ uri: 'metric-x-uri' }] });
             const columns = table.props.children;
-            const cell = columns[0].props.cell({ rowIndex: 0, columnKey: 0 });
+            const cell = columns[1].props.cell({ rowIndex: 0, columnKey: 1 });
 
             expect(cell.props).not.toHaveProperty('onClick', expect.any(Function));
         });

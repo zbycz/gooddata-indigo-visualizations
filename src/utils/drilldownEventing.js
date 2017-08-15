@@ -1,12 +1,22 @@
-import { cloneDeep, set, debounce } from 'lodash';
+import { set, debounce, cloneDeep } from 'lodash';
 import invariant from 'invariant';
 import CustomEvent from 'custom-event';
 import { BAR_CHART, COLUMN_CHART, LINE_CHART, PIE_CHART, TABLE } from '../VisualizationTypes';
 
-export function enableDrillablePoints(isDrillable, data, context) {
+export const isDrillable = (drillableItems, header) =>
+    drillableItems.some(drillableItem =>
+        drillableItem.identifier === header.identifier ||
+        drillableItem.uri === header.uri
+    );
+
+export function enableDrillablePoint(drillableItems, data, context) {
     const point = cloneDeep(data);
 
-    set(point, 'drilldown', !!isDrillable);
+    const pointIsDrillable = context.some(item =>
+        isDrillable(drillableItems, item)
+    );
+
+    set(point, 'drilldown', pointIsDrillable);
     set(point, 'drillContext', context);
 
     return point;
@@ -36,10 +46,14 @@ function fireEvent(data, target) {
 }
 
 function normalizeIntersectionElements(intersection) {
-    return intersection.map(({ id, title, value, name }) => {
+    return intersection.map(({ id, title, value, name, uri, identifier }) => {
         return {
             id,
-            title: title || value || name
+            title: title || value || name,
+            header: {
+                uri,
+                identifier
+            }
         };
     });
 }
@@ -84,7 +98,7 @@ const chartClickDebounced = debounce((afm, event, target, chartType) => {
 export const chartClick = (...props) => chartClickDebounced(...props);
 
 export const cellClick = (afm, event, target) => {
-    const { columnIndex, rowIndex, row } = event;
+    const { columnIndex, rowIndex, row, intersection } = event;
     const data = {
         executionContext: afm,
         drillContext: {
@@ -92,7 +106,8 @@ export const cellClick = (afm, event, target) => {
             element: getClickableElementNameByChartType(TABLE),
             columnIndex,
             rowIndex,
-            row
+            row,
+            intersection: normalizeIntersectionElements(intersection)
         }
     };
 
