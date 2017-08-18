@@ -11,8 +11,7 @@ import {
     sortBy,
     zip,
     values,
-    assign,
-    compact
+    assign
 } from 'lodash';
 
 import {
@@ -74,15 +73,10 @@ const enrichPieDataHeaders = (data, afm) =>
         return header;
     }));
 
-function getPieChartContext(metricsOnly, index, extendedInfo, data) {
-    if (metricsOnly) {
-        return [extendedInfo[index]];
-    }
-
-    const context = compact(extendedInfo);
+function getPieContext(index, data, headers) {
     const { id, name } = data[index][0];
 
-    return context.map((item) => {
+    return headers.map((item) => {
         if (item.type === 'attrLabel') {
             return {
                 id,
@@ -125,16 +119,11 @@ export function getPieFamilyChartData(config, data, drillableItems = [], afm = {
         row.push(values(enrichedData.headers)[index]); // push data.headers into values, so that it is sorted
         return row;
     });
-    const sortedDataWithExtendedInfo = sortBy(unsortedDataWithExtendedInfo, sortDesc);
-    const sortedExtendedInfo = [];
-    const sortedData = sortedDataWithExtendedInfo.map((row) => {
-        sortedExtendedInfo.push(row.pop()); // pop sorted data.headers back out
-        return row;
-    });
+    const sortedData = sortBy(unsortedDataWithExtendedInfo, sortDesc);
 
     return {
         series: [{
-            data: sortedData.map(([attr, y, format], i) => {
+            data: sortedData.map(([attr, y, format, header], i) => {
                 return enableDrillablePoint(
                     drillableItems,
                     {
@@ -144,7 +133,7 @@ export function getPieFamilyChartData(config, data, drillableItems = [], afm = {
                         legendIndex: i,
                         format
                     },
-                    getPieChartContext(metricsOnly, i, sortedExtendedInfo, sortedData)
+                    metricsOnly ? [header] : getPieContext(i, sortedData, enrichedData.headers)
                 );
             })
         }]
