@@ -1,6 +1,6 @@
 import { map } from 'lodash';
 import { DEFAULT_FORMAT } from '../../constants/metrics';
-import { getChartData } from '../SeriesTransformation';
+import { getChartData, setDrillableFlag } from '../SeriesTransformation';
 import { transposeMetrics } from '../MetricTransposition';
 import { singleMeasure, singleMeasureAndAttribute } from './fixtures/executionResponses';
 
@@ -220,7 +220,7 @@ describe('Getting chart data', () => {
         expect(series).toEqual(expectedSeries);
     });
 
-    it('should add isDrilldown flag to series', () => {
+    it('should add isDrilldown flag to series constructed by raw data', () => {
         const data = {
             headers: [
                 { id: 'a1', type: 'attrLabel' }
@@ -242,5 +242,22 @@ describe('Getting chart data', () => {
         };
 
         expect(getChartData(data, configuration)).toHaveProperty('series.0.isDrillable', false);
+    });
+
+    describe('Set isDrillable flag to series', () => {
+        it('should set isDrillable when first series point is drillable', () => {
+            const series = [{ data: [{ drilldown: true }, { drilldown: false }] }];
+            expect(setDrillableFlag(series)).toHaveProperty('0.isDrillable', true);
+        });
+
+        it('should set isDrillable when first series point is padded and drillable', () => {
+            const series = [{ data: [null, { drilldown: true }] }];
+            expect(setDrillableFlag(series)).toHaveProperty('0.isDrillable', true);
+        });
+
+        it('should not set isDrillable when first series point is not drillable', () => {
+            const series = [{ data: [{ drilldown: false }, { drilldown: true }] }];
+            expect(setDrillableFlag(series)).toHaveProperty('0.isDrillable', false);
+        });
     });
 });

@@ -1,4 +1,4 @@
-import { compact, uniqBy, map, times, constant, set, sortBy, get } from 'lodash';
+import { compact, uniqBy, map, times, constant, set, sortBy, get, isEmpty } from 'lodash';
 import { enableDrillablePoint } from '../../utils/drilldownEventing';
 
 // get unique elements for given index regarding their interal id
@@ -50,11 +50,12 @@ function getSeries(data, seriesNames, categories, indices, drillableItems = []) 
     });
 }
 
-function setDrillableFlag(series) {
-    return series.map((s) => {
+export function setDrillableFlag(series) {
+    return series.map((seriesItem) => {
+        const firstNonEmptyDataItem = seriesItem.data.find(dataItem => !isEmpty(dataItem));
         return {
-            ...s,
-            isDrillable: get(s, 'data.0.drilldown')
+            ...seriesItem,
+            isDrillable: get(firstNonEmptyDataItem, 'drilldown', false)
         };
     });
 }
