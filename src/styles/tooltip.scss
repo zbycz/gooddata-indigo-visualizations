@@ -142,6 +142,7 @@ g.highcharts-tooltip {
         border-color: transparentize($bubble-light-border-base, 0.5) transparent transparent transparent;
         border-width: 10px;
         border-style: solid;
+        pointer-events: none;
 
         &.right {
             left: calc(100% - 14px);
@@ -163,6 +164,7 @@ g.highcharts-tooltip {
         border-color: #fff transparent transparent;
         border-width: 10px;
         border-style: solid;
+        pointer-events: none;
 
         &.right {
             left: calc(100% - 14px);
