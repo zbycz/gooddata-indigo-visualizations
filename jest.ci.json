@@ -7,9 +7,7 @@
     "js",
     "jsx"
   ],
-  "moduleNameMapper": {
-    "\\.(css|scss)$": "identity-obj-proxy"
-  },
+  "setupTestFrameworkScriptFile": "<rootDir>/jest.setup.js",
   "collectCoverage": true,
   "collectCoverageFrom" : ["src/**/*.{js,jsx}", "!**/node_modules/**"],
   "coverageDirectory": "<rootDir>/ci/results/coverage",
