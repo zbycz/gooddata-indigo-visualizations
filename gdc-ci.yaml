@@ -3,7 +3,8 @@ before:
   - ci-yarn-install
 pull-request:
   - ci-run-validation
-  - mkdir -p ./ci/results ; JEST_SUITE_NAME="Indigo Visualizations Unit Tests" JEST_JUNIT_OUTPUT="./ci/results/test-results.xml" jest --config=./jest.ci.json
+  - mkdir -p ./ci/results
+  - JEST_SUITE_NAME="Indigo Visualizations Unit Tests" JEST_JUNIT_OUTPUT="./ci/results/test-results.xml" jest --config=./jest.ci.json
 dist:
   - yarn build-storybook
 rpm-build:
