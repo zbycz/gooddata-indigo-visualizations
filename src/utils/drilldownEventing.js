@@ -38,11 +38,16 @@ export function getClickableElementNameByChartType(type) {
     }
 }
 
-function fireEvent(data, target) {
-    target.dispatchEvent(new CustomEvent('drill', {
-        detail: data,
-        bubbles: true
-    }));
+function fireEvent(onFiredDrillEvent, data, target) {
+    const returnValue = onFiredDrillEvent(data);
+
+    // if user-specified onFiredDrillEvent fn returns false, do not fire default DOM event
+    if (returnValue !== false) {
+        target.dispatchEvent(new CustomEvent('drill', {
+            detail: data,
+            bubbles: true
+        }));
+    }
 }
 
 function normalizeIntersectionElements(intersection) {
@@ -82,7 +87,8 @@ function composeDrillContextPoint({ point }, chartType) {
     };
 }
 
-const chartClickDebounced = debounce((afm, event, target, chartType) => {
+const chartClickDebounced = debounce((drillConfig, event, target, chartType) => {
+    const { afm, onFiredDrillEvent } = drillConfig;
     const { points } = event;
     const isGroupClick = !!points;
 
@@ -92,12 +98,13 @@ const chartClickDebounced = debounce((afm, event, target, chartType) => {
             composeDrillContextGroup(event, chartType) : composeDrillContextPoint(event, chartType)
     };
 
-    fireEvent(data, target);
+    fireEvent(onFiredDrillEvent, data, target);
 });
 
 export const chartClick = (...props) => chartClickDebounced(...props);
 
-export const cellClick = (afm, event, target) => {
+export const cellClick = (drillConfig, event, target) => {
+    const { afm, onFiredDrillEvent } = drillConfig;
     const { columnIndex, rowIndex, row, intersection } = event;
     const data = {
         executionContext: afm,
@@ -111,5 +118,5 @@ export const cellClick = (afm, event, target) => {
         }
     };
 
-    fireEvent(data, target);
+    fireEvent(onFiredDrillEvent, data, target);
 };

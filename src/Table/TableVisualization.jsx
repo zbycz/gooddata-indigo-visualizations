@@ -37,6 +37,7 @@ export default class TableVisualization extends Component {
     static propTypes = {
         afm: PropTypes.object,
         drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
+        onFiredDrillEvent: PropTypes.func,
         containerWidth: PropTypes.number.isRequired,
         containerHeight: PropTypes.number,
         containerMaxHeight: PropTypes.number,
@@ -54,6 +55,7 @@ export default class TableVisualization extends Component {
     static defaultProps = {
         afm: {},
         drillableItems: [],
+        onFiredDrillEvent: noop,
         rows: [],
         headers: [],
         onSortChange: noop,
@@ -363,7 +365,7 @@ export default class TableVisualization extends Component {
     }
 
     renderCell(columns, index) {
-        const { rows, afm, drillableItems } = this.props;
+        const { rows, afm, drillableItems, onFiredDrillEvent } = this.props;
 
         const column = columns[index];
 
@@ -375,13 +377,14 @@ export default class TableVisualization extends Component {
             const row = rows[rowIndex];
             const content = row[columnKey];
             const classes = getCellClassNames(rowIndex, columnKey, drillable);
+            const drillConfig = { afm, onFiredDrillEvent };
 
             const { style, label } = getStyledLabel(column, content);
 
             const cellPropsDrill = drillable ? assign({}, cellProps, {
                 onClick(e) {
                     cellClick(
-                        afm,
+                        drillConfig,
                         {
                             columnIndex: columnKey,
                             rowIndex,
