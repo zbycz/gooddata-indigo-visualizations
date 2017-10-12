@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Table } from 'fixed-data-table-2';
 
-import TableVisualization from '../TableVisualization';
+import TableVisualization, { DEFAULT_FOOTER_ROW_HEIGHT } from '../TableVisualization';
 import { ASC, DESC } from '../Sort';
 import { withIntl } from '../../test/utils';
 
@@ -23,8 +23,24 @@ const FIXTURE = {
             format: '[red]#,##0'
         }
     ],
+    onlyMetricHeaders: [
+        {
+            id: 'metric-1',
+            type: 'metric',
+            title: '# of Open Opps.',
+            format: '#,##0'
+        }, {
+            id: 'metric-2',
+            type: 'metric',
+            title: '# of Opportunities',
+            format: '[red]#,##0'
+        }
+    ],
     rawData: [
         [{ id: '1', name: 'Wile E. Coyote' }, '30', '1324']
+    ],
+    onlyMetricRawData: [
+        ['30', '1324']
     ],
     afm: {
         measures: [
@@ -35,7 +51,19 @@ const FIXTURE = {
                 id: 'metric-1'
             }
         ]
-    }
+    },
+    aggregations: [
+        {
+            name: 'Sum',
+            values: [null, null, 125]
+        }, {
+            name: 'Avg',
+            values: [null, 45.98, 12.32]
+        }, {
+            name: 'Rollup',
+            values: [null, 12.99, 1.008]
+        }
+    ]
 };
 
 const WrappedTable = withIntl(TableVisualization);
@@ -181,6 +209,60 @@ describe('Table', () => {
                 // work-around to handle overlays
                 document.body.innerHTML = '';
             });
+        });
+    });
+
+    describe('table footer', () => {
+        it('should not render any footer cells when no aggregations are provided', () => {
+            const wrapper = renderTable();
+
+            expect(wrapper.find('.indigo-table-footer-cell').length).toEqual(0);
+        });
+
+        it('should not render any footer cells when aggregations are provided but data contains only metrics', () => {
+            const wrapper = renderTable({
+                aggregations: FIXTURE.aggregations,
+                headers: FIXTURE.onlyMetricHeaders,
+                rawData: FIXTURE.onlyMetricRawData
+            });
+
+            expect(wrapper.find('.indigo-table-footer-cell').length).toEqual(0);
+        });
+
+        it('should render footer cells when aggregations are provided', () => {
+            const wrapper = renderTable({ aggregations: FIXTURE.aggregations });
+
+            expect(wrapper.find('.indigo-table-footer-cell').length).toEqual(9);
+        });
+
+        it('should reset footer when component is updated with no aggregations', () => {
+            const wrapper = renderTable({ aggregations: FIXTURE.aggregations });
+            const footer = wrapper.find(TableVisualization).instance().footer;
+
+            expect(footer.classList.contains('table-footer')).toBeTruthy();
+
+            wrapper.setProps({ aggregations: [] });
+
+            expect(footer.classList.contains('table-footer')).toBeFalsy();
+        });
+
+        it('should update footer height when component is updated with different aggregations', () => {
+            const wrapper = renderTable({ aggregations: FIXTURE.aggregations });
+            const footer = wrapper.find(TableVisualization).instance().footer;
+
+            const heightBefore = FIXTURE.aggregations.length * DEFAULT_FOOTER_ROW_HEIGHT;
+
+            expect(footer.style.height).toEqual(`${heightBefore}px`);
+
+            const aggregationsAfter = [...FIXTURE.aggregations, {
+                name: 'Other',
+                values: [1, 2, 3]
+            }];
+            const heightAfter = aggregationsAfter.length * DEFAULT_FOOTER_ROW_HEIGHT;
+
+            wrapper.setProps({ aggregations: aggregationsAfter });
+
+            expect(footer.style.height).toEqual(`${heightAfter}px`);
         });
     });
 });
