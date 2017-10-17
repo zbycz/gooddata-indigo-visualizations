@@ -126,16 +126,16 @@ const BASE_TEMPLATE = {
     }
 };
 
-const registerDrilldownHandler = (configuration, chartOptions, afm) => {
+function registerDrilldownHandler(configuration, chartOptions, drillConfig) {
     set(configuration, 'chart.events.drilldown', function chartDrilldownHandler(event) {
-        chartClick(afm, event, this.container, chartOptions.type);
+        chartClick(drillConfig, event, this.container, chartOptions.type);
     });
 
     return configuration;
-};
+}
 
-export const getCommonConfiguration = (chartOptions, afm) => {
+export function getCommonConfiguration(chartOptions, drillConfig) {
     const commonConfiguration = cloneDeep(BASE_TEMPLATE);
 
-    return registerDrilldownHandler(commonConfiguration, chartOptions, afm);
-};
+    return registerDrilldownHandler(commonConfiguration, chartOptions, drillConfig);
+}

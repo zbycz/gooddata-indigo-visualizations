@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { decorateAction } from '@storybook/addon-actions';
+import { action, decorateAction } from '@storybook/addon-actions';
 import LineFamilyChartTransformation from '../src/Chart/LineFamilyChartTransformation';
 import TableTransformation from '../src/Table/TableTransformation';
 import * as TestConfig from './test_data/test_config';
@@ -35,6 +35,51 @@ storiesOf('Drilldown')
                     data={TestData.barChart2Series}
                 />
             )
+        )
+    ))
+    .add('Line chart with onFiredDrillEvent', () => (
+        screenshotWrap(
+            <div>
+                <p>Line chart with standard onFiredDrillEvent callback</p>
+                {
+                    wrap(
+                        <LineFamilyChartTransformation
+                            afm={TestData.afm}
+                            drillableItems={TestData.barChart2SeriesDrillableItems}
+                            onFiredDrillEvent={action('onFiredDrillEvent')}
+                            config={{
+                                ...TestConfig.barChart2Series,
+                                legend: {
+                                    enabled: false
+                                }
+                            }}
+                            data={TestData.barChart2Series}
+                        />
+                    )
+                }
+                <p>Line chart with onFiredDrillEvent where drillEvent
+                    is logged into console and default event is prevented</p>
+                {
+                    wrap(
+                        <LineFamilyChartTransformation
+                            afm={TestData.afm}
+                            drillableItems={TestData.barChart2SeriesDrillableItems}
+                            onFiredDrillEvent={({ executionContext, drillContext }) => {
+                                // eslint-disable-next-line no-console
+                                console.log('onFiredDrillEvent', { executionContext, drillContext });
+                                return false;
+                            }}
+                            config={{
+                                ...TestConfig.barChart2Series,
+                                legend: {
+                                    enabled: false
+                                }
+                            }}
+                            data={TestData.barChart2Series}
+                        />
+                    )
+                }
+            </div>
         )
     ))
     .add('Bar chart', () => (

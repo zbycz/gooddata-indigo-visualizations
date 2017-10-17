@@ -19,6 +19,7 @@ export default class TableTransformation extends Component {
             rawData: PropTypes.arrayOf(PropTypes.array)
         }).isRequired,
         drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
+        onFiredDrillEvent: PropTypes.func,
         tableRenderer: PropTypes.func.isRequired,
         height: PropTypes.number,
         width: PropTypes.number,
@@ -30,6 +31,7 @@ export default class TableTransformation extends Component {
         afm: {},
         config: {},
         drillableItems: [],
+        onFiredDrillEvent: () => {},
         tableRenderer: renderTable,
         afterRender: () => {},
         onSortChange: () => {},
@@ -37,9 +39,18 @@ export default class TableTransformation extends Component {
         width: undefined
     };
 
-
     render() {
-        const { data: { headers, rawData }, config, height, width, onSortChange, afm, drillableItems } = this.props;
+        const {
+            data: { headers, rawData },
+            config,
+            height,
+            width,
+            onSortChange,
+            afm,
+            drillableItems,
+            onFiredDrillEvent
+        } = this.props;
+
         const { sortBy, sortDir } = getSortInfo(config);
 
         const rows = parseMetricValues(headers, rawData);
@@ -48,6 +59,7 @@ export default class TableTransformation extends Component {
             afm,
             rows,
             drillableItems,
+            onFiredDrillEvent,
             headers,
             sortBy,
             sortDir,

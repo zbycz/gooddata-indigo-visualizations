@@ -23,12 +23,14 @@ export default class Visualization extends Component {
         config: PropTypes.shape({
             type: PropTypes.string.isRequired
         }).isRequired,
+        onFiredDrillEvent: PropTypes.func,
         numericSymbols: PropTypes.array,
         afterRender: PropTypes.func
     };
 
     static defaultProps = {
         numericSymbols: [],
+        onFiredDrillEvent: () => {},
         afterRender: () => {}
     };
 
@@ -60,7 +62,6 @@ export default class Visualization extends Component {
 
     render() {
         const visType = this.props.config.type;
-
 
         if (isLineFamily(visType)) {
             return (

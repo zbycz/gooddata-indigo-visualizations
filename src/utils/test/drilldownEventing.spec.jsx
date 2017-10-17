@@ -9,6 +9,35 @@ import { BAR_CHART, COLUMN_CHART, LINE_CHART, PIE_CHART, TABLE } from '../../Vis
 describe('Drilldown Eventing', () => {
     jest.useFakeTimers();
 
+    const pointClickEventData = {
+        point: {
+            x: 1,
+            y: 2,
+            drillContext: [
+                {
+                    id: 'id',
+                    title: 'title',
+                    identifier: 'identifier1',
+                    uri: 'uri1',
+                    some: 'nonrelevant data'
+                },
+                {
+                    id: 'id',
+                    value: 'value',
+                    identifier: 'identifier2',
+                    uri: 'uri2'
+                },
+                {
+                    id: 'id',
+                    name: 'name',
+                    identifier: 'identifier3',
+                    uri: 'uri3'
+                }
+            ],
+            some: 'nonrelevant data'
+        }
+    };
+
     it('should enable drilldown to point', () => {
         const point = {};
         const context = [{ header: { id: 'foo' } }];
@@ -33,39 +62,12 @@ describe('Drilldown Eventing', () => {
         }).toThrowError();
     });
 
-    it('should call fire event on point click', () => {
+    it('should call default fire event on point click and fire correct data', () => {
         const afm = { is: 'AFM' };
+        const drillConfig = { afm, onFiredDrillEvent: () => {} };
         const target = { dispatchEvent: jest.fn() };
-        const event = {
-            point: {
-                x: 1,
-                y: 2,
-                drillContext: [
-                    {
-                        id: 'id',
-                        title: 'title',
-                        identifier: 'identifier1',
-                        uri: 'uri1',
-                        some: 'nonrelevant data'
-                    },
-                    {
-                        id: 'id',
-                        value: 'value',
-                        identifier: 'identifier2',
-                        uri: 'uri2'
-                    },
-                    {
-                        id: 'id',
-                        name: 'name',
-                        identifier: 'identifier3',
-                        uri: 'uri3'
-                    }
-                ],
-                some: 'nonrelevant data'
-            }
-        };
 
-        chartClick(afm, event, target, LINE_CHART);
+        chartClick(drillConfig, pointClickEventData, target, LINE_CHART);
 
         jest.runAllTimers();
 
@@ -108,10 +110,49 @@ describe('Drilldown Eventing', () => {
         });
     });
 
+    it('should call user defined callback on point click', () => {
+        const afm = { is: 'AFM' };
+        const drillConfig = { afm, onFiredDrillEvent: jest.fn() };
+        const target = { dispatchEvent: () => {} };
+
+        chartClick(drillConfig, pointClickEventData, target, LINE_CHART);
+
+        jest.runAllTimers();
+
+        expect(drillConfig.onFiredDrillEvent).toHaveBeenCalled();
+    });
+
+    it('should call both default fire event and user defined callback on point click', () => {
+        const afm = { is: 'AFM' };
+        const drillConfig = { afm, onFiredDrillEvent: jest.fn() };
+        const target = { dispatchEvent: jest.fn() };
+
+        chartClick(drillConfig, pointClickEventData, target, LINE_CHART);
+
+        jest.runAllTimers();
+
+        expect(target.dispatchEvent).toHaveBeenCalled();
+        expect(drillConfig.onFiredDrillEvent).toHaveBeenCalled();
+    });
+
+    it('should only call user defined callback on point click', () => {
+        const afm = { is: 'AFM' };
+        const drillConfig = { afm, onFiredDrillEvent: jest.fn().mockReturnValue(false) };
+        const target = { dispatchEvent: jest.fn() };
+
+        chartClick(drillConfig, pointClickEventData, target, LINE_CHART);
+
+        jest.runAllTimers();
+
+        expect(target.dispatchEvent).not.toHaveBeenCalled();
+        expect(drillConfig.onFiredDrillEvent).toHaveBeenCalled();
+    });
+
     it('should call fire event on label click', () => {
         const afm = { is: 'AFM' };
+        const drillConfig = { afm, onFiredDrillEvent: () => {} };
         const target = { dispatchEvent: jest.fn() };
-        const event = {
+        const labelClickEventData = {
             points: [{
                 x: 1,
                 y: 2,
@@ -128,7 +169,7 @@ describe('Drilldown Eventing', () => {
             }]
         };
 
-        chartClick(afm, event, target, LINE_CHART);
+        chartClick(drillConfig, labelClickEventData, target, LINE_CHART);
 
         jest.runAllTimers();
 
@@ -160,8 +201,9 @@ describe('Drilldown Eventing', () => {
 
     it('should call fire event on cell click', () => {
         const afm = { is: 'AFM' };
+        const drillConfig = { afm, onFiredDrillEvent: () => {} };
         const target = { dispatchEvent: jest.fn() };
-        const event = {
+        const cellClickEventData = {
             columnIndex: 1,
             rowIndex: 2,
             row: ['3'],
@@ -175,7 +217,7 @@ describe('Drilldown Eventing', () => {
             some: 'nonrelevant data'
         };
 
-        cellClick(afm, event, target);
+        cellClick(drillConfig, cellClickEventData, target);
 
         expect(target.dispatchEvent).toHaveBeenCalled();
 

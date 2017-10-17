@@ -10,33 +10,33 @@ import { getColumnConfiguration } from './highcharts/columnConfiguration';
 import { getCustomizedConfiguration } from './highcharts/customConfiguration';
 import { getPieConfiguration } from './highcharts/pieConfiguration';
 
-export function getLineChartConfiguration(chartOptions, afm) {
+export function getLineChartConfiguration(chartOptions, drillConfig) {
     return merge({},
-        getCommonConfiguration(chartOptions, afm),
+        getCommonConfiguration(chartOptions, drillConfig),
         getLineConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );
 }
 
-export function getColumnChartConfiguration(chartOptions, afm) {
+export function getColumnChartConfiguration(chartOptions, drillConfig) {
     return merge({},
-        getCommonConfiguration(chartOptions, afm),
+        getCommonConfiguration(chartOptions, drillConfig),
         getColumnConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );
 }
 
-export function getBarChartConfiguration(chartOptions, afm) {
+export function getBarChartConfiguration(chartOptions, drillConfig) {
     return merge({},
-        getCommonConfiguration(chartOptions, afm),
+        getCommonConfiguration(chartOptions, drillConfig),
         getBarConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );
 }
 
-export function getPieChartConfiguration(chartOptions, afm) {
+export function getPieChartConfiguration(chartOptions, drillConfig) {
     return merge({},
-        getCommonConfiguration(chartOptions, afm),
+        getCommonConfiguration(chartOptions, drillConfig),
         getPieConfiguration(),
         getCustomizedConfiguration(chartOptions)
     );

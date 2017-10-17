@@ -48,7 +48,7 @@ export function isMetricNamesInSeries(config, headers) { // TODO export only for
     return get(propertiesToHeaders(config, headers), 'color.id') === 'metricNames';
 }
 
-export function getLineFamilyChartData(config, rawData, drillableItems = [], afm = {}) {
+export function getLineFamilyChartData(config, rawData, afm = {}, drillableItems = []) {
     const data = transposeMetrics(rawData, afm);
 
     // prepare series, categories and data
