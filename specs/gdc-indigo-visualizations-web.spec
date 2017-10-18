@@ -15,6 +15,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  nodejs > 1:6.0, nodejs < 1:7.0, npm > 3.10, git, yarn = 0.22.0
 
+Obsoletes:  gdc-indigo-visualizations-web
+Provides:  gdc-indigo-visualizations-web
+
 %description
 %{summary}
 
