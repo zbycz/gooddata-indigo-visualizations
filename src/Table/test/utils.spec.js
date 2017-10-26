@@ -1,4 +1,10 @@
-import { getSortInfo, getMetricsFromHeaders, parseMetricValues } from '../utils';
+import {
+    getSortInfo,
+    getMetricsFromHeaders,
+    parseMetricValues,
+    getHeaderSortClassName
+} from '../utils';
+import { ASC, DESC } from '../Sort';
 
 describe('Utils', () => {
     describe('getSortInfo', () => {
@@ -91,6 +97,21 @@ describe('Utils', () => {
 
             expect(sortInfo.sortBy).toEqual(1);
             expect(sortInfo.sortDir).toEqual('asc');
+        });
+    });
+
+    describe('getHeaderSortClassName', () => {
+        it('should create classes with hinted ASC and current sort DESC', () => {
+            const classes = getHeaderSortClassName(ASC, DESC);
+            expect(classes).toContain('gd-table-arrow-up');
+            expect(classes).toContain('s-sorted-desc');
+        });
+
+        it('should create classes with hinted sort and without current sort', () => {
+            const classes = getHeaderSortClassName(DESC, null);
+            expect(classes).toContain('gd-table-arrow-down');
+            expect(classes).not.toContain('s-sorted-desc');
+            expect(classes).not.toContain('s-sorted-asc');
         });
     });
 
