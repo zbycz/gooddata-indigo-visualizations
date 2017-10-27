@@ -135,7 +135,8 @@ describe('Table', () => {
                 const header = columns[0].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).toEqual('gd-table-arrow-up');
+                expect(sort.props.className).toContain('gd-table-arrow-up');
+                expect(sort.props.className).toContain('s-sorted-asc');
             });
 
             it('should render down arrow', () => {
@@ -144,7 +145,8 @@ describe('Table', () => {
                 const header = columns[0].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).toEqual('gd-table-arrow-down');
+                expect(sort.props.className).toContain('gd-table-arrow-down');
+                expect(sort.props.className).toContain('s-sorted-desc');
             });
 
             it('should render arrow on second column', () => {
@@ -153,7 +155,8 @@ describe('Table', () => {
                 const header = columns[1].props.header({ columnKey: 0 });
                 const sort = header.props.children[1];
 
-                expect(sort.props.className).toEqual('gd-table-arrow-up');
+                expect(sort.props.className).toContain('gd-table-arrow-up');
+                expect(sort.props.className).toContain('s-sorted-asc');
             });
 
             it('should not render arrow if sort info is missing', () => {

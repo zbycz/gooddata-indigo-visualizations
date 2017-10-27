@@ -169,7 +169,7 @@ export default class TableVisualization extends Component {
         return {
             dir,
             nextDir,
-            sortDirClass: getHeaderSortClassName(hintSortBy === index ? nextDir : dir)
+            sortDirClass: getHeaderSortClassName(hintSortBy === index ? nextDir : dir, dir)
         };
     }
 

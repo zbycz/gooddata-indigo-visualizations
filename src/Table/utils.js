@@ -195,10 +195,12 @@ export function getStyledLabel(column, content) {
     return { style, label };
 }
 
-export function getHeaderSortClassName(sortDir) {
+export function getHeaderSortClassName(sortDir, currentSort) {
     return cx({
         'gd-table-arrow-up': sortDir === ASC,
-        'gd-table-arrow-down': sortDir === DESC
+        'gd-table-arrow-down': sortDir === DESC,
+        's-sorted-asc': currentSort === ASC,
+        's-sorted-desc': currentSort === DESC
     });
 }
 
