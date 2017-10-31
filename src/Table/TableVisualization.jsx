@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import classNames from 'classnames';
-import { noop, partial, uniqueId, debounce, pick, assign } from 'lodash';
+import { noop, partial, pick, uniqueId, assign, isEqual, debounce } from 'lodash';
+import { numberFormat } from '@gooddata/numberjs';
 
 import Bubble from '@gooddata/goodstrap/lib/Bubble/Bubble';
 import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/BubbleHoverTrigger';
 import TableSortBubbleContent from './TableSortBubbleContent';
+import { subscribeEvents } from '../utils/common';
 import { cellClick, isDrillable } from '../utils/drilldownEventing';
 import DrillableItem from '../proptypes/DrillableItem';
 
@@ -21,21 +23,48 @@ import {
     getTooltipSortAlignPoints,
     getTooltipAlignPoints,
     calculateArrowPositions,
-    enrichTableDataHeaders
+    enrichTableDataHeaders,
+    isHeaderAtDefaultPosition,
+    isHeaderAtEdgePosition,
+    getHeaderPositions,
+    isFooterAtDefaultPosition,
+    isFooterAtEdgePosition,
+    getFooterPositions,
+    updatePosition
 } from './utils';
 
 const MIN_COLUMN_WIDTH = 100;
 export const DEFAULT_ROW_HEIGHT = 30;
 export const DEFAULT_HEADER_HEIGHT = 26;
+export const DEFAULT_FOOTER_ROW_HEIGHT = 30;
 
-const DEBOUNCE_SCROLL_STOP = 500;
 const TOOLTIP_DISPLAY_DELAY = 1000;
 
-const scrollEvents = ['scroll', 'goodstrap.scrolled', 'goodstrap.drag'];
+const DEBOUNCE_SCROLL_STOP = 500;
+
+export const SCROLL_DEBOUNCE_MILISECONDS = 0;
+export const RESIZE_DEBOUNCE_MILISECONDS = 60;
+
+const scrollEvents = [
+    {
+        name: 'scroll',
+        debounce: SCROLL_DEBOUNCE_MILISECONDS
+    }, {
+        name: 'goodstrap.scrolled',
+        debounce: SCROLL_DEBOUNCE_MILISECONDS
+    }, {
+        name: 'resize',
+        debounce: RESIZE_DEBOUNCE_MILISECONDS
+    }, {
+        name: 'goodstrap.drag',
+        debounce: RESIZE_DEBOUNCE_MILISECONDS
+    }
+];
 
 export default class TableVisualization extends Component {
     static propTypes = {
         afm: PropTypes.object,
+        aggregations: PropTypes.array,
         drillableItems: PropTypes.arrayOf(PropTypes.shape(DrillableItem)),
         onFiredDrillEvent: PropTypes.func,
         containerWidth: PropTypes.number.isRequired,
@@ -54,6 +83,7 @@ export default class TableVisualization extends Component {
 
     static defaultProps = {
         afm: {},
+        aggregations: [],
         drillableItems: [],
         onFiredDrillEvent: noop,
         rows: [],
@@ -85,18 +115,30 @@ export default class TableVisualization extends Component {
         this.setTableRef = this.setTableRef.bind(this);
         this.setTableWrapRef = this.setTableWrapRef.bind(this);
         this.closeBubble = this.closeBubble.bind(this);
+        this.scroll = this.scroll.bind(this);
         this.scrolled = this.scrolled.bind(this);
 
-        this.stopped = debounce(() => this.scrollHeader(true), DEBOUNCE_SCROLL_STOP);
+        this.scrollingStopped = debounce(() => this.scroll(true), DEBOUNCE_SCROLL_STOP);
     }
 
     componentDidMount() {
-        // eslint-disable-next-line react/no-find-dom-node
-        this.table = ReactDOM.findDOMNode(this.tableRef);
-        this.header = this.table.querySelector('.fixedDataTableRowLayout_rowWrapper');
+        const { stickyHeader } = this.props;
 
-        if (this.isSticky(this.props.stickyHeader)) {
-            this.setListeners('add');
+        this.table = ReactDOM.findDOMNode(this.tableRef); // eslint-disable-line react/no-find-dom-node
+        this.tableInnerContainer = this.table.querySelector('.fixedDataTableLayout_rowsContainer');
+
+        const tableRows = this.table.querySelectorAll('.fixedDataTableRowLayout_rowWrapper');
+
+        this.header = tableRows[0];
+        this.header.classList.add('table-header');
+
+        if (this.hasFooter()) {
+            this.footer = tableRows[tableRows.length - 1];
+            this.footer.classList.add('table-footer');
+        }
+
+        if (this.isSticky(stickyHeader)) {
+            this.setListeners();
             this.scrolled();
             this.checkTableDimensions();
         }
@@ -109,17 +151,32 @@ export default class TableVisualization extends Component {
 
         if (currentIsSticky !== nextIsSticky) {
             if (currentIsSticky) {
-                this.setListeners('remove');
+                this.unsetListeners();
             }
             if (nextIsSticky) {
-                this.setListeners('add');
+                this.setListeners();
             }
         }
     }
 
-    componentDidUpdate() {
-        if (this.isSticky(this.props.stickyHeader)) {
-            this.scrollHeader(true);
+    componentDidUpdate(prevProps) {
+        const { stickyHeader, aggregations } = this.props;
+
+        if (!isEqual(prevProps.aggregations, aggregations)) {
+            const tableRows = this.table.querySelectorAll('.fixedDataTableRowLayout_rowWrapper');
+
+            if (this.footer) {
+                this.footer.classList.remove('table-footer');
+            }
+
+            if (this.hasFooter()) {
+                this.footer = tableRows[tableRows.length - 1];
+                this.footer.classList.add('table-footer');
+            }
+        }
+
+        if (this.isSticky(stickyHeader)) {
+            this.scroll(true);
             this.checkTableDimensions();
         }
 
@@ -127,9 +184,7 @@ export default class TableVisualization extends Component {
     }
 
     componentWillUnmount() {
-        if (this.isSticky(this.props.stickyHeader)) {
-            this.setListeners('remove');
-        }
+        this.unsetListeners();
     }
 
     setTableRef(ref) {
@@ -140,18 +195,8 @@ export default class TableVisualization extends Component {
         this.tableWrapRef = ref;
     }
 
-    setListeners(action) {
-        const method = `${action}EventListener`;
-        scrollEvents.forEach(name => window[method](name, this.scrolled));
-    }
-
-    setHeader(position = '', x = 0, y = 0) {
-        const { style, classList } = this.header;
-
-        classList[position ? 'add' : 'remove']('sticking');
-        style.position = position;
-        style.left = `${Math.round(x)}px`;
-        style.top = `${Math.round(y)}px`;
+    setListeners() {
+        this.subscribers = subscribeEvents(this.scrolled, scrollEvents);
     }
 
     getSortFunc(column, index) {
@@ -183,8 +228,46 @@ export default class TableVisualization extends Component {
         };
     }
 
+    getComponentClasses() {
+        const { hasHiddenRows } = this.props;
+
+        return classNames(
+            'indigo-table-component',
+            {
+                'has-hidden-rows': hasHiddenRows,
+                'has-footer': this.hasFooter()
+            });
+    }
+
+    getContentClasses() {
+        const { stickyHeader } = this.props;
+
+        return classNames(
+            'indigo-table-component-content',
+            {
+                'has-sticky-header': this.isSticky(stickyHeader)
+            });
+    }
+
+    unsetListeners() {
+        if (this.subscribers && this.subscribers.length > 0) {
+            this.subscribers.forEach((subscriber) => {
+                subscriber.unsubscribe();
+            });
+            this.subscribers = null;
+        }
+    }
+
     isSticky(stickyHeader) {
         return stickyHeader >= 0;
+    }
+
+    hasFooter() {
+        const { aggregations, headers } = this.props;
+
+        const onlyMetrics = headers.every(column => column.type === 'metric');
+
+        return aggregations.length > 0 && !onlyMetrics;
     }
 
     checkTableDimensions() {
@@ -198,43 +281,96 @@ export default class TableVisualization extends Component {
         }
     }
 
-    scrollHeader(stopped = false) {
-        const { stickyHeader, sortInTooltip, hasHiddenRows } = this.props;
-        const boundingRect = this.table.getBoundingClientRect();
+    scrollHeader(isScrollingStopped = false) {
+        const { stickyHeader, sortInTooltip, aggregations, hasHiddenRows } = this.props;
+        const tableBoundingRect = this.tableInnerContainer.getBoundingClientRect();
 
-        if (!stopped && sortInTooltip && this.state.sortBubble.visible) {
+        const isOutOfViewport = tableBoundingRect.bottom < 0;
+        if (isOutOfViewport) {
+            return;
+        }
+
+        if (!isScrollingStopped && sortInTooltip && this.state.sortBubble.visible) {
             this.closeBubble();
         }
 
-        if (
-            boundingRect.top >= stickyHeader ||
-            boundingRect.top < stickyHeader - boundingRect.height
-        ) {
-            this.setHeader();
+        const isDefaultPosition = isHeaderAtDefaultPosition(
+            stickyHeader,
+            tableBoundingRect.top
+        );
+
+        const isEdgePosition = isHeaderAtEdgePosition(
+            stickyHeader,
+            hasHiddenRows,
+            aggregations,
+            tableBoundingRect.bottom
+        );
+
+        const positions = getHeaderPositions(
+            stickyHeader,
+            hasHiddenRows,
+            aggregations,
+            tableBoundingRect.height,
+            tableBoundingRect.top
+        );
+
+        updatePosition(
+            this.header,
+            isDefaultPosition,
+            isEdgePosition,
+            positions,
+            isScrollingStopped
+        );
+    }
+
+    scrollFooter(isScrollingStopped = false) {
+        const { aggregations, hasHiddenRows } = this.props;
+        const tableBoundingRect = this.tableInnerContainer.getBoundingClientRect();
+
+        const isOutOfViewport = tableBoundingRect.top > window.innerHeight;
+        if (isOutOfViewport || !this.hasFooter()) {
             return;
         }
 
-        const headerOffset = DEFAULT_HEADER_HEIGHT + ((hasHiddenRows ? 2 : 1) * DEFAULT_ROW_HEIGHT);
+        const isDefaultPosition = isFooterAtDefaultPosition(
+            hasHiddenRows,
+            tableBoundingRect.bottom,
+            window.innerHeight
+        );
 
-        if (boundingRect.bottom >= stickyHeader &&
-            boundingRect.bottom < stickyHeader + headerOffset
-        ) {
-            this.setHeader('absolute', 0, boundingRect.height - headerOffset);
-            return;
-        }
+        const isEdgePosition = isFooterAtEdgePosition(
+            hasHiddenRows,
+            aggregations,
+            tableBoundingRect.height,
+            tableBoundingRect.bottom,
+            window.innerHeight
+        );
 
-        if (stopped) {
-            this.setHeader('absolute', 0, stickyHeader - boundingRect.top);
-        } else {
-            this.setHeader('fixed', boundingRect.left, stickyHeader);
-        }
+        const positions = getFooterPositions(
+            hasHiddenRows,
+            aggregations,
+            tableBoundingRect.height,
+            tableBoundingRect.bottom,
+            window.innerHeight
+        );
+
+        updatePosition(
+            this.footer,
+            isDefaultPosition,
+            isEdgePosition,
+            positions,
+            isScrollingStopped
+        );
+    }
+
+    scroll(isScrollingStopped = false) {
+        this.scrollHeader(isScrollingStopped);
+        this.scrollFooter(isScrollingStopped);
     }
 
     scrolled() {
-        this.scrollHeader();
-
-        // required for Edge/IE to make sticky header clickable
-        this.stopped();
+        this.scroll();
+        this.scrollingStopped();
     }
 
     closeBubble() {
@@ -271,7 +407,7 @@ export default class TableVisualization extends Component {
         const showSortBubble = () => {
             // workaround glitch with fixed-data-table-2
             // where header styles are overwritten first time user clicks on it
-            this.scrolled();
+            this.scroll();
 
             this.setState({
                 sortBubble: {
@@ -405,21 +541,49 @@ export default class TableVisualization extends Component {
         };
     }
 
+    renderFooter(column, index) {
+        const { aggregations } = this.props;
+
+        if (!this.hasFooter()) return null;
+
+        const style = {
+            height: DEFAULT_FOOTER_ROW_HEIGHT
+        };
+        const isFirstColumn = (index === 0);
+
+        return (
+            <Cell>
+                {aggregations.map((aggregation) => {
+                    const value = aggregation.values[index] === null ? '' : aggregation.values[index];
+
+                    return (
+                        <div key={uniqueId('footer-cell-')} className={'indigo-table-footer-cell'} style={style}>
+                            <span>{isFirstColumn ? aggregation.name : numberFormat(value, column.format)}</span>
+                        </div>
+                    );
+                })}
+            </Cell>
+        );
+    }
+
     renderColumns(columns, columnWidth) {
         const renderHeader =
             this.props.sortInTooltip ? this.renderTooltipHeader : this.renderDefaultHeader;
 
-        return columns.map((column, index) => (
-            <Column
-                key={`${index}.${column.id}`} // eslint-disable-line react/no-array-index-key
-                width={columnWidth}
-                align={getColumnAlign(column)}
-                columnKey={index}
-                header={renderHeader(column, index, columnWidth)}
-                cell={this.renderCell(columns, index)}
-                allowCellsRecycling
-            />
-        ));
+        return columns.map((column, index) => {
+            return (
+                <Column
+                    key={`${index}.${column.id}`} // eslint-disable-line react/no-array-index-key
+                    width={columnWidth}
+                    align={getColumnAlign(column)}
+                    columnKey={index}
+                    header={renderHeader(column, index, columnWidth)}
+                    footer={this.renderFooter(column, index)}
+                    cell={this.renderCell(columns, index)}
+                    allowCellsRecycling
+                />
+            );
+        });
     }
 
     render() {
@@ -428,29 +592,26 @@ export default class TableVisualization extends Component {
             containerWidth,
             containerHeight,
             containerMaxHeight,
-            stickyHeader,
-            hasHiddenRows,
-            afm
+            afm,
+            aggregations,
+            stickyHeader
         } = this.props;
 
         const enrichedHeaders = enrichTableDataHeaders(headers, afm);
 
         const columnWidth = Math.max(containerWidth / enrichedHeaders.length, MIN_COLUMN_WIDTH);
-        const isSticky = this.isSticky(stickyHeader);
 
+        const footerHeight = DEFAULT_FOOTER_ROW_HEIGHT * aggregations.length;
         const height = containerMaxHeight ? undefined : containerHeight;
-        const componentClasses =
-            classNames('indigo-table-component', { 'has-hidden-rows': hasHiddenRows });
-        const componentContentClasses =
-            classNames('indigo-table-component-content', { 'has-sticky-header': isSticky });
 
         return (
-            <div className={componentClasses}>
-                <div className={componentContentClasses} ref={this.setTableWrapRef}>
+            <div className={this.getComponentClasses()}>
+                <div className={this.getContentClasses()} ref={this.setTableWrapRef}>
                     <Table
                         ref={this.setTableRef}
                         touchScrollEnabled
                         headerHeight={DEFAULT_HEADER_HEIGHT}
+                        footerHeight={footerHeight}
                         rowHeight={DEFAULT_ROW_HEIGHT}
                         rowsCount={this.props.rows.length}
                         width={containerWidth}
@@ -461,9 +622,9 @@ export default class TableVisualization extends Component {
                         {this.renderColumns(enrichedHeaders, columnWidth)}
                     </Table>
                 </div>
-                {isSticky ? (
+                {this.isSticky(stickyHeader) ? (
                     <div
-                        className="indigo-table-background-filler"
+                        className={'indigo-table-background-filler'}
                         style={{ ...pick(this.state, 'width', 'height') }}
                     />
                 ) : false}
