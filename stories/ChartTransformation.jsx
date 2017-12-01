@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { screenshotWrap } from '@gooddata/test-storybook';
 
 import ChartTransformation from '../src/Chart/ChartTransformation';
 import { FLUID_LEGEND_THRESHOLD } from '../src/Chart/Legend/Legend';
@@ -9,7 +10,7 @@ import { VIEW_BY_DIMENSION_INDEX, STACK_BY_DIMENSION_INDEX } from '../src/Chart/
 
 import fixtureDataSets, * as fixtures from './test_data/fixtures';
 
-import { wrap, screenshotWrap } from './utils/wrap';
+import { wrap } from './utils/wrap';
 
 import '../src/styles/charts.scss';
 

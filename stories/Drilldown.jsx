@@ -1,8 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action, decorateAction } from '@storybook/addon-actions';
+import { screenshotWrap } from '@gooddata/test-storybook';
+
 import Visualization from '../src/Visualization';
-import { wrap, screenshotWrap } from './utils/wrap';
+import { wrap } from './utils/wrap';
 import * as fixtures from './test_data/fixtures';
 import { VIEW_BY_DIMENSION_INDEX, STACK_BY_DIMENSION_INDEX } from '../src/Chart/constants';
 

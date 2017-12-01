@@ -1,11 +1,11 @@
 import React from 'react';
 import { storiesOf, action } from '@storybook/react';
 import { range } from 'lodash';
+import { screenshotWrap } from '@gooddata/test-storybook';
 
 import TableTransformation from '../src/Table/TableTransformation';
 import ResponsiveTable from '../src/Table/ResponsiveTable';
 import IntlWrapper from './utils/IntlWrapper';
-import { screenshotWrap } from './utils/wrap';
 import '../src/styles/table.scss';
 
 import {
