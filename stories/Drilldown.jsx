@@ -33,7 +33,7 @@ const defaultColumnChartProps = {
 
 document.addEventListener('drill', eventAction('drill'));
 
-storiesOf('Drilldown')
+storiesOf('Drilldown', module)
     .add('Line chart drillable by measure', () => {
         const dataSet = fixtures.barChartWithStackByAndViewByAttributes;
         return screenshotWrap(

@@ -100,7 +100,7 @@ class DynamicVisualization extends React.Component {
     }
 }
 
-storiesOf('Visualization')
+storiesOf('Visualization', module)
     .add('visualization bar chart without attributes', () => {
         const dataSet = fixtures.barChartWithoutAttributes;
 

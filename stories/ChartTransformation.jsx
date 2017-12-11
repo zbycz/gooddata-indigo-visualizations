@@ -136,7 +136,7 @@ class DynamicChart extends React.Component {
     }
 }
 
-storiesOf('ChartTransformation')
+storiesOf('ChartTransformation', module)
     .add('Column chart with one measure and no attributes', () => {
         const dataSet = {
             ...fixtures.barChartWithSingleMeasureAndNoAttributes

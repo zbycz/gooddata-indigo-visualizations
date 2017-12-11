@@ -110,7 +110,7 @@ function generateAggregations(columns, aggregationsTypes) {
     });
 }
 
-storiesOf('Table')
+storiesOf('Table', module)
     .add('Fixed dimensions', () => (
         screenshotWrap(
             <div>
