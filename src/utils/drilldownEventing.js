@@ -28,8 +28,9 @@ function getMeasureUriOrIdentifier(afm, localIdentifier) {
 
 function isHeaderDrillable(drillableItems, header) {
     return drillableItems.some(drillableItem =>
-        drillableItem.identifier === header.identifier ||
-        drillableItem.uri === header.uri
+        // Check for defined values because undefined === undefined
+        (drillableItem.identifier && header.identifier && drillableItem.identifier === header.identifier) ||
+        (drillableItem.uri && header.uri && drillableItem.uri === header.uri)
     );
 }
 
