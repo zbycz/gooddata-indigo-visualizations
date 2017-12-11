@@ -1,25 +1,47 @@
-import { set, debounce, cloneDeep } from 'lodash';
+import { get, debounce } from 'lodash';
 import invariant from 'invariant';
 import CustomEvent from 'custom-event';
 import { BAR_CHART, COLUMN_CHART, LINE_CHART, PIE_CHART, TABLE } from '../VisualizationTypes';
 
-export const isDrillable = (drillableItems, header) =>
-    drillableItems.some(drillableItem =>
+function getPoPMeasureIdentifier(measure) {
+    return get(measure, ['definition', 'popMeasure', 'measureIdentifier']);
+}
+
+function findMeasureByIdentifier(afm, localIdentifier) {
+    return (afm.measures || []).find(m => m.localIdentifier === localIdentifier);
+}
+
+function getMeasureUriOrIdentifier(afm, localIdentifier) {
+    let measure = findMeasureByIdentifier(afm, localIdentifier);
+    if (measure) {
+        const popMeasureIdentifier = getPoPMeasureIdentifier(measure);
+        if (popMeasureIdentifier) {
+            measure = findMeasureByIdentifier(afm, popMeasureIdentifier);
+        }
+        return {
+            uri: get(measure, ['definition', 'measure', 'item', 'uri']),
+            identifier: get(measure, ['definition', 'measure', 'item', 'identifier'])
+        };
+    }
+    return null;
+}
+
+function isHeaderDrillable(drillableItems, header) {
+    return drillableItems.some(drillableItem =>
         drillableItem.identifier === header.identifier ||
         drillableItem.uri === header.uri
     );
+}
 
-export function enableDrillablePoint(drillableItems, data, context) {
-    const point = cloneDeep(data);
+export function isDrillable(drillableItems, header, afm) {
+    // This works only for non adhoc metric & attributes
+    // because adhoc metrics don't have uri & identifier
+    const isDrillablePureHeader = isHeaderDrillable(drillableItems, header);
 
-    const pointIsDrillable = context.some(item =>
-        isDrillable(drillableItems, item)
-    );
+    const afmHeader = getMeasureUriOrIdentifier(afm, header.localIdentifier);
+    const isDrillableAdhocHeader = afmHeader && isHeaderDrillable(drillableItems, afmHeader);
 
-    set(point, 'drilldown', pointIsDrillable);
-    set(point, 'drillContext', context);
-
-    return point;
+    return !!(isDrillablePureHeader || isDrillableAdhocHeader);
 }
 
 export function getClickableElementNameByChartType(type) {
