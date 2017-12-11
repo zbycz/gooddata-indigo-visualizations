@@ -513,15 +513,16 @@ export default class TableVisualization extends Component {
 
     renderCell(headers, index) {
         const { executionRequest, drillableItems, onFiredDrillEvent, rows } = this.props;
+        const { afm } = executionRequest;
         const header = headers[index];
-        const drillable = isDrillable(drillableItems, header);
+        const drillable = isDrillable(drillableItems, header, afm);
 
         return (cellProps) => {
             const { rowIndex, columnKey } = cellProps;
             const row = rows[rowIndex];
             const cellContent = row[columnKey];
             const classes = getCellClassNames(rowIndex, columnKey, drillable);
-            const drillConfig = { executionRequest, onFiredDrillEvent };
+            const drillConfig = { afm, onFiredDrillEvent };
             const { style, label } = getStyledLabel(header, cellContent);
 
             const cellPropsDrill = drillable ? assign({}, cellProps, {

@@ -91,7 +91,6 @@ describe('Table', () => {
             const wrapper = renderTable({ drillableItems: [{ uri: '/gdc/md/project_id/obj/unknown_measure_uri_id' }] });
             const columns = wrapper.find(Table).prop('children');
             const cell = columns[1].props.cell({ rowIndex: 0, columnKey: 1 });
-
             expect(cell.props).not.toHaveProperty('onClick', expect.any(Function));
         });
     });

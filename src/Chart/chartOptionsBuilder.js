@@ -3,6 +3,7 @@ import invariant from 'invariant';
 
 import { range, get, without, escape, unescape } from 'lodash';
 import { parseValue, getAttributeElementIdFromAttributeElementUri } from '../utils/common';
+import { isDrillable } from '../utils/drilldownEventing';
 import { DEFAULT_COLOR_PALETTE, getLighterColor } from '../utils/color';
 import { PIE_CHART, CHART_TYPES } from '../VisualizationTypes';
 import { isDataOfReasonableSize } from './highChartsCreators';
@@ -292,7 +293,8 @@ export function getDrillableSeries(
     measureGroup,
     viewByAttribute,
     stackByAttribute,
-    type
+    type,
+    afm
 ) {
     const isMetricPieChart = type === PIE_CHART && !viewByAttribute;
 
@@ -336,12 +338,9 @@ export function getDrillableSeries(
                 stackByItem
             ], null);
 
-            const drilldown = drillableItems.some(drillableItem => (
-                drillableHooks.some(drillableHook =>
-                    (drillableHook.uri && drillableHook.uri === drillableItem.uri)
-                    || (drillableHook.identifier && drillableHook.identifier === drillableItem.identifier)
-                )
-            ));
+            const drilldown = drillableHooks.some(drillableHook =>
+                isDrillable(drillableItems, drillableHook, afm)
+            );
 
             const drillableProps = {
                 drilldown
@@ -438,7 +437,8 @@ export function getChartOptions(
         measureGroup,
         viewByAttribute,
         stackByAttribute,
-        type
+        type,
+        afm
     );
 
     let categories = getCategories(type, viewByAttribute, measureGroup);

@@ -658,6 +658,7 @@ describe('chartOptionsBuilder', () => {
     });
 
     describe('getDrillableSeries', () => {
+        const afm = {};
         describe('in usecase of bar chart with 3 measures and view by attribute', () => {
             const dataSet = fixtures.barChartWith3MetricsAndViewByAttribute;
             const mVS = getMVS(dataSet);
@@ -675,7 +676,8 @@ describe('chartOptionsBuilder', () => {
                     seriesWithoutDrillability,
                     noDrillableItems,
                     ...mVS,
-                    type
+                    type,
+                    afm
                 );
                 it('should return the same number of items as seriesWithoutDrillability', () => {
                     expect(noDrillableSeriesData.length).toBe(seriesWithoutDrillability.length);
@@ -709,7 +711,8 @@ describe('chartOptionsBuilder', () => {
                     seriesWithoutDrillability,
                     twoDrillableMeasuresItems,
                     ...mVS,
-                    type
+                    type,
+                    afm
                 );
                 it('should return the same number of items as seriesWithoutDrillability', () => {
                     expect(twoDrillableMeasuresSeriesData.length).toBe(seriesWithoutDrillability.length);

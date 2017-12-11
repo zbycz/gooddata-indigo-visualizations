@@ -1,10 +1,128 @@
 import {
-    enableDrillablePoint,
     getClickableElementNameByChartType,
     chartClick,
-    cellClick
+    cellClick,
+    isDrillable
 } from '../drilldownEventing';
 import { BAR_CHART, COLUMN_CHART, LINE_CHART, PIE_CHART, TABLE } from '../../VisualizationTypes';
+
+describe('isDrillable', () => {
+    const PURE_MEASURE_URI = '/gdc/md/projectId/obj/1';
+    const PURE_MEASURE_IDENTIFIER = 'MEASURE.identifier';
+    const ADHOC_MEASURE_LOCAL_IDENTIFIER = 'm1';
+    const ADHOC_MEASURE_URI = '/gdc/md/projectId/obj/2';
+    const ADHOC_MEASURE_IDENTIFIER = 'adhoc.measure.identifier';
+    const ADHOC_MEASURE_POP_LOCAL_IDENTIFIER = 'm1_pop';
+
+    const drillableItems = [
+        {
+            uri: PURE_MEASURE_URI,
+            identifier: PURE_MEASURE_IDENTIFIER
+        },
+        {
+            uri: ADHOC_MEASURE_URI,
+            identifier: ADHOC_MEASURE_IDENTIFIER
+        }
+    ];
+
+    describe('Header with uri or identifier (pure measures & attributes)', () => {
+        it('should be true if uri is found in drillableItems', () => {
+            const header = {
+                uri: PURE_MEASURE_URI
+            };
+            expect(
+                isDrillable(drillableItems, header, {})
+            ).toEqual(true);
+        });
+
+        it('should be true if identifier is found in drillableItems', () => {
+            const header = {
+                identifier: PURE_MEASURE_IDENTIFIER
+            };
+            expect(
+                isDrillable(drillableItems, header, {})
+            ).toEqual(true);
+        });
+    });
+
+    describe('Header without uri & identifier (adhoc measures)', () => {
+        it('should be true if uri based measure in AFM is found in drillableItems', () => {
+            const header = {
+                localIdentifier: ADHOC_MEASURE_LOCAL_IDENTIFIER
+            };
+            const afm = {
+                measures: [
+                    {
+                        localIdentifier: ADHOC_MEASURE_LOCAL_IDENTIFIER,
+                        definition: {
+                            measure: {
+                                item: {
+                                    uri: ADHOC_MEASURE_URI
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+            expect(
+                isDrillable(drillableItems, header, afm)
+            ).toEqual(true);
+        });
+
+        it('should be true if identifier based measure in AFM is found in drillableItems', () => {
+            const header = {
+                localIdentifier: ADHOC_MEASURE_LOCAL_IDENTIFIER
+            };
+            const afm = {
+                measures: [
+                    {
+                        localIdentifier: ADHOC_MEASURE_LOCAL_IDENTIFIER,
+                        definition: {
+                            measure: {
+                                item: {
+                                    identifier: ADHOC_MEASURE_IDENTIFIER
+                                }
+                            }
+                        }
+                    }
+                ]
+            };
+            expect(
+                isDrillable(drillableItems, header, afm)
+            ).toEqual(true);
+        });
+
+        it('should detect PoP in AFM', () => {
+            const header = {
+                localIdentifier: ADHOC_MEASURE_POP_LOCAL_IDENTIFIER
+            };
+            const afm = {
+                measures: [
+                    {
+                        localIdentifier: ADHOC_MEASURE_LOCAL_IDENTIFIER,
+                        definition: {
+                            measure: {
+                                item: {
+                                    uri: ADHOC_MEASURE_URI
+                                }
+                            }
+                        }
+                    }, {
+                        localIdentifier: ADHOC_MEASURE_POP_LOCAL_IDENTIFIER,
+                        definition: {
+                            popMeasure: {
+                                measureIdentifier: ADHOC_MEASURE_LOCAL_IDENTIFIER
+                            }
+                        }
+                    }
+                ]
+            };
+            expect(
+                isDrillable(drillableItems, header, afm)
+            ).toEqual(true);
+        });
+    });
+});
 
 describe('Drilldown Eventing', () => {
     jest.useFakeTimers();
@@ -37,18 +155,6 @@ describe('Drilldown Eventing', () => {
             some: 'nonrelevant data'
         }
     };
-
-    it('should enable drilldown to point', () => {
-        const point = {};
-        const context = [{ header: { id: 'foo' } }];
-        const drillableItems = [{ identifier: 'foo' }];
-        const res = enableDrillablePoint(drillableItems, point, context);
-
-        expect(res).toMatchObject({
-            drilldown: true,
-            drillContext: context
-        });
-    });
 
     it('should get clickable chart element name', () => {
         const fn = getClickableElementNameByChartType;
