@@ -1,5 +1,4 @@
 before:
-  - echo chromedriver_version=2.24 >> .npmrc
   - ci-yarn-install
 pull-request:
   - yarn validate-ci
@@ -9,3 +8,5 @@ dist:
   - yarn build-storybook
 rpm-build:
   - yarn build-storybook
+test-storybook:
+  - yarn test-storybook

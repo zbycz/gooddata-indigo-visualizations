@@ -1,10 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { screenshotWrap } from '@gooddata/test-storybook';
 
 import Visualization from '../src/Visualization';
 import fixtureDataSets, * as fixtures from './test_data/fixtures';
-import { wrap, screenshotWrap } from './utils/wrap';
+import { wrap } from './utils/wrap';
 import { immutableSet } from '../src/utils/common';
 
 import '../src/styles/charts.scss';
