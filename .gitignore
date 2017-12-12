@@ -31,8 +31,4 @@ coverage
 
 junit.xml
 
-nohup.out
-start-storybook.log
-test-storybook/ci-report/
-test-storybook/html-report/
-test-storybook/tests/
+test-storybook/
