@@ -1,9 +1,10 @@
-import { set } from 'lodash';
+import { set, cloneDeep } from 'lodash';
 import {
     getBackwardCompatibleHeaderForDrilling,
     getBackwardCompatibleRowForDrilling,
     getHeaders,
     getRows,
+    getTotalsWithData,
     validateTableProportions
 } from '../dataTransformation';
 
@@ -64,6 +65,15 @@ import {
     TABLE_HEADERS_POP,
     TABLE_ROWS_POP
 } from '../../fixtures/periodOverPeriod';
+
+import {
+    EXECUTION_RESULT_1,
+    EXECUTION_RESULT_2,
+    TOTALS_DEFINITION_1,
+    TOTALS_DEFINITION_2,
+    EXPECTED_TOTALS_WITH_DATA_1,
+    EXPECTED_TOTALS_WITH_DATA_2
+} from '../fixtures/totalsWithData';
 
 describe('Table utils - Data transformation', () => {
     describe('Get headers and rows', () => {
@@ -164,8 +174,37 @@ describe('Table utils - Data transformation', () => {
         });
     });
 
+    describe('Get table totals with data', () => {
+        it('should put together totals definition with result data', () => {
+            const totalsWithData = getTotalsWithData(TOTALS_DEFINITION_1, EXECUTION_RESULT_1);
+            expect(totalsWithData).toEqual(EXPECTED_TOTALS_WITH_DATA_1);
+        });
+
+        it('should always return totals in the same order [sum, max, min, avg, med, nat]', () => {
+            const totalsWithData = getTotalsWithData(TOTALS_DEFINITION_2, EXECUTION_RESULT_2);
+            expect(totalsWithData).toEqual(EXPECTED_TOTALS_WITH_DATA_2);
+        });
+
+        it('should return empty array when totals definition is empty', () => {
+            const totalsWithData = getTotalsWithData([], EXECUTION_RESULT_2);
+            expect(totalsWithData).toEqual([]);
+        });
+
+        it('should return empty array when totals are not present in execution result data', () => {
+            const totalsWithData = getTotalsWithData(TOTALS_DEFINITION_2, {});
+            expect(totalsWithData).toEqual([]);
+        });
+
+        it('should return empty array when totals are not present in execution result headers', () => {
+            const execResult = cloneDeep(EXECUTION_RESULT_2);
+            execResult.headerItems[0][0] = [];
+            const totalsWithData = getTotalsWithData(TOTALS_DEFINITION_2, execResult);
+            expect(totalsWithData).toEqual([]);
+        });
+    });
+
     describe('ExecutionResult headerItems', () => {
-        it('should filter only arrays which contains only attribute header items', () => {
+        it('should filter only arrays which contains some attribute header items', () => {
             const measureGroupHeaderItems = [
                 {
                     measureGroupHeaderItem: {

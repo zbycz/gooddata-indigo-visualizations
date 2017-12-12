@@ -55,6 +55,23 @@ export const EXECUTION_REQUEST_2A_3M = {
             {
                 itemIdentifiers: ['measureGroup']
             }
+        ],
+        totals: [
+            {
+                measureIdentifier: '3rd_measure_local_identifier',
+                type: 'sum',
+                attributeIdentifier: '1st_attr_local_identifier'
+            },
+            {
+                measureIdentifier: '1st_measure_local_identifier',
+                type: 'avg',
+                attributeIdentifier: '1st_attr_local_identifier'
+            },
+            {
+                measureIdentifier: '2nd_measure_local_identifier',
+                type: 'nat',
+                attributeIdentifier: '1st_attr_local_identifier'
+            }
         ]
     }
 };
@@ -73,7 +90,24 @@ export const EXECUTION_RESPONSE_2A_3M = {
                             name: 'Product',
                             uri: '/gdc/md/project_id/obj/1st_attr_uri_id',
                             identifier: '1st_attr_local_identifier'
-                        }
+                        },
+                        totalItems: [
+                            {
+                                totalHeaderItem: {
+                                    name: 'sum'
+                                }
+                            },
+                            {
+                                totalHeaderItem: {
+                                    name: 'avg'
+                                }
+                            },
+                            {
+                                totalHeaderItem: {
+                                    name: 'nat'
+                                }
+                            }
+                        ]
                     }
                 },
                 {
@@ -183,6 +217,24 @@ export const EXECUTION_RESULT_2A_3M = {
                         uri: '/gdc/md/project_id/obj/1st_attr_df_uri_id/elements?id=12',
                         name: 'Television'
                     }
+                },
+                {
+                    totalHeaderItem: {
+                        name: 'sum',
+                        type: 'sum'
+                    }
+                },
+                {
+                    totalHeaderItem: {
+                        name: 'avg',
+                        type: 'avg'
+                    }
+                },
+                {
+                    totalHeaderItem: {
+                        name: 'nat',
+                        type: 'nat'
+                    }
                 }
             ],
             [
@@ -232,6 +284,25 @@ export const EXECUTION_RESULT_2A_3M = {
                         order: 2
                     }
                 }
+            ]
+        ]
+    ],
+    totals: [
+        [
+            [
+                null,
+                null,
+                '2754207.72'
+            ],
+            [
+                '5726498.93',
+                null,
+                null
+            ],
+            [
+                null,
+                '17000001',
+                null
             ]
         ]
     ],

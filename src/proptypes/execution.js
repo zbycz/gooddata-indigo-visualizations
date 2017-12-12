@@ -238,6 +238,13 @@ const resultMeasureHeaderItemPropTypes = {
     }).isRequired
 };
 
+const resultTotalHeaderItemPropTypes = {
+    totalHeaderItem: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        type: PropTypes.string.isRequired
+    }).isRequired
+};
+
 const dataValuePropTypes = PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number
@@ -261,7 +268,10 @@ export const ExecutionResultPropTypes = PropTypes.shape({
         PropTypes.arrayOf(
             PropTypes.oneOfType([
                 PropTypes.arrayOf(
-                    PropTypes.shape(resultAttributeHeaderItemPropTypes)
+                    PropTypes.oneOfType([
+                        PropTypes.shape(resultAttributeHeaderItemPropTypes),
+                        PropTypes.shape(resultTotalHeaderItemPropTypes)
+                    ])
                 ),
                 PropTypes.arrayOf(
                     PropTypes.shape(resultMeasureHeaderItemPropTypes)
