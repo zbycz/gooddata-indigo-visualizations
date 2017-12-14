@@ -3,7 +3,7 @@ import invariant from 'invariant';
 
 import { range, get, without, escape, unescape } from 'lodash';
 import { parseValue, getAttributeElementIdFromAttributeElementUri } from '../utils/common';
-import { isDrillable } from '../utils/drilldownEventing';
+import { getMeasureUriOrIdentifier, isDrillable } from '../utils/drilldownEventing';
 import { DEFAULT_COLOR_PALETTE, getLighterColor } from '../utils/color';
 import { PIE_CHART, CHART_TYPES } from '../VisualizationTypes';
 import { isDataOfReasonableSize } from './highChartsCreators';
@@ -260,7 +260,7 @@ export function findAttributeInDimension(dimension, attributeHeaderItemsDimensio
     });
 }
 
-export function getDrillContext(stackByItem, viewByItem, measure) {
+export function getDrillContext(stackByItem, viewByItem, measure, afm) {
     return without([
         stackByItem,
         viewByItem,
@@ -282,7 +282,9 @@ export function getDrillContext(stackByItem, viewByItem, measure) {
             }),
             value: name, // text label of attribute value or formatted measure value
             identifier: attribute ? attribute.identifier : identifier, // identifier of attribute or measure
-            uri: attribute ? attribute.uri : uri // uri of attribute or measure
+            uri: attribute
+                ? attribute.uri // uri of attribute
+                : get(getMeasureUriOrIdentifier(afm, localIdentifier), 'uri') // uri of measure
         };
     });
 }
@@ -346,7 +348,7 @@ export function getDrillableSeries(
                 drilldown
             };
             if (drilldown) {
-                drillableProps.drillContext = getDrillContext(measure, viewByItem, stackByItem);
+                drillableProps.drillContext = getDrillContext(measure, viewByItem, stackByItem, afm);
                 isSeriesDrillable = true;
             }
             return {

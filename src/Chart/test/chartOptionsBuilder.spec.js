@@ -612,7 +612,8 @@ describe('chartOptionsBuilder', () => {
                 attribute: stackByAttribute
             };
 
-            const drillContext = getDrillContext(stackByItem, viewByItem, measure);
+            const afm = dataSet.executionRequest.afm;
+            const drillContext = getDrillContext(stackByItem, viewByItem, measure, afm);
             expect(drillContext).toEqual([
                 {
                     id: '1225',
@@ -644,7 +645,8 @@ describe('chartOptionsBuilder', () => {
             const viewByItem = null;
             const stackByItem = null;
 
-            const drillContext = getDrillContext(stackByItem, viewByItem, measure);
+            const afm = dataSet.executionRequest.afm;
+            const drillContext = getDrillContext(stackByItem, viewByItem, measure, afm);
             expect(drillContext).toEqual([
                 {
                     format: '#,##0.00',
@@ -658,9 +660,9 @@ describe('chartOptionsBuilder', () => {
     });
 
     describe('getDrillableSeries', () => {
-        const afm = {};
         describe('in usecase of bar chart with 3 measures and view by attribute', () => {
             const dataSet = fixtures.barChartWith3MetricsAndViewByAttribute;
+            const afm = dataSet.executionRequest.afm;
             const mVS = getMVS(dataSet);
             const type = 'column';
             const seriesWithoutDrillability = getSeries(
