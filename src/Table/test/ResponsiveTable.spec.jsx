@@ -37,9 +37,24 @@ describe('Responsive Table', () => {
         );
     }
 
-    it('should set container width', () => {
-        const wrapper = renderTable(TABLE_DATA);
-        expect(wrapper.find(Table).prop('containerWidth')).toEqual(600);
+    describe('proportions', () => {
+        it('should set container width', () => {
+            const wrapper = renderTable(TABLE_DATA);
+            expect(wrapper.find(Table).prop('containerWidth')).toEqual(600);
+        });
+
+        it('should compute table max height using data and total rows count', () => {
+            const tableDataWithTotals = Object.assign({}, TABLE_DATA, {
+                totalsWithData: [{
+                    type: 'sum',
+                    outputMeasureIndexes: [],
+                    values: []
+                }]
+            });
+            const wrapper = renderTable(tableDataWithTotals);
+            const componentInstance = wrapper.find(ResponsiveTable).instance();
+            expect(componentInstance.getContainerMaxHeight()).toEqual(106);
+        });
     });
 
     describe('page', () => {

@@ -228,7 +228,7 @@ storiesOf('Drilldown', module)
     })
     .add('Table', () => (
         screenshotWrap(
-            <div>
+            wrap(
                 <Visualization
                     config={{ type: 'table' }}
                     executionRequest={EXECUTION_REQUEST_POP}
@@ -249,6 +249,6 @@ storiesOf('Drilldown', module)
                         }
                     ]}
                 />
-            </div>
+            )
         )
     ));
