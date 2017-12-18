@@ -2,7 +2,7 @@ import Highcharts from 'highcharts';
 import drillmodule from 'highcharts/modules/drilldown';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { cloneDeep, get, set, isEqual } from 'lodash';
+import { cloneDeep, get, set, isEqual, noop } from 'lodash';
 import cx from 'classnames';
 
 import { PIE_CHART } from '../VisualizationTypes';
@@ -41,7 +41,8 @@ export default class HighChartRenderer extends PureComponent {
             })).isRequired
         }),
         chartRenderer: PropTypes.func,
-        legendRenderer: PropTypes.func
+        legendRenderer: PropTypes.func,
+        getReflowTrigger: PropTypes.func
     };
 
     static defaultProps = {
@@ -53,7 +54,8 @@ export default class HighChartRenderer extends PureComponent {
             position: RIGHT
         },
         chartRenderer: renderChart,
-        legendRenderer: renderLegend
+        legendRenderer: renderLegend,
+        getReflowTrigger: noop
     };
 
     constructor(props) {
@@ -79,6 +81,8 @@ export default class HighChartRenderer extends PureComponent {
                 chart.container.style.position = this.props.height ? 'relative' : 'absolute';
 
                 chart.reflow();
+                const reflowTrigger = () => chart.reflow();
+                this.props.getReflowTrigger(reflowTrigger);
             }
         }, 0);
     }
@@ -90,6 +94,16 @@ export default class HighChartRenderer extends PureComponent {
         if (hasLegendChanged) {
             this.resetLegendState(nextProps);
         }
+    }
+
+    componentDidUpdate() {
+        setTimeout(() => {
+            if (this.chartRef) {
+                const chart = this.chartRef.getChart();
+                const reflowTrigger = () => chart.reflow();
+                this.props.getReflowTrigger(reflowTrigger);
+            }
+        }, 0);
     }
 
     onLegendItemClick(item) {
@@ -153,7 +167,7 @@ export default class HighChartRenderer extends PureComponent {
     }
 
     renderLegend() {
-        const { chartOptions, legend, height, legendRenderer } = this.props;
+        const { chartOptions, legend, height } = this.props;
         const { items } = legend;
 
         if (!legend.enabled) {
@@ -170,7 +184,7 @@ export default class HighChartRenderer extends PureComponent {
             height
         };
 
-        return legendRenderer(legendProps);
+        return this.props.legendRenderer(legendProps);
     }
 
     renderHighcharts() {

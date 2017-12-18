@@ -101,6 +101,29 @@ describe('HighChartRenderer', () => {
         expect(chartRef).toBe(mockRef);
     });
 
+    it('should call props.getReflowTrigger', () => {
+        const getReflowTrigger = jest.fn();
+        const chartRenderer = (props) => {
+            const mockRef = {
+                getChart: () => ({
+                    container: {
+                        style: {}
+                    },
+                    reflow: jest.fn()
+                })
+            };
+            props.ref(mockRef);
+            return jest.fn().mockReturnValue(<div />);
+        };
+
+        jest.useFakeTimers();
+        mount(createComponent({ chartRenderer, getReflowTrigger }));
+        jest.runAllTimers();
+        jest.useRealTimers();
+
+        expect(getReflowTrigger).toHaveBeenCalledTimes(1);
+    });
+
     it('should force chart reflow and set container styles when height is set', () => {
         const chartMock = {
             container: {

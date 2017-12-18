@@ -72,6 +72,7 @@ export default class ChartTransformation extends Component {
             height,
             width,
             afterRender,
+            getReflowTrigger: config.getReflowTrigger,
             legend: getLegend(config.legend, chartOptions)
         };
     }

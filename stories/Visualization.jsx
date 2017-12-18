@@ -209,6 +209,37 @@ storiesOf('Visualization', module)
             )
         );
     })
+    .add('highchart reflow()', () => {
+        let reflowTrigger;
+        const getReflowTrigger = (fnc) => { reflowTrigger = fnc; };
+        const reflow = () => { reflowTrigger(); }; // react needs the trigger to be called in another closure
+
+        let outerDiv;
+        const resizeToggle = () => {
+            outerDiv.style.width = (outerDiv.style.width === '500px') ? '100%' : '500px';
+        };
+
+        return (
+            <div>
+                <button onClick={reflow}>call reflowTrigger()</button>
+                <button onClick={resizeToggle}>toggle size</button>
+                <div style={{ width: '100%', height: '100%' }} ref={(o) => { outerDiv = o; }}>
+                    {wrap(
+                        <Visualization
+                            {...fixtures.barChartWith3MetricsAndViewByAttribute}
+                            config={{
+                                type: 'column',
+                                getReflowTrigger
+                            }}
+                            onDataTooLarge={f => f}
+                        />,
+                        500,
+                        '100%'
+                    )}
+                </div>
+            </div>
+        );
+    })
     .add('dynamic visualization', () => {
         return <DynamicVisualization />;
     });
