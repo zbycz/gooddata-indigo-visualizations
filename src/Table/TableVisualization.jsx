@@ -5,6 +5,7 @@ import { injectIntl, intlShape } from 'react-intl';
 import cx from 'classnames';
 import { Cell, Column, Table } from 'fixed-data-table-2';
 import { assign, debounce, isEqual, noop, pick, uniqueId } from 'lodash';
+import 'nodelist-foreach-polyfill';
 
 import Bubble from '@gooddata/goodstrap/lib/Bubble/Bubble';
 import BubbleHoverTrigger from '@gooddata/goodstrap/lib/Bubble/BubbleHoverTrigger';
