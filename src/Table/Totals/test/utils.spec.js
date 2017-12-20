@@ -15,8 +15,14 @@ import {
     addTotalsRow,
     updateTotalsRemovePosition,
     getAddTotalDropdownAlignPoints,
-    shouldShowAddTotalButton, getFirstMeasureIndex, hasTableColumnTotalEnabled, addMeasureIndex, removeMeasureIndex,
-    getTotalsDefinition, orderTotals
+    shouldShowAddTotalButton,
+    getFirstMeasureIndex,
+    hasTableColumnTotalEnabled,
+    addMeasureIndex,
+    removeMeasureIndex,
+    getTotalsDefinition,
+    orderTotals,
+    shouldShowTotals
 } from '../utils';
 
 const intl = createIntlMock();
@@ -458,6 +464,41 @@ describe('Totals', () => {
                 { type: 'sum', outputMeasureIndexes: [] },
                 { type: 'avg', outputMeasureIndexes: [] }
             ]);
+        });
+    });
+
+    describe('shouldShowTotals', () => {
+        it('should return false when no header', () => {
+            const headers = [];
+
+            expect(shouldShowTotals(headers)).toBeFalsy();
+        });
+
+        it('should return true when mixed attributes and measures', () => {
+            const headers = [
+                { type: 'attribute' },
+                { type: 'measure' }
+            ];
+
+            expect(shouldShowTotals(headers)).toBeTruthy();
+        });
+
+        it('should return false when attributes used', () => {
+            const headers = [
+                { type: 'attribute' },
+                { type: 'attribute' }
+            ];
+
+            expect(shouldShowTotals(headers)).toBeFalsy();
+        });
+
+        it('should return false when measures used', () => {
+            const headers = [
+                { type: 'measure' },
+                { type: 'measure' }
+            ];
+
+            expect(shouldShowTotals(headers)).toBeFalsy();
         });
     });
 });

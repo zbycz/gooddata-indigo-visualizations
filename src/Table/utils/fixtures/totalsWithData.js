@@ -177,3 +177,31 @@ export const EXPECTED_TOTALS_WITH_DATA_2 = [
         values: [6]
     }
 ];
+
+export const EXPECTED_TOTALS_WITH_EMPTY_DATA_2 = [
+    {
+        type: 'sum',
+        outputMeasureIndexes: [0],
+        values: []
+    }, {
+        type: 'max',
+        outputMeasureIndexes: [0],
+        values: []
+    }, {
+        type: 'min',
+        outputMeasureIndexes: [0],
+        values: []
+    }, {
+        type: 'avg',
+        outputMeasureIndexes: [0],
+        values: []
+    }, {
+        type: 'med',
+        outputMeasureIndexes: [0],
+        values: []
+    }, {
+        type: 'nat',
+        outputMeasureIndexes: [0],
+        values: []
+    }
+];

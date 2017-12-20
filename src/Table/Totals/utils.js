@@ -177,3 +177,14 @@ export function getTotalsDefinition(totalsWithValues) {
     const totalsWithoutValues = totalsWithValues.map(total => omit(total, 'values'));
     return orderTotals(totalsWithoutValues);
 }
+
+export function shouldShowTotals(headers) {
+    if (headers.length < 1) {
+        return false;
+    }
+
+    const onlyMeasures = headers.every(header => header.type === 'measure');
+    const onlyAttributes = headers.every(header => header.type === 'attribute');
+
+    return !(onlyAttributes || onlyMeasures);
+}

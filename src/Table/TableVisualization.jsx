@@ -35,7 +35,8 @@ import {
     addMeasureIndex,
     removeMeasureIndex,
     getFirstMeasureIndex,
-    getTotalsDefinition
+    getTotalsDefinition,
+    shouldShowTotals
 } from './Totals/utils';
 import TotalCell from './Totals/TotalCells';
 import { TotalsWithDataPropTypes } from '../proptypes/totals';
@@ -164,7 +165,7 @@ export class TableVisualization extends Component {
         this.header = tableRows[0];
         this.header.classList.add('table-header');
 
-        if (this.hasFooter()) {
+        if (this.hasFooterWithTotals()) {
             this.footer = tableRows[tableRows.length - 1];
             this.footer.classList.add('table-footer');
         }
@@ -199,7 +200,7 @@ export class TableVisualization extends Component {
                 this.footer.classList.remove('table-footer');
             }
 
-            if (this.hasFooter()) {
+            if (this.hasFooterWithTotals()) {
                 this.footer = tableRows[tableRows.length - 1];
                 this.footer.classList.add('table-footer');
             }
@@ -300,7 +301,7 @@ export class TableVisualization extends Component {
             'indigo-table-component',
             {
                 'has-hidden-rows': hasHiddenRows,
-                'has-footer': this.hasFooter(),
+                'has-footer': this.hasFooterWithTotals(),
                 'has-footer-editable': this.isTotalsEditAllowed()
             });
     }
@@ -350,18 +351,10 @@ export class TableVisualization extends Component {
         resetRowClass(this.rootRef, 'indigo-totals-remove-row-highlight', '.indigo-totals-remove > .indigo-totals-remove-row', rowIndex);
     }
 
-    hasFooter() {
-        if (this.isTotalsEditAllowed()) {
-            return true;
-        }
+    hasFooterWithTotals() {
+        const { headers, totalsWithData } = this.props;
 
-        const { headers, totalsWithData, rows } = this.props;
-
-        const onlyMeasures = headers.every(header => header.type === 'measure');
-        const totalRowsCount = totalsWithData.length;
-        const rowsCount = rows.length;
-
-        return rowsCount > 1 && totalRowsCount > 0 && !onlyMeasures;
+        return this.isTotalsEditAllowed() || (totalsWithData.length && shouldShowTotals(headers));
     }
 
     checkTableDimensions() {
@@ -428,7 +421,7 @@ export class TableVisualization extends Component {
         const totalsEditAllowed = this.isTotalsEditAllowed();
 
         const isOutOfViewport = tableBoundingRect.top > window.innerHeight;
-        if (isOutOfViewport || !this.hasFooter()) {
+        if (isOutOfViewport || !this.hasFooterWithTotals()) {
             return;
         }
 
@@ -498,7 +491,9 @@ export class TableVisualization extends Component {
     }
 
     isTotalsEditAllowed() {
-        return this.props.totalsEditAllowed;
+        const { headers, totalsEditAllowed } = this.props;
+
+        return totalsEditAllowed && shouldShowTotals(headers);
     }
 
     addTotalsRow(columnIndex, totalType) {
@@ -685,17 +680,19 @@ export class TableVisualization extends Component {
     }
 
     renderFooter(header, columnIndex, headersCount) {
-        if (!this.hasFooter()) {
+        const { headers, totalsWithData } = this.props;
+
+        if (!shouldShowTotals(headers)) {
             return null;
         }
 
         return (
             <TotalCell
-                totalsWithData={this.props.totalsWithData}
+                totalsWithData={totalsWithData}
                 columnIndex={columnIndex}
                 header={header}
                 headersCount={headersCount}
-                firstMeasureIndex={getFirstMeasureIndex(this.props.headers)}
+                firstMeasureIndex={getFirstMeasureIndex(headers)}
                 editAllowed={this.isTotalsEditAllowed()}
                 onCellMouseEnter={(rowIndex, colIndex) => {
                     this.resetTotalsRowHighlight(rowIndex);
