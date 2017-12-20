@@ -214,14 +214,14 @@ storiesOf('Table', module)
                     height={400}
                     onSortChange={action('Sort changed')}
                     tableRenderer={props => (<ResponsiveTable {...props} rowsPerPage={10} />)}
-                    totals={generateTotals(['sum', 'avg', 'nat'])}
+                    totals={generateTotals(['avg', 'nat', 'sum'])}
                 />
             </IntlWrapper>
         )
     ))
     .add('Totals edit mode', () => {
         let tableRef;
-        const totals = generateTotals(['sum', 'avg', 'nat']);
+        const totals = generateTotals(['avg', 'nat', 'sum']);
 
         return screenshotWrap(
             <IntlWrapper>

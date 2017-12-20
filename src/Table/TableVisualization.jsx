@@ -38,6 +38,7 @@ import {
     getTotalsDefinition
 } from './Totals/utils';
 import TotalCell from './Totals/TotalCells';
+import { TotalsWithDataPropTypes } from '../proptypes/totals';
 
 const FULLSCREEN_TOOLTIP_VIEWPORT_THRESHOLD = 480;
 const MIN_COLUMN_WIDTH = 100;
@@ -71,13 +72,6 @@ const scrollEvents = [
     }
 ];
 
-export const TotalItemWithData = {
-    alias: PropTypes.string,
-    type: PropTypes.string.isRequired,
-    outputMeasureIndexes: PropTypes.arrayOf(PropTypes.number).isRequired,
-    values: PropTypes.array.isRequired
-};
-
 export class TableVisualization extends Component {
     static propTypes = {
         afterRender: PropTypes.func,
@@ -97,7 +91,7 @@ export class TableVisualization extends Component {
         stickyHeaderOffset: PropTypes.number,
         totalsEditAllowed: PropTypes.bool,
         onTotalsEdit: PropTypes.func,
-        totalsWithData: PropTypes.arrayOf(PropTypes.shape(TotalItemWithData)),
+        totalsWithData: TotalsWithDataPropTypes,
         intl: intlShape.isRequired
     };
 

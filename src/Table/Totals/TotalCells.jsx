@@ -7,7 +7,6 @@ import { injectIntl, intlShape } from 'react-intl';
 
 import {
     DEFAULT_FOOTER_ROW_HEIGHT,
-    TotalItemWithData,
     TOTALS_ADD_ROW_HEIGHT
 } from '../TableVisualization';
 import { getStyledLabel } from '../utils/cell';
@@ -19,9 +18,11 @@ import {
 } from './utils';
 import AddTotal from './AddTotal';
 
+import { TotalsWithDataPropTypes } from '../../proptypes/totals';
+
 export class TotalCells extends Component {
     static propTypes = {
-        totalsWithData: PropTypes.arrayOf(PropTypes.shape(TotalItemWithData)).isRequired,
+        totalsWithData: TotalsWithDataPropTypes.isRequired,
         columnIndex: PropTypes.number.isRequired,
         header: PropTypes.object.isRequired,
         headersCount: PropTypes.number.isRequired,

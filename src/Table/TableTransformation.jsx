@@ -4,14 +4,14 @@ import { noop, pick } from 'lodash';
 
 import Table from './Table';
 import DrillableItem from '../proptypes/DrillableItem';
-import { getHeaders, getRows, validateTableProportions } from './utils/dataTransformation';
+import { getHeaders, getRows, validateTableProportions, getTotalsWithData } from './utils/dataTransformation';
 import { getSortInfo, getSortItem } from './utils/sort';
 import {
     ExecutionRequestPropTypes,
     ExecutionResponsePropTypes,
     ExecutionResultPropTypes
 } from '../proptypes/execution';
-import { addMockDataToTotals } from './Totals/utils';
+import { TotalsPropTypes } from '../proptypes/totals';
 
 function renderDefaultTable(props) {
     return <Table {...props} />;
@@ -20,7 +20,7 @@ function renderDefaultTable(props) {
 export default class TableTransformation extends Component {
     static propTypes = {
         afterRender: PropTypes.func,
-        totals: PropTypes.array,
+        totals: TotalsPropTypes,
         totalsEditAllowed: PropTypes.bool,
         onTotalsEdit: PropTypes.func,
         config: PropTypes.object,
@@ -67,7 +67,7 @@ export default class TableTransformation extends Component {
 
         const headers = getHeaders(executionResponse);
         const rows = getRows(executionResult);
-        const totalsWithData = addMockDataToTotals(totals);
+        const totalsWithData = getTotalsWithData(totals, executionResult);
 
         validateTableProportions(headers, rows);
 

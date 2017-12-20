@@ -246,7 +246,7 @@ describe('Table', () => {
                 expect(footer.style.height).toEqual(`${heightBefore}px`);
 
                 const totalsAfter = [...TOTALS, {
-                    type: 'Other',
+                    type: 'min',
                     outputMeasureIndexes: [],
                     values: [1, 2, 3]
                 }];

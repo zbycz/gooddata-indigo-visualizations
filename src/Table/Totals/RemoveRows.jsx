@@ -5,12 +5,13 @@ import { noop } from 'lodash';
 
 import Button from '@gooddata/goodstrap/lib/Button/Button';
 
-import { TotalItemWithData, TOTALS_ADD_ROW_HEIGHT } from '../TableVisualization';
+import { TOTALS_ADD_ROW_HEIGHT } from '../TableVisualization';
+import { TotalsWithDataPropTypes } from '../../proptypes/totals';
 
 export default class RemoveRows extends Component {
     static propTypes = {
         onRemove: PropTypes.func,
-        totalsWithData: PropTypes.arrayOf(PropTypes.shape(TotalItemWithData))
+        totalsWithData: TotalsWithDataPropTypes
     };
 
     static defaultProps = {
