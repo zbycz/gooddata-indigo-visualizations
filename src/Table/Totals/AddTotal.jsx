@@ -39,6 +39,12 @@ export default class AddTotal extends Component {
         };
     }
 
+    componentWillUnmount() {
+        if (this.state.dropdownOpened) {
+            this.onOpenStateChanged(this.props.columnIndex, false);
+        }
+    }
+
     onOpenStateChanged(columnIndex, isOpened) {
         this.setState({
             dropdownOpened: isOpened
