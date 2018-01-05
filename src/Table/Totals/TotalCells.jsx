@@ -110,9 +110,8 @@ export class TotalCells extends Component {
         const columnHasTotal = hasTableColumnTotalEnabled(total.outputMeasureIndexes, columnIndex, firstMeasureIndex);
 
         const labelElement = (
-            <span className={cx('s-total-column-value')}>{label}</span>
+            <span className={cx('s-total-column-value')} title={label}>{label}</span>
         );
-
 
         if (editAllowed) {
             if (columnHasTotal) {

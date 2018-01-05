@@ -280,6 +280,14 @@ $gdc-goodstrap-basepath: '~@gooddata/goodstrap/lib/';
             margin-right: -8px;
         }
 
+        .indigo-totals-disable-column-button {
+            max-width: 0;
+        }
+
+        .indigo-totals-disable-column-button::before {
+            left: -15px;
+        }
+
         .indigo-totals-disable-column-button::before,
         .indigo-totals-enable-column-button::before {
             display: none;
