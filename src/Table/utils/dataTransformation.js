@@ -2,6 +2,7 @@ import invariant from 'invariant';
 import { get, has, isObject, omit, zip, isEmpty } from 'lodash';
 import { getAttributeElementIdFromAttributeElementUri } from '../../utils/common';
 import { getMeasureUriOrIdentifier } from '../../utils/drilldownEventing';
+import { getTotalsTypesList } from '../Totals/utils';
 
 function getAttributeHeaders(attributeDimension) {
     return attributeDimension.headers
@@ -77,7 +78,7 @@ function getResultTotalsValues(executionResult) {
         // and in case of Table, attributes are always in 0-th dimension
         return totalsData[0];
     }
-    return null;
+    return [];
 }
 
 function getOrderedTotalTypes(executionResult) {
@@ -85,8 +86,9 @@ function getOrderedTotalTypes(executionResult) {
     // attributes are always in 0-th dimension right now, therefore executionResult.headerItems[0].
     // Also, we are now supporting only Grand Totals, so totals will be returned always next to the headerItems
     // of the first attribute, therefore executionResult.headerItems[0][0]
+    const headerItems = get(executionResult, 'headerItems[0][0]', []);
 
-    return executionResult.headerItems[0][0].reduce((types, headerItem) => {
+    return headerItems.reduce((types, headerItem) => {
         if (headerItem.totalHeaderItem) {
             types.push(headerItem.totalHeaderItem.type);
         }
@@ -96,11 +98,15 @@ function getOrderedTotalTypes(executionResult) {
 
 export function getTotalsWithData(totalsDefinition, executionResult) {
     const totalsResultValues = getResultTotalsValues(executionResult);
-    if (isEmpty(totalsDefinition) || isEmpty(totalsResultValues)) {
+    if (isEmpty(totalsDefinition)) {
         return [];
     }
 
-    const orderedTotalsTypes = getOrderedTotalTypes(executionResult);
+    let orderedTotalsTypes = getOrderedTotalTypes(executionResult);
+
+    if (!orderedTotalsTypes.length) {
+        orderedTotalsTypes = getTotalsTypesList();
+    }
 
     let index = 0;
     return orderedTotalsTypes.reduce((totals, type) => {
@@ -109,7 +115,7 @@ export function getTotalsWithData(totalsDefinition, executionResult) {
         if (totalDefinition) {
             totals.push({
                 ...totalDefinition,
-                values: totalsResultValues[index]
+                values: totalsResultValues[index] || []
             });
             index += 1;
         }

@@ -20,7 +20,7 @@ import AddTotal from './AddTotal';
 
 import { TotalsWithDataPropTypes } from '../../proptypes/totals';
 
-export class TotalCells extends Component {
+export class TotalCell extends Component {
     static propTypes = {
         totalsWithData: TotalsWithDataPropTypes.isRequired,
         columnIndex: PropTypes.number.isRequired,
@@ -215,4 +215,4 @@ export class TotalCells extends Component {
     }
 }
 
-export default injectIntl(TotalCells);
+export default injectIntl(TotalCell);

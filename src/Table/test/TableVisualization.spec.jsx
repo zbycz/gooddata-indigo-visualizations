@@ -9,7 +9,7 @@ import { EXECUTION_REQUEST_1A_2M, TABLE_HEADERS_1A_2M, TABLE_ROWS_1A_2M } from '
 import { EXECUTION_REQUEST_2M, TABLE_HEADERS_2M, TABLE_ROWS_2M } from '../fixtures/2measures';
 import RemoveRows from '../Totals/RemoveRows';
 import { EXECUTION_REQUEST_2A_3M, TABLE_HEADERS_2A_3M, TABLE_ROWS_2A_3M } from '../fixtures/2attributes3measures';
-import { TotalCells } from '../Totals/TotalCells';
+import { TotalCell } from '../Totals/TotalCells';
 
 function getInstanceFromWrapper(wrapper, component) {
     return wrapper.find(component).childAt(0).instance();
@@ -182,13 +182,32 @@ describe('Table', () => {
         };
 
         describe('totals edit not allowed', () => {
+            it('should not has footer when no totals provided', () => {
+                const wrapper = renderTable({
+                    ...DATA_2A_3M
+                });
+                const component = wrapper.find(TableVisualization).childAt(0).instance();
+
+                expect(component.hasFooterWithTotals()).toBeFalsy();
+            });
+
+            it('should has footer when some totals provided', () => {
+                const wrapper = renderTable({
+                    totalsWithData: TOTALS,
+                    ...DATA_2A_3M
+                });
+                const component = wrapper.find(TableVisualization).childAt(0).instance();
+
+                expect(component.hasFooterWithTotals()).toBeTruthy();
+            });
+
             it('should render total cells when totals are provided', () => {
                 const wrapper = renderTable({
                     totalsWithData: TOTALS,
                     ...DATA_2A_3M
                 });
 
-                expect(wrapper.find(TotalCells).length).toEqual(5);
+                expect(wrapper.find(TotalCell).length).toEqual(5);
             });
 
             it('should not render any footer cells when no totals are provided', () => {
@@ -205,10 +224,10 @@ describe('Table', () => {
                     executionRequest: EXECUTION_REQUEST_2M
                 });
 
-                expect(wrapper.find(TotalCells).length).toEqual(0);
+                expect(wrapper.find(TotalCell).length).toEqual(0);
             });
 
-            it('should not render total cell when totals are provided but there is only row in data', () => {
+            it('should not render total cell when totals are provided and there is only row in data', () => {
                 const wrapper = renderTable({
                     totalsWithData: TOTALS,
                     rows: TABLE_ROWS_1A_2M,
@@ -216,7 +235,7 @@ describe('Table', () => {
                     executionRequest: EXECUTION_REQUEST_1A_2M
                 });
 
-                expect(wrapper.find(TotalCells).length).toEqual(0);
+                expect(wrapper.find(TotalCell).length).toEqual(3);
             });
 
             it('should reset footer when component is updated with no totals', () => {
@@ -259,6 +278,16 @@ describe('Table', () => {
         });
 
         describe('totals edit allowed', () => {
+            it('should has footer even when no totals defined', () => {
+                const wrapper = renderTable({
+                    totalsEditAllowed: true,
+                    ...DATA_2A_3M
+                });
+                const component = wrapper.find(TableVisualization).childAt(0).instance();
+
+                expect(component.hasFooterWithTotals()).toBeTruthy();
+            });
+
             it('should set editable class name to table', () => {
                 const wrapper = renderTable({
                     totalsEditAllowed: true,

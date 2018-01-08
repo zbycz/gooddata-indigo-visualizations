@@ -72,7 +72,7 @@ import {
     TOTALS_DEFINITION_1,
     TOTALS_DEFINITION_2,
     EXPECTED_TOTALS_WITH_DATA_1,
-    EXPECTED_TOTALS_WITH_DATA_2
+    EXPECTED_TOTALS_WITH_DATA_2, EXPECTED_TOTALS_WITH_EMPTY_DATA_2
 } from '../fixtures/totalsWithData';
 
 describe('Table utils - Data transformation', () => {
@@ -190,16 +190,16 @@ describe('Table utils - Data transformation', () => {
             expect(totalsWithData).toEqual([]);
         });
 
-        it('should return empty array when totals are not present in execution result data', () => {
+        it('should return empty totals with empty values totals ordered by default list when totals are not present in execution result data', () => {
             const totalsWithData = getTotalsWithData(TOTALS_DEFINITION_2, {});
-            expect(totalsWithData).toEqual([]);
+            expect(totalsWithData).toEqual(EXPECTED_TOTALS_WITH_EMPTY_DATA_2);
         });
 
-        it('should return empty array when totals are not present in execution result headers', () => {
+        it('should return totals ordered by default list when totals are not present in execution result headers', () => {
             const execResult = cloneDeep(EXECUTION_RESULT_2);
             execResult.headerItems[0][0] = [];
             const totalsWithData = getTotalsWithData(TOTALS_DEFINITION_2, execResult);
-            expect(totalsWithData).toEqual([]);
+            expect(totalsWithData).toEqual(EXPECTED_TOTALS_WITH_DATA_2);
         });
     });
 
