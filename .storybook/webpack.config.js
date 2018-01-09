@@ -1,14 +1,6 @@
-module.exports = (storybookBaseConfig, configType) => {
-    if (configType === 'PRODUCTION') {
-        // see https://github.com/storybooks/storybook/issues/1570
-        storybookBaseConfig.plugins = storybookBaseConfig.plugins.filter(
-            plugin => plugin.constructor.name !== 'UglifyJsPlugin'
-        )
-    }
-
-    storybookBaseConfig.module = {
+module.exports = {
+    module: {
         rules: [
-            ...storybookBaseConfig.module.rules,
             {
                 test: /\.css$/,
                 loaders: ['style-loader', 'css-loader']
@@ -22,7 +14,5 @@ module.exports = (storybookBaseConfig, configType) => {
                 loader: 'file-loader'
             }
         ]
-    };
-
-    return storybookBaseConfig;
+    }
 };
