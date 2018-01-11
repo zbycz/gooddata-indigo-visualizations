@@ -52,4 +52,50 @@ describe('HighChartRenderer', () => {
         expect(wrapper.find(Chart)).toHaveLength(1);
         expect(wrapper.find(Legend)).toHaveLength(1);
     });
+
+    it('should set chart ref', () => {
+        const mockRef = {
+            getChart: () => ({
+                container: {
+                    style: {}
+                },
+                reflow: jest.fn()
+            })
+        };
+        const chartRenderer = (props) => {
+            props.ref(mockRef);
+            return jest.fn().mockReturnValue(<div />);
+        };
+        const wrapper = mount(createComponent({
+            chartRenderer,
+            ref: mockRef
+        }));
+        const chartRef = wrapper.instance().chartRef;
+        expect(chartRef).toBe(mockRef);
+    });
+
+    it('should call props.getReflowTrigger', () => {
+        const getReflowTrigger = jest.fn();
+        const chartRenderer = (props) => {
+            const mockRef = {
+                getChart: () => ({
+                    container: {
+                        style: {}
+                    },
+                    reflow: jest.fn()
+                })
+            };
+            props.ref(mockRef);
+            return jest.fn().mockReturnValue(<div />);
+        };
+
+        jest.useFakeTimers();
+        mount(createComponent({ chartRenderer, getReflowTrigger }));
+        jest.runAllTimers();
+        jest.useRealTimers();
+
+        expect(getReflowTrigger).toHaveBeenCalledTimes(1);
+    });
+
+
 });

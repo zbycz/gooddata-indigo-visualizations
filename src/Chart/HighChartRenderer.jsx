@@ -31,7 +31,8 @@ export default class HighChartRenderer extends PureComponent {
                 color: PropTypes.string.isRequired
             })).isRequired,
             onItemClick: PropTypes.func.isRequired
-        })
+        }),
+        getReflowTrigger: PropTypes.func
     };
 
     static defaultProps = {
@@ -41,7 +42,8 @@ export default class HighChartRenderer extends PureComponent {
             enabled: true,
             responsive: false,
             position: RIGHT
-        }
+        },
+        getReflowTrigger: noop
     };
 
     constructor(props) {
@@ -61,6 +63,18 @@ export default class HighChartRenderer extends PureComponent {
                 chart.container.style.position = this.props.height ? 'relative' : 'absolute';
 
                 chart.reflow();
+                const reflowTrigger = () => chart.reflow();
+                this.props.getReflowTrigger(reflowTrigger);
+            }
+        }, 0);
+    }
+
+    componentDidUpdate() {
+        setTimeout(() => {
+            if (this.chartRef) {
+                const chart = this.chartRef.getChart();
+                const reflowTrigger = () => chart.reflow();
+                this.props.getReflowTrigger(reflowTrigger);
             }
         }, 0);
     }
