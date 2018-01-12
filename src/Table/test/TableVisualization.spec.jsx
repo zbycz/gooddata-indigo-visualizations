@@ -9,7 +9,7 @@ import { EXECUTION_REQUEST_1A_2M, TABLE_HEADERS_1A_2M, TABLE_ROWS_1A_2M } from '
 import { EXECUTION_REQUEST_2M, TABLE_HEADERS_2M, TABLE_ROWS_2M } from '../fixtures/2measures';
 import RemoveRows from '../Totals/RemoveRows';
 import { EXECUTION_REQUEST_2A_3M, TABLE_HEADERS_2A_3M, TABLE_ROWS_2A_3M } from '../fixtures/2attributes3measures';
-import { TotalCell } from '../Totals/TotalCells';
+import { TotalCell } from '../Totals/TotalCell';
 
 function getInstanceFromWrapper(wrapper, component) {
     return wrapper.find(component).childAt(0).instance();
@@ -340,7 +340,6 @@ describe('Table', () => {
 
                 expect(component.onTotalsEdit).toBeCalledWith([{
                     type: 'sum',
-                    alias: 'Sum',
                     outputMeasureIndexes: [0]
                 }]);
             });

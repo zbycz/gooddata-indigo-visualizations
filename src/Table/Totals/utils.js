@@ -17,8 +17,7 @@ function getTotalsList(intl) {
 
     return types.map(type => ({
         type,
-        title: intl.formatMessage({ id: `visualizations.totals.funcTitle.${type}` }),
-        alias: intl.formatMessage({ id: `visualizations.totals.funcAlias.${type}` })
+        title: intl.formatMessage({ id: `visualizations.totals.dropdown.title.${type}` })
     }));
 }
 
@@ -30,7 +29,7 @@ export function getTotalsDatasource(usedTotals, intl) {
         disabled: usedTotalsTypes.includes(total.type)
     }));
 
-    list.unshift({ title: 'visualizations.totals.dropdownHeading', role: 'header' });
+    list.unshift({ title: 'visualizations.totals.dropdown.heading', role: 'header' });
 
     return {
         rowsCount: list.length,
@@ -38,10 +37,8 @@ export function getTotalsDatasource(usedTotals, intl) {
     };
 }
 
-export function getTotalFromListByType(totalItemType, intl) {
-    const { alias, type } = getTotalsList(intl).find(total => total.type === totalItemType);
-
-    return { alias, type, outputMeasureIndexes: [] };
+export function createTotalItem(type) {
+    return { type, outputMeasureIndexes: [] };
 }
 
 export function orderTotals(totalsUnordered) {
@@ -88,14 +85,14 @@ export function isTotalUsed(totals, totalItemType) {
     return totals.some(row => row.type === totalItemType);
 }
 
-export function addTotalsRow(intl, totals, totalItemTypeToAdd) {
+export function addTotalsRow(totals, totalItemTypeToAdd) {
     const updatedTotals = cloneDeep(totals);
 
     if (isTotalUsed(updatedTotals, totalItemTypeToAdd)) {
         return updatedTotals;
     }
 
-    const total = getTotalFromListByType(totalItemTypeToAdd, intl);
+    const total = createTotalItem(totalItemTypeToAdd);
 
     updatedTotals.push(total);
 

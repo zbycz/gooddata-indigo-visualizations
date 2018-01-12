@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { withIntl } from '../../../test/utils';
 import AddTotal from '../../Totals/AddTotal';
 import RemoveRows from '../../Totals/RemoveRows';
-import TotalCells from '../TotalCells';
+import TotalCells from '../TotalCell';
 
 const WrappedTotalCells = withIntl(TotalCells);
 

@@ -38,7 +38,7 @@ import {
     getTotalsDefinition,
     shouldShowTotals
 } from './Totals/utils';
-import TotalCell from './Totals/TotalCells';
+import TotalCell from './Totals/TotalCell';
 import { TotalsWithDataPropTypes } from '../proptypes/totals';
 
 const FULLSCREEN_TOOLTIP_VIEWPORT_THRESHOLD = 480;
@@ -497,10 +497,11 @@ export class TableVisualization extends Component {
     }
 
     addTotalsRow(columnIndex, totalType) {
-        const totalsAddedRow = addTotalsRow(this.props.intl, this.props.totalsWithData, totalType);
-        const totalsEnabledColumn = addMeasureIndex(totalsAddedRow, this.props.headers, totalType, columnIndex);
+        const { totalsWithData, headers } = this.props;
+        const totalsAddedRow = addTotalsRow(totalsWithData, totalType);
+        const totalsEnabledColumn = addMeasureIndex(totalsAddedRow, headers, totalType, columnIndex);
 
-        if (!isEqual(totalsEnabledColumn, this.props.totalsWithData)) {
+        if (!isEqual(totalsEnabledColumn, totalsWithData)) {
             this.onTotalsEdit(totalsEnabledColumn);
         }
     }

@@ -109,7 +109,7 @@ function generateTotals(totalsTypes) {
     return totalsTypes.map((type, index) => {
         return {
             type,
-            alias: `My ${type}`,
+            alias: index === 0 ? `My ${type}` : undefined,
             outputMeasureIndexes: [index]
         };
     });

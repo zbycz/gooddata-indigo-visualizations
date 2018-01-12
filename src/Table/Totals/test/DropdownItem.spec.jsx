@@ -10,17 +10,17 @@ const FIXTURE = {
         role: '',
         type: 'sum',
         disabled: false,
-        title: 'visualizations.totals.funcTitle.sum'
+        title: 'visualizations.totals.dropdown.title.sum'
     },
     disabledItem: {
         role: '',
         type: 'avg',
         disabled: true,
-        title: 'visualizations.totals.funcTitle.avg'
+        title: 'visualizations.totals.dropdown.title.avg'
     },
     headerItem: {
         role: 'header',
-        title: 'visualizations.totals.dropdownHeading'
+        title: 'visualizations.totals.dropdown.heading'
     }
 };
 
