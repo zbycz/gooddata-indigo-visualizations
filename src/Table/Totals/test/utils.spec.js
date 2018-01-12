@@ -6,7 +6,7 @@ import { createIntlMock } from '../../../test/utils';
 import {
     getTotalsTypesList,
     getTotalsDatasource,
-    getTotalFromListByType,
+    createTotalItem,
     toggleCellClass,
     resetRowClass,
     isAddingMoreTotalsEnabled,
@@ -57,7 +57,6 @@ describe('Totals', () => {
         describe('getObjectAt', () => {
             it('should return disabled "max" on index 2 when it is already used', () => {
                 expect(dataSource.getObjectAt(2)).toEqual({
-                    alias: 'Max',
                     disabled: true,
                     title: 'Max',
                     type: 'max'
@@ -66,7 +65,6 @@ describe('Totals', () => {
 
             it('should return enabled "Rollup" on index 5 when it is not used already', () => {
                 expect(dataSource.getObjectAt(5)).toEqual({
-                    alias: 'Median',
                     disabled: false,
                     title: 'Median',
                     type: 'med'
@@ -91,33 +89,12 @@ describe('Totals', () => {
         });
     });
 
-    describe('getTotalFromListByType', () => {
+    describe('createTotalItem', () => {
         it('should return `sum` total item', () => {
-            const total = getTotalFromListByType('sum', intl);
+            const total = createTotalItem('sum');
 
             expect(total).toEqual({
-                alias: 'Sum',
                 type: 'sum',
-                outputMeasureIndexes: []
-            });
-        });
-
-        it('should return `max` total item', () => {
-            const total = getTotalFromListByType('max', intl);
-
-            expect(total).toEqual({
-                alias: 'Max',
-                type: 'max',
-                outputMeasureIndexes: []
-            });
-        });
-
-        it('should return `nat` total item', () => {
-            const total = getTotalFromListByType('nat', intl);
-
-            expect(total).toEqual({
-                alias: 'Total',
-                type: 'nat',
                 outputMeasureIndexes: []
             });
         });
@@ -266,11 +243,10 @@ describe('Totals', () => {
             ];
             const totalToAdd = 'avg';
             const expectedTotals = [...usedTotals, {
-                alias: 'Avg',
                 type: 'avg',
                 outputMeasureIndexes: []
             }];
-            expect(addTotalsRow(intl, usedTotals, totalToAdd)).toEqual(expectedTotals);
+            expect(addTotalsRow(usedTotals, totalToAdd)).toEqual(expectedTotals);
         });
 
         it('should not add total if is already present among used ones', () => {
@@ -279,7 +255,7 @@ describe('Totals', () => {
                 { type: 'avg' }
             ];
             const totalToAdd = 'avg';
-            expect(addTotalsRow(intl, usedTotals, totalToAdd)).toEqual(usedTotals);
+            expect(addTotalsRow(usedTotals, totalToAdd)).toEqual(usedTotals);
         });
     });
 

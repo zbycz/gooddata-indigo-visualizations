@@ -151,7 +151,9 @@ export class TotalCell extends Component {
 
     renderCellContent(isFirstColumn, isMeasureColumn, columnIndex, measureColumnIndex, total, header) {
         if (isFirstColumn) {
-            return total.alias ? total.alias : total.type;
+            return total.alias || this.props.intl.formatMessage({
+                id: `visualizations.totals.row.title.${total.type}`
+            });
         }
 
         if (isMeasureColumn) {
